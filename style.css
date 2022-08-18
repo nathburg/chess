@@ -1,0 +1,12 @@
+.board {
+    /* display: flex; */
+    width:850px;
+    overflow-wrap: initial;
+}
+
+.square {
+    height: 100px;
+    width: 100px;
+    margin: 0px;
+    padding:0px;
+}
