@@ -87,12 +87,12 @@ function renderSquare(position) {
             const coords = position.split('');
             const piece = positions[position].split('');
             if (whiteTurn && piece[0] === 'w') {
-                console.log('hello')
                 if (piece[1] === 'p') {
                     const pawnMoves = pawn(coords);
                     for (let move of pawnMoves) {
                         const moveEl = document.getElementById(`${move}`);
                         moveEl.textContent = 'x';
+                        console.log(pawnMoves)
                     }
                 }
             }    
@@ -110,7 +110,12 @@ function pawn(coords) {
     
     if  (!positions[potentialString]) {
         moves.push(potentialString)
+        if (coords[1] === '2' && !positions[`${x}`, `${y+2}}`]) {
+            const newMove = [`${x}`, `${y+2}`];
+            moves.push(newMove.join(''));
+        }
     }
+
     return moves;
 }   
 
