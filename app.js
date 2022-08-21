@@ -79,43 +79,43 @@ let positions = {
         piece: 'pawn',
         image: 'wp'
         },
-    '13': false,
-    '23': false,
-    '33': false,
-    '43': false,
-    '53': false,
-    '63': false,
-    '73': false,
-    '83': false,
-    '14': false,
-    '24': false,
-    '34': false,
-    '44': false,
-    '54': false,
-    '64': false,
-    '74': false,
-    '84': false,
-    '15': false,
-    '25': false,
-    '35': false,
-    '45': false,
-    '55': false,
-    '65': false,
-    '75': false,
-    '85': false,
-    '16': false,
-    '26': false,
-    '36': false,
-    '46': false,
-    '56': false,
-    '66': false,
-    '76': false,
-    '86': false,
-    17:  {
+    13: false,
+    23: false,
+    33: false,
+    43: {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
+    53: false,
+    63: false,
+    73: false,
+    83: false,
+    14: false,
+    24: false,
+    34: false,
+    44: false,
+    54: false,
+    64: false,
+    74: false,
+    84: false,
+    15: false,
+    25: false,
+    35: false,
+    45: false,
+    55: false,
+    65: false,
+    75: false,
+    85: false,
+    16: false,
+    26: false,
+    36: false,
+    46: false,
+    56: false,
+    66: false,
+    76: false,
+    86: false,
+    17: false ,
     27:  {
         color: 'black',
         piece: 'pawn',
@@ -190,8 +190,9 @@ let positions = {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
-        }, 
+        } 
 }
+
 
 let whiteCaptured = [];
 let blackCaptured = [];
@@ -204,32 +205,36 @@ displayBoard()
 
 function displayBoard() {
     for (const position in positions) {
-        const newPosition = document.getElementById(position);
+        const getPosition = document.getElementById(position);
+        const newPosition = document.createElement('button');
+        newPosition.id = position;
+        newPosition.classList.add('square');
+        getPosition.replaceWith(newPosition);
+
+
         if (positions[position]) {
             newPosition.textContent = `${positions[position].image}`;
             if (positions[position].color === currentPlayer) {
                 renderPlayable(position);
             }
-            if (positions[position] === false) {
-//stuck here                
-                const emptySpot = document.getElementById(position);
-                emptySpot.textContent = '';
-            }
         }
-
     }
 }
 
 function renderPlayable(position) {
-        const positionEl = document.getElementById(`${position}`);
+        const positionEl = document.getElementById(position);
         
         positionEl.addEventListener('click', () => {
             if (positions[position].piece === 'pawn') {
                 displayBoard();
+                console.log(position)
                 const moves = pawn(position);
                 for (let move of moves) {
                     if (move.condition === 'empty') {
                         moveButton(position, move.space);
+                    }
+                    if (move.condition === 'enemy') {
+                        attackButton(position, move.space);
                     }
                 }
             }
@@ -250,12 +255,13 @@ function moveButton(currentPosition, targetPosition) {
 
 function attackButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.textContent = `x${positions[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
         const savePiece = positions[targetPosition];
         if (savePiece.color === 'white') {
-            whiteCaptured.append(savePiece)
+            whiteCaptured.push(savePiece);
         } else {
-            blackCaptured.append(savePiece)
+            blackCaptured.push(savePiece);
         }
         positions[targetPosition] = positions[currentPosition];
         positions[currentPosition] = false;
@@ -279,7 +285,7 @@ function pawn(position) {
             //attack
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y+1]);
-                if (inspectSpace(test).status === 'enemy') {
+                if (inspectSpace(test).condition === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
@@ -306,6 +312,7 @@ function pawn(position) {
         if (inRange(y-1)) {
             //attack
             if (inRange(x-1)) {
+                console.log('left attack in range');
                 const test = coordsToString([x-1, y-1]);
                 if (inspectSpace(test).status === 'enemy') {
                     moves.push(inspectSpace(test));
@@ -327,7 +334,7 @@ function pawn(position) {
             }
         }
     }
-
+    console.log(moves);
     if (moves) {
         return moves;
     } else {
@@ -336,7 +343,7 @@ function pawn(position) {
 }  
 
 function inRange(number) {
-    if (0 < number <= 8) {
+    if (0 < number && number <= 8) {
         return true;
     } else {
         return false;
@@ -363,6 +370,6 @@ function changePlayer() {
     if (currentPlayer === 'white') {
         currentPlayer = 'black';
     } else {
-        currentPlayer === 'white'
+        currentPlayer === 'white';
     }
 }
