@@ -314,7 +314,7 @@ function pawn(position) {
             if (inRange(x-1)) {
                 console.log('left attack in range');
                 const test = coordsToString([x-1, y-1]);
-                if (inspectSpace(test).status === 'enemy') {
+                if (inspectSpace(test).condition === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
@@ -325,16 +325,15 @@ function pawn(position) {
                 }
             }
             //move one space
-            if (inspectSpace(coordsToString([x, y-1]))[condition] === 'empty') {
+            if (inspectSpace(coordsToString([x, y-1])).condition === 'empty') {
                 moves.push(inspectSpace(coordsToString([x, y-1])));
                 //move two spaces if in starting row
-                if (y === 7 && inspectSpace(coordsToString([x, y-2])) === 'empty') {
+                if (y === 7 && inspectSpace(coordsToString([x, y-2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y-2])))
                 }
             }
         }
     }
-    console.log(moves);
     if (moves) {
         return moves;
     } else {
@@ -370,6 +369,15 @@ function changePlayer() {
     if (currentPlayer === 'white') {
         currentPlayer = 'black';
     } else {
-        currentPlayer === 'white';
+        currentPlayer = 'white';
     }
 }
+
+console.log(currentPlayer)
+changePlayer()
+console.log(currentPlayer)
+changePlayer()
+console.log(currentPlayer)
+changePlayer()
+console.log(currentPlayer)
+changePlayer()
