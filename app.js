@@ -1,72 +1,202 @@
 let positions = {
-    '11': 'wr',
-    '21': 'wn',
-    '31': 'wb',
-    '41': 'wq',
-    '51': 'wk',
-    '61': 'wb',
-    '71': 'wn',
-    '81': 'wr',
-    '12': 'wp',
-    '22': 'wp',
-    '32': 'wp',
-    '42': 'wp',
-    '52': 'wp',
-    '62': 'wp',
-    '72': 'wp',
-    '82': 'wp',
-    '13': '',
-    '23': '',
-    '33': '',
-    '43': '',
-    '53': '',
-    '63': '',
-    '73': '',
-    '83': '',
-    '14': '',
-    '24': '',
-    '34': '',
-    '44': '',
-    '54': '',
-    '64': '',
-    '74': '',
-    '84': '',
-    '15': '',
-    '25': '',
-    '35': '',
-    '45': '',
-    '55': '',
-    '65': '',
-    '75': '',
-    '85': '',
-    '16': '',
-    '26': '',
-    '36': '',
-    '46': '',
-    '56': '',
-    '66': '',
-    '76': '',
-    '86': '',
-    '17': 'bp',
-    '27': 'bp',
-    '37': 'bp',
-    '47': 'bp',
-    '57': 'bp',
-    '67': 'bp',
-    '77': 'bp',
-    '87': 'bp',
-    '18': 'br',
-    '28': 'bn',
-    '38': 'bb',
-    '48': 'bq',
-    '58': 'bk',
-    '68': 'bb',
-    '78': 'bn',
-    '88': 'br' 
+    11: {
+        color: 'white',
+        piece: 'rook',
+        image: 'wr'
+        },
+    21:  {
+        color: 'white',
+        piece: 'knight',
+        image: 'wn'
+        },
+    31:  {
+        color: 'white',
+        piece: 'bishop',
+        image: 'wb'
+        },
+    41:  {
+        color: 'white',
+        piece: 'queen',
+        image: 'wq'
+        },
+    51:  {
+        color: 'white',
+        piece: 'king',
+        image: 'wk'
+        },
+    61:  {
+        color: 'white',
+        piece: 'bishop',
+        image: 'wb'
+        },
+    71: {
+        color: 'white',
+        piece: 'knight',
+        image: 'wn'
+        },
+    81: {
+        color: 'white',
+        piece: 'rook',
+        image: 'wr'
+        },
+    12: {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    22:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    32:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    42:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    52:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    62:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    72:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    82:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    '13': false,
+    '23': false,
+    '33': false,
+    '43': false,
+    '53': false,
+    '63': false,
+    '73': false,
+    '83': false,
+    '14': false,
+    '24': false,
+    '34': false,
+    '44': false,
+    '54': false,
+    '64': false,
+    '74': false,
+    '84': false,
+    '15': false,
+    '25': false,
+    '35': false,
+    '45': false,
+    '55': false,
+    '65': false,
+    '75': false,
+    '85': false,
+    '16': false,
+    '26': false,
+    '36': false,
+    '46': false,
+    '56': false,
+    '66': false,
+    '76': false,
+    '86': false,
+    17:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    27:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    37:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    47:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    57:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    67:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    77:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    87:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
+    18:  {
+        color: 'black',
+        piece: 'rook',
+        image: 'br'
+        },
+    28:  {
+        color: 'black',
+        piece: 'knight',
+        image: 'bn'
+        },
+    38:  {
+        color: 'black',
+        piece: 'bishop',
+        image: 'bb'
+        },
+    48:  {
+        color: 'black',
+        piece: 'queen',
+        image: 'bq'
+        },
+    58:  {
+        color: 'black',
+        piece: 'king',
+        image: 'bk'
+        },
+    68:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        },
+    78:  {
+        color: 'black',
+        piece: 'knight',
+        image: 'bn'
+        },
+    88:  {
+        color: 'white',
+        piece: 'pawn',
+        image: 'wp'
+        }, 
 }
 
-let whiteTurn = true;
+let whiteCaptured = [];
+let blackCaptured = [];
 
+let currentPlayer = 'white';
 
 
 displayBoard()
@@ -74,48 +204,165 @@ displayBoard()
 
 function displayBoard() {
     for (const position in positions) {
-        const newPosition = document.getElementById(`${position}`);
-        newPosition.textContent = `${positions[position]}`;
-        renderSquare(position);
+        const newPosition = document.getElementById(position);
+        if (positions[position]) {
+            newPosition.textContent = `${positions[position].image}`;
+            if (positions[position].color === currentPlayer) {
+                renderPlayable(position);
+            }
+            if (positions[position] === false) {
+//stuck here                
+                const emptySpot = document.getElementById(position);
+                emptySpot.textContent = '';
+            }
+        }
+
     }
 }
 
-function renderSquare(position) {
-    const positionEl = document.getElementById(`${position}`);
-    if (positionEl.textContent) {
+function renderPlayable(position) {
+        const positionEl = document.getElementById(`${position}`);
+        
         positionEl.addEventListener('click', () => {
-            const coords = position.split('');
-            const piece = positions[position].split('');
-            if (whiteTurn && piece[0] === 'w') {
-                if (piece[1] === 'p') {
-                    const pawnMoves = pawn(coords);
-                    for (let move of pawnMoves) {
-                        const moveEl = document.getElementById(`${move}`);
-                        moveEl.textContent = 'x';
-                        console.log(pawnMoves)
+            if (positions[position].piece === 'pawn') {
+                displayBoard();
+                const moves = pawn(position);
+                for (let move of moves) {
+                    if (move.condition === 'empty') {
+                        moveButton(position, move.space);
                     }
                 }
-            }    
+            }
         });
     }
+
+function moveButton(currentPosition, targetPosition) {
+    const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.textContent = 'x';
+    targetPositionEl.addEventListener('click', () => {
+        const savePiece = positions[currentPosition];
+        positions[currentPosition] = false;
+        positions[targetPosition] = savePiece;
+        changePlayer();
+        displayBoard();
+    })
 }
 
-function pawn(coords) {
+function attackButton(currentPosition, targetPosition) {
+    const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.addEventListener('click', () => {
+        const savePiece = positions[targetPosition];
+        if (savePiece.color === 'white') {
+            whiteCaptured.append(savePiece)
+        } else {
+            blackCaptured.append(savePiece)
+        }
+        positions[targetPosition] = positions[currentPosition];
+        positions[currentPosition] = false;
+        changePlayer();
+        displayBoard();
+    })
+}
+    
+// function displayMoves(moves)
+
+function pawn(position) {
     let moves = [];
+
+    const coords = stringToCoords(position);
     let x = Number(coords[0]);
     let y = Number(coords[1]);
-
-    const potential = [`${x}`, `${y+1}`];
-    const potentialString = potential.join('');
     
-    if  (!positions[potentialString]) {
-        moves.push(potentialString)
-        if (coords[1] === '2' && !positions[`${x}`, `${y+2}}`]) {
-            const newMove = [`${x}`, `${y+2}`];
-            moves.push(newMove.join(''));
+    //white pawn
+    if (currentPlayer === 'white') {
+        if (inRange(y+1)) {
+            //attack
+            if (inRange(x-1)) {
+                const test = coordsToString([x-1, y+1]);
+                if (inspectSpace(test).status === 'enemy') {
+                    moves.push(inspectSpace(test));
+                }
+            }
+            if (inRange(x+1)) {
+                const test = coordsToString([x+1, y+1]);
+                if (inspectSpace(test).condition === 'enemy') {
+                    moves.push(inspectSpace(test));
+                }
+            }
+            //move one space
+            if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
+                
+                moves.push(inspectSpace(coordsToString([x, y+1])));
+                //move two spaces if in starting row
+                if (y === 2 && inspectSpace(coordsToString([x, y+2])).condition === 'empty') {
+                    moves.push(inspectSpace(coordsToString([x, y+2])))
+                }
+            }
         }
     }
 
-    return moves;
-}   
+         //black pawn
+    if (currentPlayer === 'black') {
+        if (inRange(y-1)) {
+            //attack
+            if (inRange(x-1)) {
+                const test = coordsToString([x-1, y-1]);
+                if (inspectSpace(test).status === 'enemy') {
+                    moves.push(inspectSpace(test));
+                }
+            }
+            if (inRange(x+1)) {
+                const test = coordsToString([x+1, y-1]);
+                if (inspectSpace(test).condition === 'enemy') {
+                    moves.push(inspectSpace(test));
+                }
+            }
+            //move one space
+            if (inspectSpace(coordsToString([x, y-1]))[condition] === 'empty') {
+                moves.push(inspectSpace(coordsToString([x, y-1])));
+                //move two spaces if in starting row
+                if (y === 7 && inspectSpace(coordsToString([x, y-2])) === 'empty') {
+                    moves.push(inspectSpace(coordsToString([x, y-2])))
+                }
+            }
+        }
+    }
 
+    if (moves) {
+        return moves;
+    } else {
+        alert('That piece can\'t move right now.');
+    }
+}  
+
+function inRange(number) {
+    if (0 < number <= 8) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function stringToCoords(string) {
+    return string.split('');
+}
+
+function coordsToString(coords) {
+    return coords.join('');
+}
+
+function inspectSpace(space) {
+    if (!positions[space]) {
+        return {'space': space, condition: 'empty'}
+    } else if (positions[space].color !== currentPlayer) {
+        return {'space': space, condition: 'enemy'}
+    }
+}
+
+function changePlayer() {
+    if (currentPlayer === 'white') {
+        currentPlayer = 'black';
+    } else {
+        currentPlayer === 'white'
+    }
+}
