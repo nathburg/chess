@@ -82,11 +82,7 @@ let positions = {
     13: false,
     23: false,
     33: false,
-    43: {
-        color: 'black',
-        piece: 'pawn',
-        image: 'bp'
-        },
+    43: false,
     53: false,
     63: false,
     73: false,
@@ -115,7 +111,11 @@ let positions = {
     66: false,
     76: false,
     86: false,
-    17: false ,
+    17:  {
+        color: 'black',
+        piece: 'pawn',
+        image: 'bp'
+        },
     27:  {
         color: 'black',
         piece: 'pawn',
@@ -177,9 +177,9 @@ let positions = {
         image: 'bk'
         },
     68:  {
-        color: 'white',
-        piece: 'pawn',
-        image: 'wp'
+        color: 'black',
+        piece: 'bishop',
+        image: 'bb'
         },
     78:  {
         color: 'black',
@@ -187,9 +187,9 @@ let positions = {
         image: 'bn'
         },
     88:  {
-        color: 'white',
-        piece: 'pawn',
-        image: 'wp'
+        color: 'black',
+        piece: 'rook',
+        image: 'br'
         } 
 }
 
@@ -334,10 +334,10 @@ function pawn(position) {
             }
         }
     }
-    if (moves) {
-        return moves;
-    } else {
+    if (moves === []) {
         alert('That piece can\'t move right now.');
+    } else {
+        return moves;
     }
 }  
 
@@ -372,12 +372,3 @@ function changePlayer() {
         currentPlayer = 'white';
     }
 }
-
-console.log(currentPlayer)
-changePlayer()
-console.log(currentPlayer)
-changePlayer()
-console.log(currentPlayer)
-changePlayer()
-console.log(currentPlayer)
-changePlayer()
