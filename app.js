@@ -1,193 +1,193 @@
 let positions = {
     
-    11: {
+    a1: {
         color: 'white',
         piece: 'rook',
         image: 'wr'
         },
-    21:  {
+    b1:  {
         color: 'white',
         piece: 'knight',
         image: 'wn'
         },
-    31:  {
+    c1:  {
         color: 'white',
         piece: 'bishop',
         image: 'wb'
         },
-    41:  {
+    d1:  {
         color: 'white',
         piece: 'queen',
         image: 'wq'
         },
-    51:  {
+    e1:  {
         color: 'white',
         piece: 'king',
         image: 'wk'
         },
-    61:  {
+    f1:  {
         color: 'white',
         piece: 'bishop',
         image: 'wb'
         },
-    71: {
+    g1: {
         color: 'white',
         piece: 'knight',
         image: 'wn'
         },
-    81: {
+    h1: {
         color: 'white',
         piece: 'rook',
         image: 'wr'
         },
-    12: {
+    a2: {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    22:  {
+    b2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    32:  {
+    c2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    42:  {
+    d2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    52:  {
+    e2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    62:  {
+    f2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    72:  {
+    g2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    82:  {
+    h2:  {
         color: 'white',
         piece: 'pawn',
         image: 'wp'
         },
-    13: false,
-    23: false,
-    33: false,
-    43: false,
-    53: false,
-    63: false,
-    73: false,
-    83: false,
-    14: false,
-    24: false,
-    34: false,
-    44: false,
-    54: false,
-    64: false,
-    74: false,
-    84: false,
-    15: false,
-    25: false,
-    35: false,
-    45: false,
-    55: false,
-    65: false,
-    75: false,
-    85: false,
-    16: false,
-    26: false,
-    36: false,
-    46: false,
-    56: false,
-    66: false,
-    76: false,
-    86: false,
-    17:  {
+    a3: false,
+    b3: false,
+    c3: false,
+    d3: false,
+    e3: false,
+    f3: false,
+    g3: false,
+    h3: false,
+    a4: false,
+    b4: false,
+    c4: false,
+    d4: false,
+    e4: false,
+    f4: false,
+    g4: false,
+    h4: false,
+    a5: false,
+    b5: false,
+    c5: false,
+    d5: false,
+    e5: false,
+    f5: false,
+    g5: false,
+    h5: false,
+    a6: false,
+    b6: false,
+    c6: false,
+    d6: false,
+    e6: false,
+    f6: false,
+    g6: false,
+    h6: false,
+    a7:  {
+        color: 'black',
+        piece: 'pawn',
+        image: '♟'
+        },
+    b7:  {
+        color: 'black',
+        piece: 'pawn',
+        image: '♟️'
+        },
+    c7:  {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
-    27:  {
+    d7:  {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
-    37:  {
+    e7:  {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
-    47:  {
+    f7:  {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
-    57:  {
+    g7:  {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
-    67:  {
+    h7:  {
         color: 'black',
         piece: 'pawn',
         image: 'bp'
         },
-    77:  {
-        color: 'black',
-        piece: 'pawn',
-        image: 'bp'
-        },
-    87:  {
-        color: 'black',
-        piece: 'pawn',
-        image: 'bp'
-        },
-    18:  {
+    a8:  {
         color: 'black',
         piece: 'rook',
         image: 'br'
         },
-    28:  {
+    b8:  {
         color: 'black',
         piece: 'knight',
         image: 'bn'
         },
-    38:  {
+    c8:  {
         color: 'black',
         piece: 'bishop',
         image: 'bb'
         },
-    48:  {
+    d8:  {
         color: 'black',
         piece: 'queen',
         image: 'bq'
         },
-    58:  { 
+    e8:  { 
         color: 'black',
         piece: 'king',
         image: 'bk'
         },
-    68:  {
+    f8:  {
         color: 'black',
         piece: 'bishop',
         image: 'bb'
         },
-    78:  {
+    g8:  {
         color: 'black',
         piece: 'knight',
         image: 'bn'
         },
-    88:  {
+    h8:  {
         color: 'black',
         piece: 'rook',
         image: 'br'
@@ -199,6 +199,8 @@ let whiteCaptured = [];
 let blackCaptured = [];
 
 let currentPlayer = 'white';
+const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+
 
 
 displayBoard()
@@ -208,7 +210,6 @@ function displayBoard() {
     let white = true;
     let counter = 0;
     for (const position in positions) {
-        console.log(position);
         const getPosition = document.getElementById(position);
         const newPosition = document.createElement('button');
         newPosition.id = position;
@@ -290,8 +291,8 @@ function pawn(position) {
     let moves = [];
 
     const coords = stringToCoords(position);
-    let x = Number(coords[0]);
-    let y = Number(coords[1]);
+    let x = coords[0];
+    let y = coords[1];
     
     //white pawn
     if (currentPlayer === 'white') {
@@ -363,11 +364,18 @@ function inRange(number) {
     }
 }
 
+console.log(stringToCoords('f7'));
+
 function stringToCoords(string) {
-    return string.split('');
+    const splitString = string.split('');
+    console.log(letterArray.indexOf('h'))
+    console.log(letterArray.indexOf(splitString[0]))
+    const coords = [letterArray.indexOf(splitString[0])+1, Number(splitString[1])]
+    return coords;
 }
 
 function coordsToString(coords) {
+    coords[0] = letterArray[coords[0]-1];
     return coords.join('');
 }
 
