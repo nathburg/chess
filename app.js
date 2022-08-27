@@ -1,4 +1,5 @@
 let positions = {
+    
     11: {
         color: 'white',
         piece: 'rook',
@@ -171,7 +172,7 @@ let positions = {
         piece: 'queen',
         image: 'bq'
         },
-    58:  {
+    58:  { 
         color: 'black',
         piece: 'king',
         image: 'bk'
@@ -204,11 +205,19 @@ displayBoard()
 
 
 function displayBoard() {
+    let white = true;
+    let counter = 0;
     for (const position in positions) {
+        console.log(position);
         const getPosition = document.getElementById(position);
         const newPosition = document.createElement('button');
         newPosition.id = position;
         newPosition.classList.add('square');
+        if (white) {
+            newPosition.classList.add('white');
+        } else {
+            newPosition.classList.add('black');
+        }
         getPosition.replaceWith(newPosition);
 
 
@@ -218,7 +227,13 @@ function displayBoard() {
                 renderPlayable(position);
             }
         }
+    counter++;
+    if (counter%8) {
+    white = !white;
     }
+
+    }
+
 }
 
 function renderPlayable(position) {
@@ -227,7 +242,6 @@ function renderPlayable(position) {
         positionEl.addEventListener('click', () => {
             if (positions[position].piece === 'pawn') {
                 displayBoard();
-                console.log(position)
                 const moves = pawn(position);
                 for (let move of moves) {
                     if (move.condition === 'empty') {

@@ -9,6 +9,15 @@
     padding:0px;
 }
 
+.black {
+    background-color: black;
+    color: white;
+}
+
+.white {
+    background-color: white;
+}
+
 .row {
     display:flex;
 }
