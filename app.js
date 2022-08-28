@@ -1,4 +1,4 @@
-let positions = {
+let board = {
     
     a1: {
         color: 'white',
@@ -205,13 +205,18 @@ const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
 displayBoard()
 
-
+// the point of displayBoard is to update the display with the current state of the board object
 function displayBoard() {
-    let white = true;
+    let white = false;
     let counter = 0;
-    for (const position in positions) {
+    // We loop through all the positions in the board object.
+    // Each "position" is one of the keys, like a4 or g6. 
+    for (const position in board) {
+        // grab the proper html element for this position
         const getPosition = document.getElementById(position);
+        // make a new button to replace it
         const newPosition = document.createElement('button');
+        // give it the right id and classes
         newPosition.id = position;
         newPosition.classList.add('square');
         if (white) {
@@ -219,35 +224,50 @@ function displayBoard() {
         } else {
             newPosition.classList.add('black');
         }
+        // replace old element with the new one
         getPosition.replaceWith(newPosition);
 
-
-        if (positions[position]) {
-            newPosition.textContent = `${positions[position].image}`;
-            if (positions[position].color === currentPlayer) {
+        // we go deeper into the function if there is actually something at the current board position
+        // otherwise the function just stops right here with an empty button and loops to a new position
+        if (board[position]) {
+            // if there's a piece at the position we insert an image of the piece at the position
+            newPosition.textContent = `${board[position].image}`;
+            // we go deeper again if the current piece is the same color as the current player
+            // if it use, we enter the renderPlayable function to give this piece a button to play
+            if (board[position].color === currentPlayer) {
                 renderPlayable(position);
             }
         }
-    counter++;
-    if (counter%8) {
-    white = !white;
-    }
+        counter++;
+        if (counter%8) {
+        white = !white;
+        }
 
     }
 
 }
 
+// this function uses the pawn function to determine which positions the pawn can move to
+// it then renders those positions with attack buttons or move buttons depending on if the
+// position is empty or has an enemy on it
+// (this is where the functions for other pieces will go once we build those)
 function renderPlayable(position) {
         const positionEl = document.getElementById(position);
         
         positionEl.addEventListener('click', () => {
-            if (positions[position].piece === 'pawn') {
+            // if the piece is a pawn
+            if (board[position].piece === 'pawn') {
+                // refresh the board
                 displayBoard();
+                // get the positions the pawn functions determines are viable moves
                 const moves = pawn(position);
+                // loop through those moves
                 for (let move of moves) {
+                    // if the positions is empty, give it a move button
                     if (move.condition === 'empty') {
                         moveButton(position, move.space);
                     }
+                    // if the position has an enemy piece, give it an attack button
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space);
                     }
@@ -260,9 +280,9 @@ function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = 'x';
     targetPositionEl.addEventListener('click', () => {
-        const savePiece = positions[currentPosition];
-        positions[currentPosition] = false;
-        positions[targetPosition] = savePiece;
+        const savePiece = board[currentPosition];
+        board[currentPosition] = false;
+        board[targetPosition] = savePiece;
         changePlayer();
         displayBoard();
     })
@@ -270,16 +290,16 @@ function moveButton(currentPosition, targetPosition) {
 
 function attackButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = `x${positions[targetPosition].image}`;
+    targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
-        const savePiece = positions[targetPosition];
+        const savePiece = board[targetPosition];
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
         } else {
             blackCaptured.push(savePiece);
         }
-        positions[targetPosition] = positions[currentPosition];
-        positions[currentPosition] = false;
+        board[targetPosition] = board[currentPosition];
+        board[currentPosition] = false;
         changePlayer();
         displayBoard();
     })
@@ -327,7 +347,6 @@ function pawn(position) {
         if (inRange(y-1)) {
             //attack
             if (inRange(x-1)) {
-                console.log('left attack in range');
                 const test = coordsToString([x-1, y-1]);
                 if (inspectSpace(test).condition === 'enemy') {
                     moves.push(inspectSpace(test));
@@ -364,7 +383,6 @@ function inRange(number) {
     }
 }
 
-console.log(stringToCoords('f7'));
 
 function stringToCoords(string) {
     const splitString = string.split('');
@@ -380,9 +398,9 @@ function coordsToString(coords) {
 }
 
 function inspectSpace(space) {
-    if (!positions[space]) {
+    if (!board[space]) {
         return {'space': space, condition: 'empty'}
-    } else if (positions[space].color !== currentPlayer) {
+    } else if (board[space].color !== currentPlayer) {
         return {'space': space, condition: 'enemy'}
     }
 }
