@@ -276,23 +276,34 @@ function renderPlayable(position) {
         });
     }
 
-function moveButton(currentPosition, targetPosition) {
+// this function moves the piece from its current position to the target position
+    function moveButton(currentPosition, targetPosition) {
+    // grab the element of the target position
     const targetPositionEl = document.getElementById(targetPosition);
+    // make the target positions have an x in it
     targetPositionEl.textContent = 'x';
+    // make the position an event listener that on click moves the piece in the current position to the target position
     targetPositionEl.addEventListener('click', () => {
+        // save the piece in a variable so you can delete it off of its current position without losing what was there
         const savePiece = board[currentPosition];
+        // replace the current position with false
         board[currentPosition] = false;
+        // put the saved piece that was on the current position onto the target position
         board[targetPosition] = savePiece;
         changePlayer();
         displayBoard();
     })
 }
 
+// mostly same as above but the target position has an enemy piece to remove and push to its array of captured pieces
 function attackButton(currentPosition, targetPosition) {
+    
     const targetPositionEl = document.getElementById(targetPosition);
+    // put x next to the text of the piece on the target position
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
         const savePiece = board[targetPosition];
+        // push piece to the right color of array
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
         } else {
@@ -305,22 +316,35 @@ function attackButton(currentPosition, targetPosition) {
     })
 }
     
-// function displayMoves(moves)
-
+// the pawn function takes the current position it's on and returns an array of positions the pawn can move to
 function pawn(position) {
+    
+    // this is array the valid moved will be pushed to
     let moves = [];
 
+    // we convert the board notion of the current position into a length-2 array, ie algebraic coordinates
     const coords = stringToCoords(position);
+    // x is the first coordinate
     let x = coords[0];
+    // y is the second coordinate
     let y = coords[1];
     
     //white pawn
     if (currentPlayer === 'white') {
+        // check if the the row ahead of the current positions is still on the board
+        // i.e. checking if the current position is already on the last row and moving forward goes off the board
         if (inRange(y+1)) {
             //attack
+            // check if column to the left is on the board
             if (inRange(x-1)) {
+                // here we take x-1 and y+1 and convert those to the chess board notation of that position
+                //we call it test because we're testing what's going on at that position
                 const test = coordsToString([x-1, y+1]);
+                //here we call inspectSpace, which looks at the space and tells us if it's empty or has an enemy on it
+                // inspectSpace returns objects that look like {space: g5, condition: 'enemy'}.
+                // this tells you that at g5 there's an enemy
                 if (inspectSpace(test).condition === 'enemy') {
+                    // push this object from inspectSpace into the moves array
                     moves.push(inspectSpace(test));
                 }
             }
@@ -368,6 +392,8 @@ function pawn(position) {
             }
         }
     }
+    // this condition doesn't work because [] is actually truthy, so this needs to change
+    // the idea though is that if there were no valid moves and nothing went in the moves array by the end then give an alert
     if (moves === []) {
         alert('That piece can\'t move right now.');
     } else {
@@ -375,6 +401,7 @@ function pawn(position) {
     }
 }  
 
+// this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
 function inRange(number) {
     if (0 < number && number <= 8) {
         return true;
@@ -384,22 +411,25 @@ function inRange(number) {
 }
 
 
+// this converts the board position string (let's say 'e7') and converts it to its coordinates (e7 is [5, 7]) 
 function stringToCoords(string) {
     const splitString = string.split('');
-    console.log(letterArray.indexOf('h'))
-    console.log(letterArray.indexOf(splitString[0]))
     const coords = [letterArray.indexOf(splitString[0])+1, Number(splitString[1])]
     return coords;
 }
 
+// this converts coordinates back to the board position strings
 function coordsToString(coords) {
     coords[0] = letterArray[coords[0]-1];
     return coords.join('');
 }
 
+// this returns nothing if there's an ally piece in the space it's looking at
 function inspectSpace(space) {
+    // if there's nothing in the space, return the object with condition marked empty
     if (!board[space]) {
         return {'space': space, condition: 'empty'}
+    // if an enemy piece is in the space, return the object with condition marked enemy
     } else if (board[space].color !== currentPlayer) {
         return {'space': space, condition: 'enemy'}
     }
