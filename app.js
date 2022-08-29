@@ -273,6 +273,21 @@ function renderPlayable(position) {
                     }
                 }
             }
+
+            if (board[position].piece === 'king') {
+                displayBoard();
+                const moves = king(position);
+
+                for (let move of moves) {
+                    if (move.condition === 'enemy') {
+                        attackButton(position, move.space) ;
+                    }
+
+                    if (move.condition === 'empty') {
+                        moveButton(position, move.space);
+                    }
+                }
+            }
         });
     }
 
@@ -400,6 +415,68 @@ function pawn(position) {
         return moves;
     }
 }  
+
+function king(position) {
+    let moves = [];
+
+    const coords = stringToCoords(position);
+    let x = coords[0];
+    let y = coords[1];
+
+    if (inRange(y+1)) {
+        if (inRange(x-1)) {
+            const test = coordsToString([x-1, y+1]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+            const testSide = coordsToString([x-1, y]);
+            if (inspectSpace(testSide)) {
+                moves.push(inspectSpace(testSide));
+            }
+        }
+        if (inRange(x+1)) {
+            const test = coordsToString([x+1, y+1]);
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                }
+            const testSide = coordsToString([x+1, y]);
+                if (inspectSpace(testSide)) {
+                    moves.push(inspectSpace(testSide));
+                }
+        }
+        const test = coordsToString([x, y+1])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+    }
+    if (inRange(y-1)) {
+        if (inRange(x-1)) {
+            const test = coordsToString([x-1, y-1]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+        }
+        if (inRange(x+1)) {
+            const test = coordsToString([x+1, y-1]);
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                }
+        }
+        const test = coordsToString([x, y-1])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+    }
+
+    console.log(moves);
+
+    if (moves.length === 0) {
+        alert('That piece can\'t move right now.');
+    } else {
+         return moves;
+    }
+    
+} 
 
 // this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
 function inRange(number) {
