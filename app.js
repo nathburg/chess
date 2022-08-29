@@ -463,11 +463,9 @@ function pawn(position) {
     }
     // this condition doesn't work because [] is actually truthy, so this needs to change
     // the idea though is that if there were no valid moves and nothing went in the moves array by the end then give an alert
-    if (moves === []) {
-        alert('That piece can\'t move right now.');
-    } else {
+    
         return moves;
-    }
+    
 }  
 
 function king(position) {
@@ -524,18 +522,19 @@ function king(position) {
 
     console.log(moves);
 
-    if (moves.length === 0) {
-        alert('That piece can\'t move right now.');
-    } else {
+    
          return moves;
-    }
+    
     
 } 
 
-function queen(position) {
-    return rook(position).concat(bishop(position));
-}
 
+
+function queen(position) {
+    let moves = bishop(position).concat(rook(position));
+    return moves;
+}
+   
 function bishop(position) {
     let moves = [];
 
@@ -557,7 +556,7 @@ function bishop(position) {
                         moves.push(inspectSpace(test));
 
                         if (inspectSpace(test).condition === 'empty') {
-                            console.log('moves', moves);
+                            
                             
                             testY++;
                             testX--;
@@ -585,7 +584,7 @@ function bishop(position) {
                         moves.push(inspectSpace(test));
 
                         if (inspectSpace(test).condition === 'empty') {
-                            console.log('moves', moves);
+                            
                             
                             testY++;
                             testX++;
@@ -753,11 +752,9 @@ function rook(position) {
             }
         }
     }
-    if (moves.length === 0) {
-        alert('That piece can\'t move right now.');
-    } else {
+    
          return moves;
-    }
+    
 }
 
 function knight(position) {
