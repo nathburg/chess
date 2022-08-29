@@ -429,23 +429,52 @@ function king(position) {
             if (inspectSpace(test)) {
                 moves.push(inspectSpace(test));
             }
+            const testSide = coordsToString([x-1, y]);
+            if (inspectSpace(testSide)) {
+                moves.push(inspectSpace(testSide));
+            }
         }
-        
         if (inRange(x+1)) {
             const test = coordsToString([x+1, y+1]);
                 if (inspectSpace(test)) {
                     moves.push(inspectSpace(test));
                 }
+            const testSide = coordsToString([x+1, y]);
+                if (inspectSpace(testSide)) {
+                    moves.push(inspectSpace(testSide));
+                }
+        }
+        const test = coordsToString([x, y+1])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+    }
+    if (inRange(y-1)) {
+        if (inRange(x-1)) {
+            const test = coordsToString([x-1, y-1]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
             }
         }
-
-        console.log(moves);
-
-        if (moves.length === 0) {
-            alert('That piece can\'t move right now.');
-        } else {
-            return moves;
+        if (inRange(x+1)) {
+            const test = coordsToString([x+1, y-1]);
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                }
         }
+        const test = coordsToString([x, y-1])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+    }
+
+    console.log(moves);
+
+    if (moves.length === 0) {
+        alert('That piece can\'t move right now.');
+    } else {
+         return moves;
+    }
     
 } 
 
