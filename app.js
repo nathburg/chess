@@ -272,35 +272,34 @@ function renderPlayable(position) {
                         attackButton(position, move.space);
                     }
                 }
-            
             }
 
             if (board[position].piece === 'king') {
                 displayBoard();
                 const moves = king(position);
-
                 for (let move of moves) {
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space) ;
                     }
-
                     if (move.condition === 'empty') {
                         moveButton(position, move.space);
                     }
                 }
             }
 
+            if (board[position].piece === 'queen') {
+                displayBoard();
+                const moves = queen(position);
+                for (let move of moves) {
+                    if (move.condition === 'enemy') {
+                        attackButton(position, move.space) ;
+                    }
+                    if (move.condition === 'empty') {
+                        moveButton(position, move.space);
+                    }
+                }
+            }
 
-
-
-
-
-
-
-
-
-
-            // lowered
             if (board[position].piece === 'rook') {
                 displayBoard();
                 const moves = rook(position);
@@ -310,10 +309,10 @@ function renderPlayable(position) {
                     }
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space);
-
                     }
                 }
             }
+
             if (board[position].piece === 'bishop') {
                 displayBoard();
                 const moves = bishop(position);
@@ -328,10 +327,7 @@ function renderPlayable(position) {
                     }
                 }
             }
-        
         });
-    
-    
 }
 
 // this function moves the piece from its current position to the target position
@@ -520,6 +516,10 @@ function king(position) {
     }
     
 } 
+
+function queen(position) {
+    return rook(position).concat(bishop(position));
+}
 
 function bishop(position) {
     let moves = [];
