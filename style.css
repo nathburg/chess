@@ -1,5 +1,97 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    display: flex;
+    padding: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    justify-content: space-evenly;
+    border-radius: 8px;
+    border:5px solid  rgb(44, 54, 57);
+    background-color: rgb(220, 215, 201);
+    box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+-webkit-box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+-moz-box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+    
+    
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Aboreto', cursive;
+    padding-left: 40px;
+    padding-right: 40px;
+    align-items: center;
+    background-color: rgb(44, 54, 57);
+    color:rgb(216, 204, 163); 
+    height: 75px;
+    margin: none;
+    box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+-webkit-box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+-moz-box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+
+}
+
+header a {
+    text-decoration: underline;
+    font-family: 'Aboreto', cursive;
+    color:rgb(216, 204, 163); 
+    text-decoration: underline;
+}
+
+.captured-pieces {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Aboreto', cursive;
+    grid-template-rows: 50% 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(63, 78, 79);
+    color: rgb(216, 204, 163); 
+    font-weight: bold;
+    width: 250px;
+    padding: 40px;
+    border: 4px solid rgb(162, 123, 92);
+    border-radius: 6px;
+    box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+-webkit-box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+-moz-box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+}
+
+
+
+
+.chat {
+    display: flex;
+    justify-content: center;
+    font-family: 'Aboreto', cursive;
+    background-color: rgb(63, 78, 79);
+    color: rgb(216, 204, 163); 
+    font-weight: bold;
+    width: 300px;
+    padding: 40px;
+    border: 4px solid rgb(162, 123, 92);
+    border-radius: 6px;
+    box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+-webkit-box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+-moz-box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+}
+
+body {
+    background-color:rgb(162, 123, 92);
+}
+
 .board {
-    width:800
+    width:800;
+    justify-self: center;
+    box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+-webkit-box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+-moz-box-shadow: 8px 9px 10px -6px rgba(0,0,0,0.75);
+    
 }
 
 .square {
@@ -8,6 +100,7 @@
     margin: 0px;
     padding:0px;
     font-size: 40px;
+    cursor: pointer;
 }
 
 .black {
