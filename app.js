@@ -288,6 +288,38 @@ function renderPlayable(position) {
                     }
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // lowered
+            if (board[position].piece === 'rook') {
+                displayBoard();
+                const moves = rook(position);
+                for (let move of moves) {
+                    if (move.condition === 'empty') {
+                        moveButton(position, move.space);
+                    }
+                    if (move.condition === 'enemy') {
+                        attackButton(position, move.space);
+
+                    }
+
             if (board[position].piece === 'bishop') {
                 displayBoard();
                 const moves = bishop(position);
@@ -651,7 +683,7 @@ function inspectSpace(space) {
     // if an enemy piece is in the space, return the object with condition marked enemy
     } else if (board[space].color !== currentPlayer) {
         return {'space': space, condition: 'enemy'}
-    }
+    } 
 }
 
 function changePlayer() {
@@ -659,5 +691,132 @@ function changePlayer() {
         currentPlayer = 'black';
     } else {
         currentPlayer = 'white';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// rook code lower
+function rook(position) {
+    let moves = [];
+    const coords = stringToCoords(position);
+    let x = coords[0];
+    let y = coords[1];
+
+    if (inRange(y+1)) {
+        let open = true;
+        let testY = y + 1;
+        while (open === true) {
+            if (inRange(testY)) {
+                const test = coordsToString([x, testY])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testY++;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (inRange(y-1)) {
+        let open = true;
+        let testY = y - 1;
+        while (open === true) {
+            if (inRange(testY)) {
+                const test = coordsToString([x, testY])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testY--;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (inRange(x+1)) {
+        let open = true;
+        let testX = x + 1;
+        while (open === true) {
+            if (inRange(testX)) {
+                const test = coordsToString([testX, y])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testX++;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (inRange(x-1)) {
+        let open = true;
+        let testX = x - 1;
+        while (open === true) {
+            if (inRange(testX)) {
+                const test = coordsToString([testX, y])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testX--;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (moves.length === 0) {
+        alert('That piece can\'t move right now.');
+    } else {
+         return moves;
     }
 }
