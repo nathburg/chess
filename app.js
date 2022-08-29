@@ -272,6 +272,7 @@ function renderPlayable(position) {
                         attackButton(position, move.space);
                     }
                 }
+            
             }
 
             if (board[position].piece === 'king') {
@@ -299,14 +300,6 @@ function renderPlayable(position) {
 
 
 
-
-
-
-
-
-
-
-
             // lowered
             if (board[position].piece === 'rook') {
                 displayBoard();
@@ -319,7 +312,8 @@ function renderPlayable(position) {
                         attackButton(position, move.space);
 
                     }
-
+                }
+            }
             if (board[position].piece === 'bishop') {
                 displayBoard();
                 const moves = bishop(position);
@@ -334,8 +328,11 @@ function renderPlayable(position) {
                     }
                 }
             }
+        
         });
-    }
+    
+    
+}
 
 // this function moves the piece from its current position to the target position
     function moveButton(currentPosition, targetPosition) {
@@ -651,79 +648,6 @@ function bishop(position) {
     }
     return moves;
 }
-
-// this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
-function inRange(number) {
-    if (0 < number && number <= 8) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
-// this converts the board position string (let's say 'e7') and converts it to its coordinates (e7 is [5, 7]) 
-function stringToCoords(string) {
-    const splitString = string.split('');
-    const coords = [letterArray.indexOf(splitString[0])+1, Number(splitString[1])]
-    return coords;
-}
-
-// this converts coordinates back to the board position strings
-function coordsToString(coords) {
-    coords[0] = letterArray[coords[0]-1];
-    return coords.join('');
-}
-
-// this returns nothing if there's an ally piece in the space it's looking at
-function inspectSpace(space) {
-    // if there's nothing in the space, return the object with condition marked empty
-    if (!board[space]) {
-        return {'space': space, condition: 'empty'}
-    // if an enemy piece is in the space, return the object with condition marked enemy
-    } else if (board[space].color !== currentPlayer) {
-        return {'space': space, condition: 'enemy'}
-    } 
-}
-
-function changePlayer() {
-    if (currentPlayer === 'white') {
-        currentPlayer = 'black';
-    } else {
-        currentPlayer = 'white';
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// rook code lower
 function rook(position) {
     let moves = [];
     const coords = stringToCoords(position);
@@ -820,3 +744,77 @@ function rook(position) {
          return moves;
     }
 }
+
+// this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
+function inRange(number) {
+    if (0 < number && number <= 8) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+// this converts the board position string (let's say 'e7') and converts it to its coordinates (e7 is [5, 7]) 
+function stringToCoords(string) {
+    const splitString = string.split('');
+    const coords = [letterArray.indexOf(splitString[0])+1, Number(splitString[1])]
+    return coords;
+}
+
+// this converts coordinates back to the board position strings
+function coordsToString(coords) {
+    coords[0] = letterArray[coords[0]-1];
+    return coords.join('');
+}
+
+// this returns nothing if there's an ally piece in the space it's looking at
+function inspectSpace(space) {
+    // if there's nothing in the space, return the object with condition marked empty
+    if (!board[space]) {
+        return {'space': space, condition: 'empty'}
+    // if an enemy piece is in the space, return the object with condition marked enemy
+    } else if (board[space].color !== currentPlayer) {
+        return {'space': space, condition: 'enemy'}
+    } 
+}
+
+function changePlayer() {
+    if (currentPlayer === 'white') {
+        currentPlayer = 'black';
+    } else {
+        currentPlayer = 'white';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// rook code lower
+
