@@ -412,18 +412,19 @@ function pawn(position) {
                 //here we call inspectSpace, which looks at the space and tells us if it's empty or has an enemy on it
                 // inspectSpace returns objects that look like {space: g5, condition: 'enemy'}.
                 // this tells you that at g5 there's an enemy
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     // push this object from inspectSpace into the moves array
                     moves.push(inspectSpace(test));
-                }
+                } 
             }
             if (inRange(x+1)) {
                 const test = coordsToString([x+1, y+1]);
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
             //move one space
+            console.log(inspectSpace(coordsToString([x,y+1])));
             if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
@@ -441,13 +442,13 @@ function pawn(position) {
             //attack
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y-1]);
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
             if (inRange(x+1)) {
                 const test = coordsToString([x+1, y-1]);
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
