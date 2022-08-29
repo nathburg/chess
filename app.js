@@ -288,6 +288,25 @@ function renderPlayable(position) {
                     }
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // lowered
             if (board[position].piece === 'rook') {
                 displayBoard();
                 const moves = rook(position);
