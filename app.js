@@ -288,6 +288,20 @@ function renderPlayable(position) {
                     }
                 }
             }
+            if (board[position].piece === 'rook') {
+                displayBoard();
+                const moves = rook(position);
+                for (let move of moves) {
+                    if (move.condition === 'empty') {
+                        moveButton(position, move.space);
+                    }
+                    if (move.condition === 'enemy') {
+                        attackButton(position, move.space);
+
+                    }
+
+                }
+            }
         });
     }
 
@@ -478,6 +492,104 @@ function king(position) {
     
 } 
 
+
+function rook(position) {
+    let moves = [];
+    const coords = stringToCoords(position);
+    let x = coords[0];
+    let y = coords[1];
+
+    if (inRange(y+1)) {
+        let open = true;
+        let testY = y + 1;
+        while (open === true) {
+            if (inRange(testY)) {
+                const test = coordsToString([x, testY])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testY++;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (inRange(y-1)) {
+        let open = true;
+        let testY = y - 1;
+        while (open === true) {
+            if (inRange(testY)) {
+                const test = coordsToString([x, testY])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testY--;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (inRange(x+1)) {
+        let open = true;
+        let testX = x + 1;
+        while (open === true) {
+            if (inRange(testX)) {
+                const test = coordsToString([testX, y])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testX++;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (inRange(x-1)) {
+        let open = true;
+        let testX = x - 1;
+        while (open === true) {
+            if (inRange(testX)) {
+                const test = coordsToString([testX, y])
+                if (inspectSpace(test)) {
+                    moves.push(inspectSpace(test));
+                    if (inspectSpace(test).condition === 'empty') {
+                        testX--;
+                    } else {
+                        open = false;
+                    }
+                } else {
+                    open = false;
+                }
+            } else {
+                open = false;
+            }
+        }
+    }
+    if (moves.length === 0) {
+        alert('That piece can\'t move right now.');
+    } else {
+         return moves;
+    }
+}
+
 // this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
 function inRange(number) {
     if (0 < number && number <= 8) {
@@ -509,7 +621,7 @@ function inspectSpace(space) {
     // if an enemy piece is in the space, return the object with condition marked enemy
     } else if (board[space].color !== currentPlayer) {
         return {'space': space, condition: 'enemy'}
-    }
+    } 
 }
 
 function changePlayer() {
