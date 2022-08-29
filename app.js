@@ -425,7 +425,7 @@ function king(position) {
 
     if (inRange(y+1)) {
         if (inRange(x-1)) {
-            const test = coordsToString([x-1, y + 1]);
+            const test = coordsToString([x-1, y+1]);
             if (inspectSpace(test)) {
                 moves.push(inspectSpace(test));
             }
