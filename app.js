@@ -327,6 +327,21 @@ function renderPlayable(position) {
                     }
                 }
             }
+
+            if (board[position].piece === 'knight') {
+                displayBoard();
+                const moves = knight(position);
+
+                for (let move of moves) {
+                    if (move.condition === 'enemy') {
+                        attackButton(position, move.space) ;
+                    }
+
+                    if (move.condition === 'empty') {
+                        moveButton(position, move.space);
+                    }
+                }
+            }
         });
 }
 
@@ -743,6 +758,75 @@ function rook(position) {
     } else {
          return moves;
     }
+}
+
+function knight(position) {
+    let moves = [];
+    const coords = stringToCoords(position);
+    let x = coords[0];
+    let y = coords[1];
+    if(inRange(y+1)) {
+
+        if(inRange(x+2)) {
+            const test = coordsToString([x+2, y+1]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+        }
+        if(inRange(x-2)) {
+            const test = coordsToString([x-2, y+1])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+                }   
+        }
+        
+    }
+    if(inRange(y-1)) {
+        if(inRange(x-2)) {
+            const test = coordsToString([x-2, y-1]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+        }
+        if(inRange(x+2)) {
+            const test = coordsToString([x+2, y-1])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }   
+        }
+        
+    }
+    if(inRange(x+1)) {
+        if(inRange(y+2)) {
+            const test = coordsToString([x+1, y+2]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+        }
+        if(inRange(y-2)) {
+            const test = coordsToString([x+1, y-2])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }   
+        }
+        
+    }
+    if(inRange(x-1)) {
+        if(inRange(y-2)) {
+            const test = coordsToString([x-1, y-2]);
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }
+        }
+        if(inRange(y+2)) {
+            const test = coordsToString([x-1, y+2])
+            if (inspectSpace(test)) {
+                moves.push(inspectSpace(test));
+            }   
+        }
+        
+    }
+    return moves;
 }
 
 // this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
