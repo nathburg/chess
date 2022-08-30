@@ -281,16 +281,6 @@ function renderPlayable(position) {
             if (board[position].piece === 'king') {
                 displayBoard();
                 const moves = king(position);
-                // example;
-                // conditions for white castling kingside
-                // current player - white
-                // whiteKingSideCastling - true
-                // empty spot on board in f1
-                // empty spot on board in g1
-                // rook in h1
-                // create moveButton
-                // manually move rook
-                // clear old rook spot
 
                 // white castling king side
                 if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === 'rook') {
@@ -311,13 +301,14 @@ function renderPlayable(position) {
                 for (let move of moves) {
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space) ;
-
                     }
                     if (move.condition === 'empty') {
                         moveButton(position, move.space);
                     }
                 }
             }
+
+
             if (board[position].piece === 'queen') {
                 displayBoard();
                 const moves = queen(position);
@@ -379,12 +370,11 @@ function renderPlayable(position) {
 // this function moves the piece from its current position to the target position
     function moveButton(currentPosition, targetPosition) {
     // grab the element of the target position
-    //white kind side castling
     const targetPositionEl = document.getElementById(targetPosition);
     // make the target positions have an x in it
     targetPositionEl.textContent = 'x';
     // make the position an event listener that on click moves the piece in the current position to the target position
-    targetPositionEl.addEventListener('click', () => {
+    targetPositionEl.addEventListener('click', () => {        
         // save the piece in a variable so you can delete it off of its current position without losing what was there
         const savePiece = board[currentPosition];
         // replace the current position with false
@@ -392,8 +382,6 @@ function renderPlayable(position) {
         // put the saved piece that was on the current position onto the target position
         board[targetPosition] = savePiece;
 
-        //checks on rook movement
-        
         //castling buttons
         if (whiteKingSideCastling === true && currentPosition === 'e1' && targetPosition === 'g1') {
             board['f1'] = board['h1']
@@ -411,9 +399,45 @@ function renderPlayable(position) {
             board['d8'] = board['a8']
             board['a8'] = false;
         }
-
         changePlayer();
         displayBoard();
+
+        // make castling impossible if white or black king moves
+        if (board[targetPosition].piece === 'king')  {
+            if (currentPlayer === 'black') {
+                if (targetPosition != 'g1') {
+                    whiteKingSideCastling = false;
+                    whiteQueenSideCastling = false;
+                }
+
+            }
+        }
+        if (board[targetPosition].piece === 'king')  {
+            if (currentPlayer === 'white') {
+                if (targetPosition != 'c8') {
+                    blackKingSideCastling = false;
+                    blackQueenSideCastling = false;
+                }
+
+            }
+        }
+
+        // make castling impossible if white or black rooks move
+        if (board[targetPosition].piece === 'rook')  {
+            if (currentPlayer === 'black') {
+                    whiteKingSideCastling = false;
+                    whiteQueenSideCastling = false;
+            }
+        }
+        if (board[targetPosition].piece === 'rook')  {
+            if (currentPlayer === 'white') {
+                    blackKingSideCastling = false;
+                    blackQueenSideCastling = false;
+            }
+        }
+
+
+
     })
 }
 
