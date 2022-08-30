@@ -281,42 +281,33 @@ function renderPlayable(position) {
             if (board[position].piece === 'king') {
                 displayBoard();
                 const moves = king(position);
+                // example;
+                // conditions for white castling kingside
+                // current player - white
+                // whiteKingSideCastling - true
+                // empty spot on board in f1
+                // empty spot on board in g1
+                // rook in h1
+                // create moveButton
+                // manually move rook
+                // clear old rook spot
 
                 // white castling king side
                 if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === 'rook') {
                     moveButton('e1', 'g1')
-                    board['f1'] = board['h1']
-                    board['h1'] = false;
-            }  else {
-                whiteKingSideCastling = false;
             }
                 // white castling queen side
                 if (currentPlayer === 'white' && whiteQueenSideCastling === true && board.a1.piece === 'rook' && board.b1 === false && board.c1 === false && board.d1 === false) {
                     moveButton('e1', 'c1')
-                    board['d1'] = board['a1']
-                    board['a1'] = false;
-            }  else {
-                whiteQueenSideCastling = false;
             }
                 // black castling king side
                 if (currentPlayer === 'black' && blackKingSideCastling === true && board.f8 === false && board.g8 === false && board.h8.piece === 'rook') {
                     moveButton('e8', 'g8')
-                    board['f8'] = board['h8']
-                    board['h8'] = false;
-            }  else {
-                whiteKingSideCastling = false;
-            }
+            }  
                 // black castling queen side
                 if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === 'rook' && board.b8 === false && board.c8 === false && board.d8 === false) {
                     moveButton('e8', 'c8')
-                    board['d8'] = board['a8']
-                    board['a8'] = false;
-            }  else {
-                whiteQueenSideCastling = false;
-            }
-
-// bug: white castle: if i click on castle, both rooks move lol still your turn tho
-
+            } 
                 for (let move of moves) {
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space) ;
@@ -326,21 +317,7 @@ function renderPlayable(position) {
                         moveButton(position, move.space);
                     }
                 }
-                // check conditions for white castling kingside
-                // current player - white
-                // whiteKingSideCastling - true
-                // empty spot on board in f1
-                // empty spot on board in g1
-                // rook in h1
-
             }
-
-            // if (currentPlayer === 'white') {
-            //     whiteCastling = false;
-            // } else {
-            //     blackCastling = false;
-            // }
-
             if (board[position].piece === 'queen') {
                 displayBoard();
                 const moves = queen(position);
@@ -402,6 +379,7 @@ function renderPlayable(position) {
 // this function moves the piece from its current position to the target position
     function moveButton(currentPosition, targetPosition) {
     // grab the element of the target position
+    //white kind side castling
     const targetPositionEl = document.getElementById(targetPosition);
     // make the target positions have an x in it
     targetPositionEl.textContent = 'x';
@@ -413,6 +391,27 @@ function renderPlayable(position) {
         board[currentPosition] = false;
         // put the saved piece that was on the current position onto the target position
         board[targetPosition] = savePiece;
+
+        //checks on rook movement
+        
+        //castling buttons
+        if (whiteKingSideCastling === true && currentPosition === 'e1' && targetPosition === 'g1') {
+            board['f1'] = board['h1']
+            board['h1'] = false;
+        }
+        if (whiteQueenSideCastling === true && currentPosition === 'e1' && targetPosition === 'c1') {
+            board['d1'] = board['a1']
+            board['a1'] = false;
+        }
+        if (blackKingSideCastling === true && currentPosition === 'e8' && targetPosition === 'g8') {
+            board['f8'] = board['h8']
+            board['h8'] = false;
+        }
+        if (blackQueenSideCastling === true && currentPosition === 'e8' && targetPosition === 'c8') {
+            board['d8'] = board['a8']
+            board['a8'] = false;
+        }
+
         changePlayer();
         displayBoard();
     })
@@ -580,6 +579,7 @@ function king(position) {
                 moves.push(inspectSpace(test));
             }
     }
+    
 
     // console.log(moves);
 
