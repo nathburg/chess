@@ -3,82 +3,82 @@ let board = {
     a1: {
         color: 'white',
         piece: 'rook',
-        image: 'wr'
+        image: '♖'
         },
     b1:  {
         color: 'white',
         piece: 'knight',
-        image: 'wn'
+        image: '♘'
         },
     c1:  {
         color: 'white',
         piece: 'bishop',
-        image: 'wb'
+        image: '♗'
         },
     d1:  {
         color: 'white',
         piece: 'queen',
-        image: 'wq'
+        image: '♕'
         },
     e1:  {
         color: 'white',
         piece: 'king',
-        image: 'wk'
+        image: '♔'
         },
     f1:  {
         color: 'white',
         piece: 'bishop',
-        image: 'wb'
+        image: '♗'
         },
     g1: {
         color: 'white',
         piece: 'knight',
-        image: 'wn'
+        image: '♘'
         },
     h1: {
         color: 'white',
         piece: 'rook',
-        image: 'wr'
+        image: '♖'
         },
     a2: {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     b2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     c2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     d2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     e2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     f2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     g2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     h2:  {
         color: 'white',
         piece: 'pawn',
-        image: 'wp'
+        image: '♙'
         },
     a3: false,
     b3: false,
@@ -120,77 +120,77 @@ let board = {
     b7:  {
         color: 'black',
         piece: 'pawn',
-        image: '♟️'
+        image: '♟'
         },
     c7:  {
         color: 'black',
         piece: 'pawn',
-        image: 'bp'
+        image: '♟'
         },
     d7:  {
         color: 'black',
         piece: 'pawn',
-        image: 'bp'
+        image: '♟'
         },
     e7:  {
         color: 'black',
         piece: 'pawn',
-        image: 'bp'
+        image: '♟'
         },
     f7:  {
         color: 'black',
         piece: 'pawn',
-        image: 'bp'
+        image: '♟'
         },
     g7:  {
         color: 'black',
         piece: 'pawn',
-        image: 'bp'
+        image: '♟'
         },
     h7:  {
         color: 'black',
         piece: 'pawn',
-        image: 'bp'
+        image: '♟'
         },
     a8:  {
         color: 'black',
         piece: 'rook',
-        image: 'br'
+        image: '♜'
         },
     b8:  {
         color: 'black',
         piece: 'knight',
-        image: 'bn'
+        image: '♞'
         },
     c8:  {
         color: 'black',
         piece: 'bishop',
-        image: 'bb'
+        image: '♝'
         },
     d8:  {
         color: 'black',
         piece: 'queen',
-        image: 'bq'
+        image: '♛'
         },
     e8:  { 
         color: 'black',
         piece: 'king',
-        image: 'bk'
+        image: '♚'
         },
     f8:  {
         color: 'black',
         piece: 'bishop',
-        image: 'bb'
+        image: '♝'
         },
     g8:  {
         color: 'black',
         piece: 'knight',
-        image: 'bn'
+        image: '♞'
         },
     h8:  {
         color: 'black',
         piece: 'rook',
-        image: 'br'
+        image: '♜'
         } 
 }
 

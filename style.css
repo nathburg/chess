@@ -104,12 +104,11 @@ body {
 }
 
 .black {
-    background-color: black;
-    color: white;
+    background-color: darkgoldenrod;
 }
 
 .white {
-    background-color: white;
+    background-color: beige;
 }
 
 .row {
