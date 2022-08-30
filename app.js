@@ -412,18 +412,19 @@ function pawn(position) {
                 //here we call inspectSpace, which looks at the space and tells us if it's empty or has an enemy on it
                 // inspectSpace returns objects that look like {space: g5, condition: 'enemy'}.
                 // this tells you that at g5 there's an enemy
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     // push this object from inspectSpace into the moves array
                     moves.push(inspectSpace(test));
-                }
+                } 
             }
             if (inRange(x+1)) {
                 const test = coordsToString([x+1, y+1]);
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
             //move one space
+            console.log(inspectSpace(coordsToString([x,y+1])));
             if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
@@ -441,13 +442,13 @@ function pawn(position) {
             //attack
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y-1]);
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
             if (inRange(x+1)) {
                 const test = coordsToString([x+1, y-1]);
-                if (inspectSpace(test).condition === 'enemy') {
+                if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
                     moves.push(inspectSpace(test));
                 }
             }
@@ -463,11 +464,9 @@ function pawn(position) {
     }
     // this condition doesn't work because [] is actually truthy, so this needs to change
     // the idea though is that if there were no valid moves and nothing went in the moves array by the end then give an alert
-    if (moves === []) {
-        alert('That piece can\'t move right now.');
-    } else {
+    
         return moves;
-    }
+    
 }  
 
 function king(position) {
@@ -524,18 +523,19 @@ function king(position) {
 
     console.log(moves);
 
-    if (moves.length === 0) {
-        alert('That piece can\'t move right now.');
-    } else {
+    
          return moves;
-    }
+    
     
 } 
 
-function queen(position) {
-    return rook(position).concat(bishop(position));
-}
 
+
+function queen(position) {
+    let moves = bishop(position).concat(rook(position));
+    return moves;
+}
+   
 function bishop(position) {
     let moves = [];
 
@@ -557,7 +557,7 @@ function bishop(position) {
                         moves.push(inspectSpace(test));
 
                         if (inspectSpace(test).condition === 'empty') {
-                            console.log('moves', moves);
+                            
                             
                             testY++;
                             testX--;
@@ -585,7 +585,7 @@ function bishop(position) {
                         moves.push(inspectSpace(test));
 
                         if (inspectSpace(test).condition === 'empty') {
-                            console.log('moves', moves);
+                            
                             
                             testY++;
                             testX++;
@@ -753,11 +753,9 @@ function rook(position) {
             }
         }
     }
-    if (moves.length === 0) {
-        alert('That piece can\'t move right now.');
-    } else {
+    
          return moves;
-    }
+    
 }
 
 function knight(position) {
