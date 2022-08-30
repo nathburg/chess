@@ -197,9 +197,12 @@ let board = {
 
 let whiteCaptured = [];
 let blackCaptured = [];
+let check = false;
 
 let currentPlayer = 'white';
-const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+
 
 
 
@@ -212,6 +215,14 @@ function displayBoard() {
     // We loop through all the positions in the board object.
     // Each "position" is one of the keys, like a4 or g6. 
     for (const position in board) {
+
+        if (white) {
+            if (board.position) {
+                checkWhite(findWhiteKing, position);
+                
+            }
+            
+        }
         // grab the proper html element for this position
         const getPosition = document.getElementById(position);
         // make a new button to replace it
@@ -290,6 +301,7 @@ function renderPlayable(position) {
             if (board[position].piece === 'queen') {
                 displayBoard();
                 const moves = queen(position);
+                
                 for (let move of moves) {
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space) ;
@@ -384,6 +396,66 @@ function attackButton(currentPosition, targetPosition) {
         displayBoard();
     })
 }
+
+function checkWhite(findWhiteKing, position) {
+    let enemyMovesArr = [];
+    
+    if (position.piece === 'pawn') {
+        const pawn = pawn(position);
+        enemyMovesArr.push(pawn);
+    }
+    if (position.piece === 'rook') {
+        const rook = rook(position);
+        enemyMovesArr.push(rook);
+    }
+    if (position.piece === 'queen') {
+        const queen = queen(position);
+        enemyMovesArr.push(queen);
+    }
+    if (position.piece === 'bishop') {
+        const bishop = bishop(position);
+        enemyMovesArr.push(bishop);
+    }
+    if (position.piece === 'knight') {
+        const knight = knight(position);
+        enemyMovesArr.push(knight);
+    }
+
+    let kingPosition = findWhiteKing();
+
+    for (let move of enemyMovesArr) {
+        if (move === kingPosition) {
+            alert('check');
+            check = true;
+            break;
+        }
+    }
+
+    
+}
+
+console.log('findking', findBlackKing());
+
+function findWhiteKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♔')) {
+            return location.id;
+        }
+    } 
+}
+
+function findBlackKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♚')) {
+            return location.id;
+        }
+    } 
+}
+
+
+
+
+
     
 // the pawn function takes the current position it's on and returns an array of positions the pawn can move to
 function pawn(position) {
@@ -424,7 +496,6 @@ function pawn(position) {
                 }
             }
             //move one space
-            console.log(inspectSpace(coordsToString([x,y+1])));
             if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
@@ -533,7 +604,11 @@ function king(position) {
 
 function queen(position) {
     let moves = bishop(position).concat(rook(position));
+    
+    console.log(moves);
     return moves;
+
+    
 }
    
 function bishop(position) {
