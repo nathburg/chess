@@ -197,6 +197,10 @@ let board = {
 
 let whiteCaptured = [];
 let blackCaptured = [];
+let whiteKingSideCastling = true;
+let whiteQueenSideCastling = true;
+let blackKingSideCastling = true;
+let blackQueenSideCastling = true;
 
 let currentPlayer = 'white';
 const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -277,15 +281,65 @@ function renderPlayable(position) {
             if (board[position].piece === 'king') {
                 displayBoard();
                 const moves = king(position);
+
+                // white castling king side
+                if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === 'rook') {
+                    moveButton('e1', 'g1')
+                    board['f1'] = board['h1']
+                    board['h1'] = false;
+            }  else {
+                whiteKingSideCastling = false;
+            }
+                // white castling queen side
+                if (currentPlayer === 'white' && whiteQueenSideCastling === true && board.a1.piece === 'rook' && board.b1 === false && board.c1 === false && board.d1 === false) {
+                    moveButton('e1', 'c1')
+                    board['d1'] = board['a1']
+                    board['a1'] = false;
+            }  else {
+                whiteQueenSideCastling = false;
+            }
+                // black castling king side
+                if (currentPlayer === 'black' && blackKingSideCastling === true && board.f8 === false && board.g8 === false && board.h8.piece === 'rook') {
+                    moveButton('e8', 'g8')
+                    board['f8'] = board['h8']
+                    board['h8'] = false;
+            }  else {
+                whiteKingSideCastling = false;
+            }
+                // black castling queen side
+                if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === 'rook' && board.b8 === false && board.c8 === false && board.d8 === false) {
+                    moveButton('e8', 'c8')
+                    board['d8'] = board['a8']
+                    board['a8'] = false;
+            }  else {
+                whiteQueenSideCastling = false;
+            }
+
+// bug: white castle: if i click on castle, both rooks move lol still your turn tho
+
                 for (let move of moves) {
                     if (move.condition === 'enemy') {
                         attackButton(position, move.space) ;
+
                     }
                     if (move.condition === 'empty') {
                         moveButton(position, move.space);
                     }
                 }
+                // check conditions for white castling kingside
+                // current player - white
+                // whiteKingSideCastling - true
+                // empty spot on board in f1
+                // empty spot on board in g1
+                // rook in h1
+
             }
+
+            // if (currentPlayer === 'white') {
+            //     whiteCastling = false;
+            // } else {
+            //     blackCastling = false;
+            // }
 
             if (board[position].piece === 'queen') {
                 displayBoard();
@@ -364,6 +418,7 @@ function renderPlayable(position) {
     })
 }
 
+
 // mostly same as above but the target position has an enemy piece to remove and push to its array of captured pieces
 function attackButton(currentPosition, targetPosition) {
     
@@ -424,7 +479,7 @@ function pawn(position) {
                 }
             }
             //move one space
-            console.log(inspectSpace(coordsToString([x,y+1])));
+            // console.log(inspectSpace(coordsToString([x,y+1])));
             if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
@@ -510,18 +565,23 @@ function king(position) {
             }
         }
         if (inRange(x+1)) {
-            const test = coordsToString([x+1, y-1]);
+            const test = coordsToString([x+1, y]); // bug change: y+1 to y
                 if (inspectSpace(test)) {
                     moves.push(inspectSpace(test));
                 }
+                const testSide = coordsToString([x-1, y]); //added movement in x direction while on black back row
+                if (inspectSpace(testSide)) {
+                    moves.push(inspectSpace(testSide));
+                }
         }
+        
         const test = coordsToString([x, y-1])
             if (inspectSpace(test)) {
                 moves.push(inspectSpace(test));
             }
     }
 
-    console.log(moves);
+    // console.log(moves);
 
     
          return moves;
@@ -565,7 +625,7 @@ function bishop(position) {
                         open = false;
                         }     
                     } else {
-                        console.log('Ello World')
+                        // console.log('Ello World')
                         open = false;
                     }    
                 } else {
@@ -593,7 +653,7 @@ function bishop(position) {
                         open = false;
                         }     
                     } else {
-                        console.log('Ello World')
+                        // console.log('Ello World')
                         open = false;
                     }    
                 } else {
@@ -616,7 +676,7 @@ function bishop(position) {
                         moves.push(inspectSpace(test));
 
                         if (inspectSpace(test).condition === 'empty') {
-                            console.log('moves', moves);
+                            // console.log('moves', moves);
                             
                             testY--;
                             testX--;
@@ -624,7 +684,7 @@ function bishop(position) {
                         open = false;
                         }     
                     } else {
-                        console.log('Ello World')
+                        // console.log('Ello World')
                         open = false;
                     }    
                 } else {
@@ -644,7 +704,7 @@ function bishop(position) {
                         moves.push(inspectSpace(test));
 
                         if (inspectSpace(test).condition === 'empty') {
-                            console.log('moves', moves);
+                            // console.log('moves', moves);
                             
                             testY--;
                             testX++;
@@ -652,7 +712,7 @@ function bishop(position) {
                         open = false;
                         }     
                     } else {
-                        console.log('Ello World')
+                        // console.log('Ello World')
                         open = false;
                     }    
                 } else {
