@@ -1,3 +1,9 @@
+import { addGame } from './fetch-utils.js';
+
+
+
+addGame('firstGame');
+
 let board = {
     
     a1: {
@@ -732,6 +738,31 @@ function rook(position) {
             }
         }
     }
+
+// function continueMove(deltaX, deltaY) {
+//     let open = true;
+//         let testX = deltaX;
+//         let testY = deltaY;
+//         while (open === true) {
+//             if (inRange(testX) && inRange(testY)) {
+//                 const test = coordsToString([testX, testY])
+//                 if (inspectSpace(test)) {
+//                     moves.push(inspectSpace(test));
+//                     if (inspectSpace(test).condition === 'empty') {
+//                         testX++;
+//                     } else {
+//                         open = false;
+//                     }
+//                 } else {
+//                     open = false;
+//                 }
+//             } else {
+//                 open = false;
+//             }
+//         }
+//     }
+
+
     if (inRange(x-1)) {
         let open = true;
         let testX = x - 1;
