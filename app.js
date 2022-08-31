@@ -394,9 +394,9 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            if (inspectSpace(coordsToString([x, y-1])).condition === 'empty') {
+            if (inspectSpace(coordsToString([x, y-1])) && inspectSpace(coordsToString([x, y-1])).condition === 'empty') {
                 moves.push(inspectSpace(coordsToString([x, y-1])));
-                if (y === 7 && inspectSpace(coordsToString([x, y-2])).condition === 'empty') {
+                if (y === 7 && inspectSpace(coordsToString([x, y-2])) && inspectSpace(coordsToString([x, y-2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y-2])))
                 }
             }
@@ -636,7 +636,7 @@ function checkCheck() {
     for (let position in board) {
         if (board[position].color === currentPlayer) {
             const checkArray = board[position].piece(position);
-            console.log(checkArray)
+            // console.log(checkArray)
             for (let move of checkArray) {
                     if (move.space === kingPosition) {
                         // if that piece is a pawn or a knight
@@ -645,18 +645,19 @@ function checkCheck() {
                             //
                             threatMoves.push({space: position, condition: 'enemy'})
                         } else {
-                            console.log('hi')
+                            // console.log('hi')
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
-                            console.log(stringToCoords(position));
-                            console.log(threatX);
-                            console.log(threatY);
+                            // console.log(stringToCoords(position));
+                            // console.log(threatX);
+                            // console.log(threatY);
                             const deltaXFunction = polarityChecker(threatX-kingX);
                             const deltaYFunction = polarityChecker(threatY-kingY);
-                            console.log(deltaXFunction, deltaYFunction);
+                            // console.log(deltaXFunction, deltaYFunction);
                             changePlayer();
-                            threatMoves.push(continueMove(kingPosition, deltaXFunction, deltaYFunction)) 
-                            console.log(continueMove(kingPosition, deltaXFunction, deltaYFunction))
+
+                            const newThreatMoves = threatMoves.concat(continueMove(kingPosition, deltaXFunction, deltaYFunction)) 
+                            threatMoves = newThreatMoves;
                             changePlayer();
                         }
                     }
@@ -664,20 +665,24 @@ function checkCheck() {
             }
         }
     }
-    console.log(threatMoves);
     changePlayer();
+    const defenseMoves = [];
 
     if (threatMoves.length > 0) {
-        console.log("you're in check")
-    //     const defenseMoves = [];
-    //     for (let position in board) {
-    //         if (board[position].color === currentPlayer) {
-    //             defenseMoves.push(board[position].piece(position))
-    //         }
-    //     const solutionForCheck = performIntersection(threatMoves, defenseMoves);
-    //         if (solutionForCheck.length === 0)
-    //         console.log("you're in checkmate")
-    //     }
+        alert("you're in check")
+        for (let position in board) {
+            if (board[position].color === currentPlayer) {
+                const newDefenseMoves = board[position].piece(position);
+                console.log(newDefenseMoves)
+                console.log(threatMoves)
+                const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
+                console.log(solutionForCheck)
+                // console.log(board[position], solutionForCheck)
+                // defenseMoves.push(solutionForCheck);
+            }
+        }
+        if (defenseMoves.length === 0)
+        console.log("you're in *checkmate")
 
     }
 }
@@ -691,10 +696,15 @@ function performIntersection(arr1, arr2) {
 
 }
 
-const array1 = [1, 2, 3, 5, 9];
-const array2 = [1, 3, 5, 8];
+const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
+const array2 = [{space: 'd7', condition: 'empty'},
+                {space: 'c6', condition: 'empty'},
+                {space: 'b5', condition: 'empty'},
+                {space: 'a4', condition: 'enemy'}      
+];
 
 const result = performIntersection(array1, array2);
+console.log(result);
 
 
 
