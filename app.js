@@ -216,13 +216,8 @@ function displayBoard() {
     // Each "position" is one of the keys, like a4 or g6. 
     for (const position in board) {
 
-        if (white) {
-            if (board.position) {
-                checkWhite(findWhiteKing, position);
-                
-            }
+        
             
-        }
         // grab the proper html element for this position
         const getPosition = document.getElementById(position);
         // make a new button to replace it
@@ -266,6 +261,21 @@ function renderPlayable(position) {
         const positionEl = document.getElementById(position);
         
         positionEl.addEventListener('click', () => {
+
+           
+            
+                
+                
+                    
+            console.log('position', position);
+
+            checkWhite(findWhiteKing(), position);
+            console.log('checkwhite', checkWhite(findWhiteKing(), position))
+                
+                
+           
+            
+
             // if the piece is a pawn
             if (board[position].piece === 'pawn') {
                 // refresh the board
@@ -397,44 +407,58 @@ function attackButton(currentPosition, targetPosition) {
     })
 }
 
+
+
 function checkWhite(findWhiteKing, position) {
     let enemyMovesArr = [];
     
+    // loop through pieces array
+    console.log('piece', position.piece);
     if (position.piece === 'pawn') {
-        const pawn = pawn(position);
-        enemyMovesArr.push(pawn);
+        let pawnMoves = pawn(position);
+        console.log('pawnmoves', pawnMoves);
+        for (let move of pawnMoves) {
+            enemyMovesArr.push(move);
+        }
+        
     }
     if (position.piece === 'rook') {
-        const rook = rook(position);
+        console.log('rook position', position);
+        let rook = rook(position);
         enemyMovesArr.push(rook);
     }
     if (position.piece === 'queen') {
-        const queen = queen(position);
+        let queen = queen(position);
         enemyMovesArr.push(queen);
     }
     if (position.piece === 'bishop') {
-        const bishop = bishop(position);
+        let bishop = bishop(position);
         enemyMovesArr.push(bishop);
     }
     if (position.piece === 'knight') {
-        const knight = knight(position);
+        let knight = knight(position);
         enemyMovesArr.push(knight);
     }
 
-    let kingPosition = findWhiteKing();
+    // let kingPosition = findWhiteKing();
 
+    // console.log(enemyMoves, kingPosition);
     for (let move of enemyMovesArr) {
         if (move === kingPosition) {
             alert('check');
+            
             check = true;
             break;
         }
-    }
+
+    console.log('enemy moves array', enemyMovesArr);
+    return enemyMovesArr;
 
     
 }
+}
 
-console.log('findking', findBlackKing());
+
 
 function findWhiteKing(){
     for (let location of document.querySelectorAll('button')) {
@@ -592,7 +616,7 @@ function king(position) {
             }
     }
 
-    console.log(moves);
+    
 
     
          return moves;
@@ -604,8 +628,6 @@ function king(position) {
 
 function queen(position) {
     let moves = bishop(position).concat(rook(position));
-    
-    console.log(moves);
     return moves;
 
     
@@ -971,7 +993,4 @@ function changePlayer() {
 
 
 
-
-
-// rook code lower
 

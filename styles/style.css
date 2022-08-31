@@ -13,9 +13,9 @@ main {
     border:5px solid  rgb(44, 54, 57);
     /* background-color: rgb(220, 215, 201); */
     background-image: url(../assets/marble1.jpg);
-    box-shadow: 8px 9px 19px 3px rgba(0,0,0,0.75);
--webkit-box-shadow: 8px 9px 19px 3px rgba(0,0,0,0.75);
--moz-box-shadow: 8px 9px 19px 3px rgba(0,0,0,0.75);
+    box-shadow: 10px 12px 10px 11px rgba(0,0,0,0.75);
+-webkit-box-shadow: 10px 12px 10px 11px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 12px 10px 11px rgba(0,0,0,0.75);
     
 }
 
@@ -67,20 +67,25 @@ header a {
 
 
 
-.chat {
-    display: flex;
+.table {
+    display: grid;
     justify-content: center;
     font-family: 'Aboreto', cursive;
-    background-color: rgb(63, 78, 79);
+    background-image: url(../assets/mahogany.jpg);
     color: rgb(216, 204, 163); 
     font-weight: bold;
     width: 300px;
     padding: 40px;
     border: 4px solid rgb(162, 123, 92);
     border-radius: 6px;
-    box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
--webkit-box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
--moz-box-shadow: 8px 9px 10px -6px rgba(63,78,79,0.75);
+    box-shadow: 10px 10px 10px 5px rgba(0,0,0,0.75);
+-webkit-box-shadow: 10px 10px 10px 5px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 10px 5px rgba(0,0,0,0.75);
+}
+
+.table img {
+    height:100px;
+    width: 100px;
 }
 
 body {
