@@ -2,82 +2,82 @@ let board = {
     
     a1: {
         color: 'white',
-        piece: 'rook',
+        piece: rook,
         image: '♖'
         },
     b1:  {
         color: 'white',
-        piece: 'knight',
+        piece: knight,
         image: '♘'
         },
     c1:  {
         color: 'white',
-        piece: 'bishop',
+        piece: bishop,
         image: '♗'
         },
     d1:  {
         color: 'white',
-        piece: 'queen',
+        piece: queen,
         image: '♕'
         },
     e1:  {
         color: 'white',
-        piece: 'king',
+        piece: king,
         image: '♔'
         },
     f1:  {
         color: 'white',
-        piece: 'bishop',
+        piece: bishop,
         image: '♗'
         },
     g1: {
         color: 'white',
-        piece: 'knight',
+        piece: knight,
         image: '♘'
         },
     h1: {
         color: 'white',
-        piece: 'rook',
+        piece: rook,
         image: '♖'
         },
     a2: {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     b2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     c2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     d2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     e2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     f2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     g2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     h2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     a3: false,
@@ -114,82 +114,82 @@ let board = {
     h6: false,
     a7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     b7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     c7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     d7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     e7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     f7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     g7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     h7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     a8:  {
         color: 'black',
-        piece: 'rook',
+        piece: rook,
         image: '♜'
         },
     b8:  {
         color: 'black',
-        piece: 'knight',
+        piece: knight,
         image: '♞'
         },
     c8:  {
         color: 'black',
-        piece: 'bishop',
+        piece: bishop,
         image: '♝'
         },
     d8:  {
         color: 'black',
-        piece: 'queen',
+        piece: queen,
         image: '♛'
         },
     e8:  { 
         color: 'black',
-        piece: 'king',
+        piece: king,
         image: '♚'
         },
     f8:  {
         color: 'black',
-        piece: 'bishop',
+        piece: bishop,
         image: '♝'
         },
     g8:  {
         color: 'black',
-        piece: 'knight',
+        piece: knight,
         image: '♞'
         },
     h8:  {
         color: 'black',
-        piece: 'rook',
+        piece: rook,
         image: '♜'
         } 
 }
@@ -260,12 +260,11 @@ function renderPlayable(position) {
         const positionEl = document.getElementById(position);
         
         positionEl.addEventListener('click', () => {
-            // if the piece is a pawn
-            if (board[position].piece === 'pawn') {
+            // if the p
                 // refresh the board
                 displayBoard();
                 // get the positions the pawn functions determines are viable moves
-                const moves = pawn(position);
+                const moves = board[position].piece(position);
                 // loop through those moves
                 for (let move of moves) {
                     // if the positions is empty, give it a move button
@@ -277,76 +276,76 @@ function renderPlayable(position) {
                         attackButton(position, move.space);
                     }
                 }
-            }
+            
 
-            if (board[position].piece === 'king') {
-                displayBoard();
-                const moves = king(position);
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        kingAttackButton(position, move.space) ;
-                    }
-                    if (move.condition === 'empty') {
-                        kingMoveButton(position, move.space);
-                    }
-                }
-            }
+        //     if (board[position].piece === 'king') {
+        //         displayBoard();
+        //         const moves = king(position);
+        //         for (let move of moves) {
+        //             if (move.condition === 'enemy') {
+        //                 kingAttackButton(position, move.space) ;
+        //             }
+        //             if (move.condition === 'empty') {
+        //                 kingMoveButton(position, move.space);
+        //             }
+        //         }
+        //     }
 
-            if (board[position].piece === 'queen') {
-                displayBoard();
-                const moves = queen(position);
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
+        //     if (board[position].piece === 'queen') {
+        //         displayBoard();
+        //         const moves = queen(position);
+        //         for (let move of moves) {
+        //             if (move.condition === 'enemy') {
+        //                 attackButton(position, move.space) ;
+        //             }
+        //             if (move.condition === 'empty') {
+        //                 moveButton(position, move.space);
+        //             }
+        //         }
+        //     }
 
-            if (board[position].piece === 'rook') {
-                displayBoard();
-                const moves = rook(position);
-                for (let move of moves) {
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space);
-                    }
-                }
-            }
+        //     if (board[position].piece === 'rook') {
+        //         displayBoard();
+        //         const moves = rook(position);
+        //         for (let move of moves) {
+        //             if (move.condition === 'empty') {
+        //                 moveButton(position, move.space);
+        //             }
+        //             if (move.condition === 'enemy') {
+        //                 attackButton(position, move.space);
+        //             }
+        //         }
+        //     }
 
-            if (board[position].piece === 'bishop') {
-                displayBoard();
-                const moves = bishop(position);
+        //     if (board[position].piece === 'bishop') {
+        //         displayBoard();
+        //         const moves = bishop(position);
 
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
+        //         for (let move of moves) {
+        //             if (move.condition === 'enemy') {
+        //                 attackButton(position, move.space) ;
+        //             }
 
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
+        //             if (move.condition === 'empty') {
+        //                 moveButton(position, move.space);
+        //             }
+        //         }
+        //     }
 
-            if (board[position].piece === 'knight') {
-                displayBoard();
-                const moves = knight(position);
+        //     if (board[position].piece === 'knight') {
+        //         displayBoard();
+        //         const moves = knight(position);
 
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
+        //         for (let move of moves) {
+        //             if (move.condition === 'enemy') {
+        //                 attackButton(position, move.space) ;
+        //             }
 
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
+        //             if (move.condition === 'empty') {
+        //                 moveButton(position, move.space);
+        //             }
+        //         }
+        //     }
         });
 }
 
@@ -673,10 +672,15 @@ function changePlayer() {
     }
 }
 
-function checkCheck(currentPlayer) {
+// function checkCheck() {
+//     const kingSpaceArray = [kings[currentPlayer]];
+//     for (let position in board) {
+//         if (board[position].color != currentPlayer) {
+//             const checkArray = 
+//         }
+//     }
 
-
-}
+// }
 
 
 
