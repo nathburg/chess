@@ -385,35 +385,20 @@ function attackButton(currentPosition, targetPosition) {
     })
 }
     
-// the pawn function takes the current position it's on and returns an array of positions the pawn can move to
 function pawn(position) {
     
-    // this is array the valid moved will be pushed to
     let moves = [];
-
-    // we convert the board notion of the current position into a length-2 array, ie algebraic coordinates
     const coords = stringToCoords(position);
-    // x is the first coordinate
     let x = coords[0];
-    // y is the second coordinate
     let y = coords[1];
     
-    //white pawn
     if (currentPlayer === 'white') {
-        // check if the the row ahead of the current positions is still on the board
-        // i.e. checking if the current position is already on the last row and moving forward goes off the board
         if (inRange(y+1)) {
-            //attack
-            // check if column to the left is on the board
             if (inRange(x-1)) {
-                // here we take x-1 and y+1 and convert those to the chess board notation of that position
-                //we call it test because we're testing what's going on at that position
+
                 const test = coordsToString([x-1, y+1]);
-                //here we call inspectSpace, which looks at the space and tells us if it's empty or has an enemy on it
-                // inspectSpace returns objects that look like {space: g5, condition: 'enemy'}.
-                // this tells you that at g5 there's an enemy
+
                 if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
-                    // push this object from inspectSpace into the moves array
                     moves.push(inspectSpace(test));
                 } 
             }
@@ -423,12 +408,10 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            //move one space
             console.log(inspectSpace(coordsToString([x,y+1])));
             if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
-                //move two spaces if in starting row
                 if (y === 2 && inspectSpace(coordsToString([x, y+2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y+2])))
                 }
@@ -436,10 +419,9 @@ function pawn(position) {
         }
     }
 
-         //black pawn
     if (currentPlayer === 'black') {
+        
         if (inRange(y-1)) {
-            //attack
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y-1]);
                 if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
@@ -452,20 +434,16 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            //move one space
             if (inspectSpace(coordsToString([x, y-1])).condition === 'empty') {
                 moves.push(inspectSpace(coordsToString([x, y-1])));
-                //move two spaces if in starting row
                 if (y === 7 && inspectSpace(coordsToString([x, y-2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y-2])))
                 }
             }
         }
     }
-    // this condition doesn't work because [] is actually truthy, so this needs to change
-    // the idea though is that if there were no valid moves and nothing went in the moves array by the end then give an alert
     
-        return moves;
+    return moves;
     
 }  
 
@@ -476,66 +454,67 @@ function king(position) {
     let x = coords[0];
     let y = coords[1];
 
-    if (inRange(y+1)) {
-        if (inRange(x-1)) {
-            const test = coordsToString([x-1, y+1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-            const testSide = coordsToString([x-1, y]);
-            if (inspectSpace(testSide)) {
-                moves.push(inspectSpace(testSide));
-            }
-        }
-        if (inRange(x+1)) {
-            const test = coordsToString([x+1, y+1]);
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                }
-            const testSide = coordsToString([x+1, y]);
-                if (inspectSpace(testSide)) {
-                    moves.push(inspectSpace(testSide));
-                }
-        }
-        const test = coordsToString([x, y+1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
+    if (testSpace(x, y+1)) {
+        moves.push(testSpace(x, y+1))
     }
-    if (inRange(y-1)) {
-        if (inRange(x-1)) {
-            const test = coordsToString([x-1, y-1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if (inRange(x+1)) {
-            const test = coordsToString([x+1, y-1]);
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                }
-        }
-        const test = coordsToString([x, y-1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
+    if (testSpace(x, y-1)) {
+        moves.push(testSpace(x, y-1))
     }
-
-    console.log(moves);
-
+    if (testSpace(x+1, y+1)) {
+        moves.push(testSpace(x+1, y+1))
+    }
+    if (testSpace(x+1, y-1)) {
+        moves.push(testSpace(x+1, y-1))
+    }
+    if (testSpace(x+1, y)) {
+        moves.push(testSpace(x+1, y))
+    }
+    if (testSpace(x-1, y+1)) {
+        moves.push(testSpace(x-1, y+1))
+    }
+    if (testSpace(x-1, y-1)) {
+        moves.push(testSpace(x-1, y-1))
+    }
+    if (testSpace(x-1, y)) {
+        moves.push(testSpace(x-1, y))
+    }
     
-         return moves;
-    
-    
-} 
-
-
-
-function queen(position) {
-    let moves = bishop(position).concat(rook(position));
     return moves;
 }
-   
+
+function knight(position) {
+    let moves = [];
+    const coords = stringToCoords(position);
+    let x = coords[0];
+    let y = coords[1];
+
+    if (testSpace(x+1, y+2)) {
+        moves.push(testSpace(x+1, y+2))
+    }
+    if (testSpace(x+1, y-2)) {
+        moves.push(testSpace(x+1, y-2))
+    }
+    if (testSpace(x+2, y+1)) {
+        moves.push(testSpace(x+2, y+1))
+    }
+    if (testSpace(x+2, y-1)) {
+        moves.push(testSpace(x+2, y-1))
+    }
+    if (testSpace(x-1, y+2)) {
+        moves.push(testSpace(x-1, y+2))
+    }
+    if (testSpace(x-1, y-2)) {
+        moves.push(testSpace(x-1, y-2))
+    }
+    if (testSpace(x-2, y+1)) {
+        moves.push(testSpace(x-2, y+1))
+    }
+    if (testSpace(x-2, y-1)) {
+        moves.push(testSpace(x-2, y-1))
+    }
+    return moves;
+}
+
 function bishop(position) {
     let moves = [];
     moves = moves.concat(continueMove(position, minusOne, plusOne));
@@ -545,9 +524,30 @@ function bishop(position) {
     return moves;
 }
 
-console.log(bishop('c3'));
+function rook(position) {
+    let moves = [];
 
-console.log('hello');
+    moves = moves.concat(continueMove(position, constantFunction, plusOne));
+    moves = moves.concat(continueMove(position, constantFunction, minusOne));
+    moves = moves.concat(continueMove(position, plusOne, constantFunction));
+    moves = moves.concat(continueMove(position, minusOne, constantFunction));
+    
+    return moves;
+}
+
+function queen(position) {
+    let moves = bishop(position).concat(rook(position));
+    return moves;
+}
+
+function testSpace(x, y) {
+    if (inRange(x) && inRange(y)) {
+        const test = coordsToString([x, y]);
+        if (inspectSpace(test)) {
+            return inspectSpace(test)
+        }
+    }
+}    
 
 function continueMove(position, deltaXFunction, deltaYFunction) {
     let newMoves = [];
@@ -598,176 +598,6 @@ function inverseFunction(fn) {
     }
 
     return inverter[fn];
-}
-
-
-
-function rook(position) {
-    let moves = [];
-    const coords = stringToCoords(position);
-    let x = coords[0];
-    let y = coords[1];
-
-    if (inRange(y+1)) {
-        let open = true;
-        let testY = y + 1;
-        while (open === true) {
-            if (inRange(testY)) {
-                const test = coordsToString([x, testY])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testY++;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-    if (inRange(y-1)) {
-        let open = true;
-        let testY = y - 1;
-        while (open === true) {
-            if (inRange(testY)) {
-                const test = coordsToString([x, testY])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testY--;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-    if (inRange(x+1)) {
-        let open = true;
-        let testX = x + 1;
-        while (open === true) {
-            if (inRange(testX)) {
-                const test = coordsToString([testX, y])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testX++;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-
-
-
-
-    if (inRange(x-1)) {
-        let open = true;
-        let testX = x - 1;
-        while (open === true) {
-            if (inRange(testX)) {
-                const test = coordsToString([testX, y])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testX--;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-    
-         return moves;
-    
-}
-
-function knight(position) {
-    let moves = [];
-    const coords = stringToCoords(position);
-    let x = coords[0];
-    let y = coords[1];
-    if(inRange(y+1)) {
-
-        if(inRange(x+2)) {
-            const test = coordsToString([x+2, y+1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(x-2)) {
-            const test = coordsToString([x-2, y+1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-                }   
-        }
-        
-    }
-    if(inRange(y-1)) {
-        if(inRange(x-2)) {
-            const test = coordsToString([x-2, y-1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(x+2)) {
-            const test = coordsToString([x+2, y-1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }   
-        }
-        
-    }
-    if(inRange(x+1)) {
-        if(inRange(y+2)) {
-            const test = coordsToString([x+1, y+2]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(y-2)) {
-            const test = coordsToString([x+1, y-2])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }   
-        }
-        
-    }
-    if(inRange(x-1)) {
-        if(inRange(y-2)) {
-            const test = coordsToString([x-1, y-2]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(y+2)) {
-            const test = coordsToString([x-1, y+2])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }   
-        }
-        
-    }
-    return moves;
 }
 
 // this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
