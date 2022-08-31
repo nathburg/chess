@@ -4,17 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <title>Document</title>
 </head>
 <body>
     <header>
-        <h1>Lobby</h1>
+        <h1>Start a Game</h1>
         <nav>
-            <a href="../auth">Sign out</a>
+            <a id="sign-out" href="../auth">Sign out</a>
         </nav>
     </header>
     <main>
         Lobby Stuff
+        <div id="start-new-game">
+            <form id="new-game-form">
+                <label for="">
+                    <input type="text" name="player-one-name" placeholder="player one name">
+                </label>
+                <label for="">
+                    <input type="text" name="player-two-name" placeholder="player two name">
+                </label>
+                <label for="">
+                    <button id="start-new-game">Start New Game</button>
+                </label>
+            </form>
+        </div>
+        <div id="past-games-el">
+
+        </div>
     </main>
+    <script type="module" src="home.js"></script>
 </body>
 </html>
