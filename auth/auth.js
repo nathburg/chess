@@ -1,28 +1,85 @@
+// import services and utilities
+import { getUser, signInUser, signUpUser } from '../fetch-utils.js';
 
+const authHeader = document.getElementById('auth-header');
+const authForm = document.getElementById('auth-form');
+const authButton = authForm.querySelector('button');
+const changeType = authForm.querySelector('a');
+const errorDisplay = authForm.querySelector('.error');
 
-const signupForm = document.getElementById('signup-form');
-const changeButtonLink = document.getElementById('change-button');
-const signUpButton = document.getElementById('signup-button');
+// check the query params for a redirect Url (page before auth redirect)
+const params = new URLSearchParams(location.search);
+const redirectUrl = params.get('redirectUrl') || '../';
+// If user directly navigated to /auth, but we have a user, go back
+// (they need to sign out first)
+const user = getUser();
+if (user) location.replace(redirectUrl);
 
+// Sign up options
+const signUpType = {
+    header: 'Create a new account',
+    button: 'Sign Up',
+    prompt: 'Already have an account?',
+    action: signUpUser,
+};
+// Sign in options
+const signInType = {
+    header: 'Sign in to your account',
+    button: 'Sign In',
+    prompt: 'Need to create an account?',
+    action: signInUser,
+};
+// Start with "sign in" as default
+let authType = signInType;
 
-signupForm.addEventListener('submit', (e) => {
+// set the text display on the header, button, and change type link
+function displayAuth() {
+    console.log(changeType);
+    authHeader.textContent = authType.header;
+    authButton.textContent = authType.button;
+    changeType.textContent = authType.prompt;
+    errorDisplay.textContent = '';
+}
+
+// set initial display on load
+displayAuth();
+
+// toggle the type (sign in vs up)
+changeType.addEventListener('click', (e) => {
+    // using an <a> tag, don't let it actually
+    // change the browser page
+    // toggle the auth type
     e.preventDefault();
+    console.log('click');
+    authType = authType === signInType ? signUpType : signInType;
 
-    const data = new FormData(signupForm);
-
-    const email = data.get('email');
-    const password = data.get('password');
-    
-    console.log(email,password);
-
-   
+    // redisplay the text in the header, button, and change type link
+    displayAuth();
 });
 
-changeButtonLink.addEventListener('click', () => {
-    console.log('clicked');
-    signUpButton.textContent = 'Sign in';
-})
+authForm.addEventListener('submit', async (e) => {
+    // don't let the form submit the page
+    e.preventDefault();
 
+    // clear the error, and put the button in "loading state"
+    errorDisplay.textContent = '';
+    const buttonText = authButton.textContent;
+    authButton.disabled = true;
+    authButton.textContent = 'Authenticating...';
 
+    // get the form data with email and password
+    const formData = new FormData(authForm);
+    // use the authType.action (either signInUser or signUpUser)
+    // and capture any returned error
+    const { error } = await authType.action(formData.get('email'), formData.get('password'));
 
-
+    if (error) {
+        // display the error and reset the button to be active
+        errorDisplay.textContent = error.message;
+        authButton.disabled = false;
+        authButton.textContent = buttonText;
+    } else {
+        // go back to wherever user came from
+        location.replace(redirectUrl);
+    }
+});
