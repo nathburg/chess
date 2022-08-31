@@ -1,5 +1,6 @@
 const SUPABASE_URL = 'https://jfjbgzuahxgxuzhpbvjy.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmamJnenVhaHhneHV6aHBidmp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTk3MjEyNDQsImV4cCI6MTk3NTI5NzI0NH0.ALTank2v_SVyJvJfAF_p6loMLpa5JT8KDW0EllJpk5Q';
+
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* Auth related functions */
@@ -44,7 +45,17 @@ function checkError({ data, error }) {
 
 /////////
 
-export async function addGame(game) {
-    const response = await client.from('games').insert({ game_name: game });
-    console.log(response);
+// export async function addGame(game) {
+//     const response = await client.from('games').insert({ game_name: game });
+//     console.log(response);
+// }
+
+export async function startNewGame(player1, player2) {
+    const response = await client.from('games').insert({ player_one_name: player1, player_two_name: player2 });
+    return response;
+}
+
+export async function getGames() {
+    const response = await client.from('games').select('*');
+    return response.data;
 }
