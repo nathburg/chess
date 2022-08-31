@@ -646,6 +646,8 @@ function moveButton(currentPosition, targetPosition) {
             board['a8'] = false;
         }
         checkCheck();
+        let test = getAllBlackMoves();
+        console.log(test);
         changePlayer();
         displayBoard();
 
@@ -708,6 +710,8 @@ function attackButton(currentPosition, targetPosition) {
         board[targetPosition] = board[currentPosition];
         board[currentPosition] = false;
         checkCheck();
+        let test = getAllBlackMoves();
+        console.log(test);
         changePlayer();
         displayBoard();
 
@@ -1353,3 +1357,96 @@ function findBlackKing(){
         }
     } 
 }
+
+// somehow spitting out enemy queen moves???
+function getAllBlackMoves() {
+    let enemyArray = [];
+    let test = Object.keys(board);
+    for (let position of test) {
+        if (board[position].color === 'black') {
+            if (board[position].piece === 'queen') {
+                let queenMoves = queen(position)
+                for (let i = 0; i < queenMoves.length; i++) {
+                    enemyArray.push(queenMoves[i].space)
+                }
+                console.log('queen moves' + enemyArray + ' ')
+            } 
+            if (board[position].piece === 'rook') {
+                let rookMoves = rook(position)
+                for (let i = 0; i < rookMoves.length; i++) {
+                    enemyArray.push(rookMoves[i].space)
+                }
+                console.log('rook moves' + enemyArray + ' ')
+            } 
+            if (board[position].piece === 'bishop') {
+                let bishopMoves = bishop(position)
+                for (let i = 0; i < bishopMoves.length; i++) {
+                    enemyArray.push(bishopMoves[i].space)
+                }
+                console.log('bishop moves' + enemyArray + ' ')
+            } 
+            if (board[position].piece === 'knight') {
+                let knightMoves = knight(position)
+                for (let i = 0; i < knightMoves.length; i++) {
+                    enemyArray.push(knightMoves[i].space)
+                }
+                console.log('knight moves' + enemyArray + ' ')
+            } 
+            // having issue with pawns
+            // if (board[position].piece === 'pawn') {
+            //     let pawnMoves = pawn(position)
+            //     for (let i = 0; i < pawnMoves.length; i++) {
+            //         enemyArray.push(pawnMoves[i].space)
+            //     }
+            //     console.log('pawn moves' + enemyArray + ' ')
+            // } 
+            if (board[position].piece === 'king') {
+                let kingMoves = king(position)
+                for (let i = 0; i < kingMoves.length; i++) {
+                    enemyArray.push(kingMoves[i].space)
+                }
+                console.log('king moves' + enemyArray + ' ')
+            } 
+        }
+    }   return enemyArray;
+}
+    // for (let i = 0; i < size; i++) {
+    //     if (test[i] === 'black') {
+    //     }
+    //     return test;
+    // } 
+
+
+// function getAllEnemyMoves() {
+//     let enemyMovesArr = [];
+//     // loop through pieces array
+//     console.log('piece', position.piece);
+
+//     if (position.piece === 'pawn') {
+//         let pawnMoves = pawn(position);
+//         for (let move of pawnMoves) {
+//             enemyMovesArr.push(move);
+//         }
+        
+//     }
+//     if (position.piece === 'rook') {
+//         console.log('rook position', position);
+//         let rook = rook(position);
+//         enemyMovesArr.push(rook);
+//     }
+//     if (position.piece === 'queen') {
+//         let queen = queen(position);
+//         enemyMovesArr.push(queen);
+//     }
+//     if (position.piece === 'bishop') {
+//         let bishop = bishop(position);
+//         enemyMovesArr.push(bishop);
+//     }
+//     if (position.piece === 'knight') {
+//         let knight = knight(position);
+//         enemyMovesArr.push(knight);
+//     }
+//     console.log('enemy moves array', enemyMovesArr);
+//     return enemyMovesArr;
+// }
+
