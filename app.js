@@ -201,7 +201,14 @@ let whiteKingSideCastling = true;
 let whiteQueenSideCastling = true;
 let blackKingSideCastling = true;
 let blackQueenSideCastling = true;
-let pastMoves = [['a1', 'a2']];
+
+let blackChecked = false;
+let whiteChecked = false;
+
+
+let pastMoves = [['ready', 'set']];
+
+let storedPieces = ['queen', 'king', 'bishop', 'knight', 'rook', 'pawn'];
 
 let currentPlayer = 'white';
 const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -241,6 +248,7 @@ function displayBoard() {
             // if it use, we enter the renderPlayable function to give this piece a button to play
             if (board[position].color === currentPlayer) {
                 renderPlayable(position);
+            
             }
         }
         counter++;
@@ -258,11 +266,10 @@ function displayBoard() {
 // (this is where the functions for other pieces will go once we build those)
 function renderPlayable(position) {
         const positionEl = document.getElementById(position);
-        
         positionEl.addEventListener('click', () => {
-            // if the piece is a pawn
+            // grab dem last moves
             const enPassantMoves = pastMoves.slice(-1);
-
+            // if the piece is a pawn
             if (board[position].piece === 'pawn') {
                 // refresh the board
                 displayBoard();
@@ -391,7 +398,7 @@ function renderPlayable(position) {
                         }
                     }
                 } else 
-                // white pawns can capture en pasasnt
+                // white pawns can capture en passant
                         {
                     if (position === 'a5') {
                         if (enPassantMoves[0][0] === 'b7' && enPassantMoves[0][1] === 'b5') {
@@ -431,7 +438,6 @@ function renderPlayable(position) {
                             const savePiece = board['d5'];
                             // push piece to the right color of array
                             whiteCaptured.push(savePiece);
-
                             board['d5'] = false;
                         }
                     }
@@ -448,7 +454,6 @@ function renderPlayable(position) {
                             const savePiece = board['e5'];
                             // push piece to the right color of array
                             whiteCaptured.push(savePiece);
-
                             board['e5'] = false;
                         }
                     }
@@ -465,7 +470,6 @@ function renderPlayable(position) {
                             const savePiece = board['f5'];
                             // push piece to the right color of array
                             whiteCaptured.push(savePiece);
-
                             board['f5'] = false;
                         }
                     }
@@ -511,25 +515,7 @@ function renderPlayable(position) {
                             board['g5'] = false;
                         }
                     }
-                }
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                }              
                 for (let move of moves) {
                     // if the positions is empty, give it a move button
                     if (move.condition === 'empty') {
@@ -571,8 +557,6 @@ function renderPlayable(position) {
                     }
                 }
             }
-
-
             if (board[position].piece === 'queen') {
                 displayBoard();
                 const moves = queen(position);
@@ -585,7 +569,6 @@ function renderPlayable(position) {
                     }
                 }
             }
-
             if (board[position].piece === 'rook') {
                 displayBoard();
                 const moves = rook(position);
@@ -598,7 +581,6 @@ function renderPlayable(position) {
                     }
                 }
             }
-
             if (board[position].piece === 'bishop') {
                 displayBoard();
                 const moves = bishop(position);
@@ -613,7 +595,6 @@ function renderPlayable(position) {
                     }
                 }
             }
-
             if (board[position].piece === 'knight') {
                 displayBoard();
                 const moves = knight(position);
@@ -664,8 +645,10 @@ function moveButton(currentPosition, targetPosition) {
             board['d8'] = board['a8']
             board['a8'] = false;
         }
+        checkCheck();
         changePlayer();
         displayBoard();
+
 
         // make castling impossible if white or black king moves
         if (board[targetPosition].piece === 'king')  {
@@ -710,7 +693,6 @@ function moveButton(currentPosition, targetPosition) {
 
 // mostly same as above but the target position has an enemy piece to remove and push to its array of captured pieces
 function attackButton(currentPosition, targetPosition) {
-
     const targetPositionEl = document.getElementById(targetPosition);
     // put x next to the text of the piece on the target position
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
@@ -725,8 +707,10 @@ function attackButton(currentPosition, targetPosition) {
         }
         board[targetPosition] = board[currentPosition];
         board[currentPosition] = false;
+        checkCheck();
         changePlayer();
         displayBoard();
+
     })
 }
     
@@ -1215,34 +1199,157 @@ function changePlayer() {
     }
 }
 
+function checkCheck() {
+    // check last turn only
+    // grab last move: [starting tile, ending tile]
+    const lastPosition = pastMoves.slice(-1)
+
+    // grab ending tile
+    const tileMovedTo = lastPosition[0][1];
+    //grab king locations
+    const blackKing = findBlackKing();
+    const whiteKing = findWhiteKing();
+
+    // feel like should be able to query storedPieces[] instead of re-writing for all pieces,
+    // but I couldn't figure out how to call the piece functions, i.e. queen(tileMoveTo)
+
+    // check what piece moved
+    if (board[tileMovedTo].piece === 'queen') {
+        if (currentPlayer === 'white') {
+            // grab queen moves
+            let moves = queen(tileMovedTo);
+            // query queen moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === blackKing) {
+                    console.log('check!')
+                    blackChecked = true;
+                    // if queen can move to e8 then call check
+                }
+            }
+        }   else {
+            let moves = queen(tileMovedTo);
+            // query queen moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === whiteKing) {
+                    console.log('check!')
+                    whiteChecked = true;
+                    // if queen can move to e8 then call check
+                }
+            }
+        } 
+    } 
+    if (board[tileMovedTo].piece === 'bishop') {
+        if (currentPlayer === 'white') {
+            // grab bishop moves
+            let moves = bishop(tileMovedTo);
+            // query bishop moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === blackKing) {
+                    console.log('check!')
+                    blackChecked = true;
+                    // if bishop can move to e8 then call check
+                }
+            }
+        }    else {
+            let moves = bishop(tileMovedTo);
+            // query bishop moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === whiteKing) {
+                    console.log('check!')
+                    whiteChecked = true;
+                    // if bishop can move to e8 then call check
+                }
+            }
+
+        }
+    } 
+    if (board[tileMovedTo].piece === 'knight') {
+        if (currentPlayer === 'white') {
+            // grab knight moves
+            let moves = knight(tileMovedTo);
+            // query knight moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === blackKing) {
+                    console.log('check!')
+                    blackChecked = true;
+                    // if knight can move to e8 then call check
+                }
+            }
+        }    else {
+            let moves = knight(tileMovedTo);
+            // query knight moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === whiteKing) {
+                    console.log('check!')
+                    whiteChecked = true;
+                    // if knight can move to e8 then call check
+                }
+            }
+        }
+    } 
+    if (board[tileMovedTo].piece === 'pawn') {
+        if (currentPlayer === 'white') {
+            // grab pawn moves
+            let moves = pawn(tileMovedTo);
+            // query pawn moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === blackKing) {
+                    console.log('check!')
+                    blackChecked = true;
+                    // if pawn can move to e8 then call check
+                }
+            }
+        }    else {
+            let moves = pawn(tileMovedTo);
+            // query pawn moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === whiteKing) {
+                    console.log('check!')
+                    whiteChecked = true;
+                    // if pawn can move to e8 then call check
+                }
+            }
+        }
+    } 
+    if (board[tileMovedTo].piece === 'rook') {
+        if (currentPlayer === 'white') {
+            // grab rook moves
+            let moves = rook(tileMovedTo);
+            // query rook moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === blackKing) {
+                    console.log('check!')
+                    blackChecked = true;
+                    // if rook can move to e8 then call check
+                }
+            }
+        }   else {
+            let moves = rook(tileMovedTo);
+            // query rook moves for blackKing location
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].space === whiteKing) {
+                    console.log('check!')
+                    whiteChecked = true;
+                    // if rook can move to e8 then call check
+                }
+            }
+        } 
+    } 
+}
 
 
+function findWhiteKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♔')) {
+            return location.id;
+        }
+    } 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// rook code lower
-
+function findBlackKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♚')) {
+            return location.id;
+        }
+    } 
+}
