@@ -734,7 +734,8 @@ function checkCheck() {
                         if (board[position].piece === pawn || board[position].piece === knight) {
                             //
                             threatMoves.push({space: position, condition: 'enemy'})
-                        } else {
+                        }
+                        else if (board[position].piece != king) {
                             // console.log('hi')
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
@@ -756,21 +757,21 @@ function checkCheck() {
         }
     }
     changePlayer();
-    const defenseMoves = [];
+    let defenseMoves = [];
 
     if (threatMoves.length > 0) {
         alert("you're in check")
         for (let position in board) {
-            if (board[position].color === currentPlayer) {
+            if (board[position].piece != king && board[position].color === currentPlayer) {
                 const newDefenseMoves = board[position].piece(position);
-                console.log(newDefenseMoves)
-                console.log(threatMoves)
+                // console.log(newDefenseMoves)
+                // console.log(threatMoves)
                 const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
-                console.log(solutionForCheck)
-                // console.log(board[position], solutionForCheck)
-                // defenseMoves.push(solutionForCheck);
+                const sendDefenseMoves = defenseMoves.concat(solutionForCheck);
+                defenseMoves = sendDefenseMoves;
             }
         }
+        console.log(defenseMoves);
         if (defenseMoves.length === 0)
         console.log("you're in *checkmate")
 
@@ -780,21 +781,34 @@ function checkCheck() {
 
 function performIntersection(arr1, arr2) {
 
-    const intersectionResult = arr1.filter(x => arr2.indexOf(x) !== -1);
- 
-    return intersectionResult;
+    const set = new Set();
+
+    for(const move of arr1) {
+        set.add(move.space + move.condition);
+    }
+    
+    const results = [];
+    
+    for(const move of arr2) {
+        if(set.has(move.space + move.condition)) {
+            results.push(move);
+        }
+    }
+    
+    return results;
+    
 
 }
 
-const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
-const array2 = [{space: 'd7', condition: 'empty'},
-                {space: 'c6', condition: 'empty'},
-                {space: 'b5', condition: 'empty'},
-                {space: 'a4', condition: 'enemy'}      
-];
+// const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
+// const array2 = [{space: 'd7', condition: 'empty'},
+//                 {space: 'c6', condition: 'empty'},
+//                 {space: 'b5', condition: 'empty'},
+//                 {space: 'a4', condition: 'enemy'}      
+// ];
 
-const result = performIntersection(array1, array2);
-console.log(result);
+// const result = performIntersection(array1, array2);
+// console.log(result);
 
 
 
