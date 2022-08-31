@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color:rgb(63, 78, 79); 
+    background-image: url(../assets/marble1.jpg);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    font-family: 'Aboreto', cursive;
+    background-color: rgb(216, 204, 163);;
+    height: 70px;
+    color: rgb(63, 78, 79);
+
+}
