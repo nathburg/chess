@@ -201,7 +201,12 @@ let blackCaptured = [];
 let currentPlayer = 'white';
 const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
+let kings = {
+    white: 'e1',
+    black: 'e8'
+}
 
+console.log(kings[currentPlayer])
 
 displayBoard()
 
@@ -279,10 +284,10 @@ function renderPlayable(position) {
                 const moves = king(position);
                 for (let move of moves) {
                     if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
+                        kingAttackButton(position, move.space) ;
                     }
                     if (move.condition === 'empty') {
-                        moveButton(position, move.space);
+                        kingMoveButton(position, move.space);
                     }
                 }
             }
@@ -345,34 +350,41 @@ function renderPlayable(position) {
         });
 }
 
-// this function moves the piece from its current position to the target position
-    function moveButton(currentPosition, targetPosition) {
-    // grab the element of the target position
+
+function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
-    // make the target positions have an x in it
     targetPositionEl.textContent = 'x';
-    // make the position an event listener that on click moves the piece in the current position to the target position
     targetPositionEl.addEventListener('click', () => {
-        // save the piece in a variable so you can delete it off of its current position without losing what was there
         const savePiece = board[currentPosition];
-        // replace the current position with false
         board[currentPosition] = false;
-        // put the saved piece that was on the current position onto the target position
         board[targetPosition] = savePiece;
+        console.log(kings);
         changePlayer();
         displayBoard();
     })
 }
 
-// mostly same as above but the target position has an enemy piece to remove and push to its array of captured pieces
+function kingMoveButton(currentPosition, targetPosition) {
+    const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.textContent = 'x';
+    targetPositionEl.addEventListener('click', () => {
+        kings[currentPlayer] = targetPosition;
+        const savePiece = board[currentPosition];
+        board[currentPosition] = false;
+        board[targetPosition] = savePiece;
+        console.log(kings);
+        changePlayer();
+        displayBoard();
+        console.log(kings);
+    })
+}
+
 function attackButton(currentPosition, targetPosition) {
     
     const targetPositionEl = document.getElementById(targetPosition);
-    // put x next to the text of the piece on the target position
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
         const savePiece = board[targetPosition];
-        // push piece to the right color of array
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
         } else {
@@ -382,6 +394,26 @@ function attackButton(currentPosition, targetPosition) {
         board[currentPosition] = false;
         changePlayer();
         displayBoard();
+    })
+}
+
+function kingAttackButton(currentPosition, targetPosition) {
+    
+    const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.textContent = `x${board[targetPosition].image}`;
+    targetPositionEl.addEventListener('click', () => {
+        kings[currentPlayer] = targetPosition;
+        const savePiece = board[targetPosition];
+        if (savePiece.color === 'white') {
+            whiteCaptured.push(savePiece);
+        } else {
+            blackCaptured.push(savePiece);
+        }
+        board[targetPosition] = board[currentPosition];
+        board[currentPosition] = false;
+        changePlayer();
+        displayBoard();
+        console.log(kings);
     })
 }
     
@@ -408,7 +440,6 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            console.log(inspectSpace(coordsToString([x,y+1])));
             if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
@@ -642,6 +673,10 @@ function changePlayer() {
     }
 }
 
+function checkCheck(currentPlayer) {
+
+
+}
 
 
 
