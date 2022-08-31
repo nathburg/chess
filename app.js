@@ -622,131 +622,70 @@ function queen(position) {
    
 function bishop(position) {
     let moves = [];
+    moves = moves.concat(continueMove(position, minusOne, plusOne));
+    moves = moves.concat(continueMove(position, plusOne, plusOne));
+    moves = moves.concat(continueMove(position, minusOne, minusOne));
+    moves = moves.concat(continueMove(position, plusOne, minusOne));
+    return moves;
+}
 
+console.log(bishop('c3'));
+
+console.log('hello');
+
+function continueMove(position, deltaXFunction, deltaYFunction) {
+    let newMoves = [];
     const coords = stringToCoords(position);
     let x = coords[0];
     let y = coords[1];
-
-    if(inRange(y+1)) {
-        
-        
-        if(inRange(x-1)) {
-            let testY = y+1;
-            let testX = x-1;
-            let open = true;
-            while (open === true) {
-                if (inRange(testY) && inRange(testX)) {
-                const test = coordsToString([testX, testY]);
-                    if (inspectSpace(test)) {
-                        moves.push(inspectSpace(test));
-
-                        if (inspectSpace(test).condition === 'empty') {
-                            
-                            
-                            testY++;
-                            testX--;
-                        } else {
-                        open = false;
-                        }     
-                    } else {
-                        // console.log('Ello World')
-                        open = false;
-                    }    
+    let open = true;
+    let testX = deltaXFunction(x);
+    let testY = deltaYFunction(y);
+    while (open === true) {
+        if (inRange(testX) && inRange(testY)) {
+            const test = coordsToString([testX, testY]);
+            if (inspectSpace(test)) {
+                newMoves.push(inspectSpace(test));
+                if (inspectSpace(test).condition === 'empty') {
+                    testX = deltaXFunction(testX);
+                    testY = deltaYFunction(testY);               
                 } else {
                     open = false;
                 }
+            } else {
+                open = false;
             }
-        }
-
-        if(inRange(x+1)) {
-            let testY = y+1;
-            let testX = x+1;
-            let open = true;
-            while (open === true) {
-                if (inRange(testY) && inRange(testX)) {
-                const test = coordsToString([testX, testY]);
-                    if (inspectSpace(test)) {
-                        moves.push(inspectSpace(test));
-
-                        if (inspectSpace(test).condition === 'empty') {
-                            
-                            
-                            testY++;
-                            testX++;
-                        } else {
-                        open = false;
-                        }     
-                    } else {
-                        // console.log('Ello World')
-                        open = false;
-                    }    
-                } else {
-                    open = false;
-                }
-            }
+        } else {
+            open = false;
         }
     }
-    if(inRange(y-1)) {
-        
-        
-        if(inRange(x-1)) {
-            let testY = y-1;
-            let testX = x-1;
-            let open = true;
-            while (open === true) {
-                if (inRange(testY) && inRange(testX)) {
-                const test = coordsToString([testX, testY]);
-                    if (inspectSpace(test)) {
-                        moves.push(inspectSpace(test));
-
-                        if (inspectSpace(test).condition === 'empty') {
-                            // console.log('moves', moves);
-                            
-                            testY--;
-                            testX--;
-                        } else {
-                        open = false;
-                        }     
-                    } else {
-                        // console.log('Ello World')
-                        open = false;
-                    }    
-                } else {
-                    open = false;
-                }
-            }
-        }
-
-        if(inRange(x+1)) {
-            let testY = y-1;
-            let testX = x+1;
-            let open = true;
-            while (open === true) {
-                if (inRange(testY) && inRange(testX)) {
-                const test = coordsToString([testX, testY]);
-                    if (inspectSpace(test)) {
-                        moves.push(inspectSpace(test));
-
-                        if (inspectSpace(test).condition === 'empty') {
-                            // console.log('moves', moves);
-                            
-                            testY--;
-                            testX++;
-                        } else {
-                        open = false;
-                        }     
-                    } else {
-                        // console.log('Ello World')
-                        open = false;
-                    }    
-                } else {
-                    open = false;
-                }
-            }
-        }
-    }
-    return moves;
+    return newMoves;
 }
+
+function plusOne(a) {
+    return a+1;
+}
+
+function minusOne(a) {
+    return a-1;
+}
+
+function constantFunction(a) {
+    return a;
+}
+
+function inverseFunction(fn) {
+    const inverter = {
+        minusOne: plusOne,
+        plusOne: minusOne,
+        constantFunction: constantFunction
+    }
+
+    return inverter[fn];
+}
+
+
+
 function rook(position) {
     let moves = [];
     const coords = stringToCoords(position);
@@ -816,6 +755,10 @@ function rook(position) {
             }
         }
     }
+
+
+
+
     if (inRange(x-1)) {
         let open = true;
         let testX = x - 1;
