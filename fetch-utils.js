@@ -59,3 +59,9 @@ export async function getGames() {
     const response = await client.from('games').select('*');
     return response.data;
 }
+
+export async function saveGame(id, boardState) {
+    const response = await client.from('games').upsert({ board_state: boardState }).match({ user_id: id}).single();
+
+    return response.data;
+}
