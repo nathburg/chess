@@ -197,9 +197,12 @@ let board = {
 
 let whiteCaptured = [];
 let blackCaptured = [];
+let check = false;
 
 let currentPlayer = 'white';
-const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+
 
 let kings = {
     white: 'e1',
@@ -215,6 +218,9 @@ function displayBoard() {
     // We loop through all the positions in the board object.
     // Each "position" is one of the keys, like a4 or g6. 
     for (const position in board) {
+
+        
+            
         // grab the proper html element for this position
         const getPosition = document.getElementById(position);
         // make a new button to replace it
@@ -258,7 +264,10 @@ function renderPlayable(position) {
         const positionEl = document.getElementById(position);
         
         positionEl.addEventListener('click', () => {
-            // if the p
+
+
+            
+
                 // refresh the board
                 displayBoard();
                 // get the positions the pawn functions determines are viable moves
@@ -274,9 +283,11 @@ function renderPlayable(position) {
                         attackButton(position, move.space);
                     }
                 }
+
             
         });
 }
+
 
 
 function moveButton(currentPosition, targetPosition) {
@@ -345,6 +356,80 @@ function kingAttackButton(currentPosition, targetPosition) {
         console.log(kings);
     })
 }
+
+
+
+function checkWhite(findWhiteKing, position) {
+    let enemyMovesArr = [];
+    
+    // loop through pieces array
+    console.log('piece', position.piece);
+    if (position.piece === 'pawn') {
+        let pawnMoves = pawn(position);
+        console.log('pawnmoves', pawnMoves);
+        for (let move of pawnMoves) {
+            enemyMovesArr.push(move);
+        }
+        
+    }
+    if (position.piece === 'rook') {
+        console.log('rook position', position);
+        let rook = rook(position);
+        enemyMovesArr.push(rook);
+    }
+    if (position.piece === 'queen') {
+        let queen = queen(position);
+        enemyMovesArr.push(queen);
+    }
+    if (position.piece === 'bishop') {
+        let bishop = bishop(position);
+        enemyMovesArr.push(bishop);
+    }
+    if (position.piece === 'knight') {
+        let knight = knight(position);
+        enemyMovesArr.push(knight);
+    }
+
+    // let kingPosition = findWhiteKing();
+
+    // console.log(enemyMoves, kingPosition);
+    for (let move of enemyMovesArr) {
+        if (move === kingPosition) {
+            alert('check');
+            
+            check = true;
+            break;
+        }
+
+    console.log('enemy moves array', enemyMovesArr);
+    return enemyMovesArr;
+
+    
+}
+}
+
+
+
+function findWhiteKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♔')) {
+            return location.id;
+        }
+    } 
+}
+
+function findBlackKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♚')) {
+            return location.id;
+        }
+    } 
+}
+
+
+
+
+
     
 function pawn(position) {
     
@@ -369,6 +454,7 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
+
             if (inspectSpace(coordsToString([x, y+1])) && inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
@@ -438,8 +524,12 @@ function king(position) {
     if (testSpace(x-1, y)) {
         moves.push(testSpace(x-1, y))
     }
+
+
     
     return moves;
+
+    
 }
 
 function knight(position) {
@@ -732,7 +822,4 @@ console.log(result);
 
 
 
-
-
-// rook code lower
 
