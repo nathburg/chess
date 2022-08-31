@@ -2,82 +2,82 @@ let board = {
     
     a1: {
         color: 'white',
-        piece: 'rook',
+        piece: rook,
         image: '♖'
         },
     b1:  {
         color: 'white',
-        piece: 'knight',
+        piece: knight,
         image: '♘'
         },
     c1:  {
         color: 'white',
-        piece: 'bishop',
+        piece: bishop,
         image: '♗'
         },
     d1:  {
         color: 'white',
-        piece: 'queen',
+        piece: queen,
         image: '♕'
         },
     e1:  {
         color: 'white',
-        piece: 'king',
+        piece: king,
         image: '♔'
         },
     f1:  {
         color: 'white',
-        piece: 'bishop',
+        piece: bishop,
         image: '♗'
         },
     g1: {
         color: 'white',
-        piece: 'knight',
+        piece: knight,
         image: '♘'
         },
     h1: {
         color: 'white',
-        piece: 'rook',
+        piece: rook,
         image: '♖'
         },
     a2: {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     b2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     c2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     d2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     e2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     f2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     g2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     h2:  {
         color: 'white',
-        piece: 'pawn',
+        piece: pawn,
         image: '♙'
         },
     a3: false,
@@ -114,82 +114,82 @@ let board = {
     h6: false,
     a7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     b7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     c7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     d7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     e7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     f7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     g7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     h7:  {
         color: 'black',
-        piece: 'pawn',
+        piece: pawn,
         image: '♟'
         },
     a8:  {
         color: 'black',
-        piece: 'rook',
+        piece: rook,
         image: '♜'
         },
     b8:  {
         color: 'black',
-        piece: 'knight',
+        piece: knight,
         image: '♞'
         },
     c8:  {
         color: 'black',
-        piece: 'bishop',
+        piece: bishop,
         image: '♝'
         },
     d8:  {
         color: 'black',
-        piece: 'queen',
+        piece: queen,
         image: '♛'
         },
     e8:  { 
         color: 'black',
-        piece: 'king',
+        piece: king,
         image: '♚'
         },
     f8:  {
         color: 'black',
-        piece: 'bishop',
+        piece: bishop,
         image: '♝'
         },
     g8:  {
         color: 'black',
-        piece: 'knight',
+        piece: knight,
         image: '♞'
         },
     h8:  {
         color: 'black',
-        piece: 'rook',
+        piece: rook,
         image: '♜'
         } 
 }
@@ -197,11 +197,17 @@ let board = {
 
 let whiteCaptured = [];
 let blackCaptured = [];
+let check = false;
 
 let currentPlayer = 'white';
-const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 
+
+let kings = {
+    white: 'e1',
+    black: 'e8'
+}
 
 displayBoard()
 
@@ -212,6 +218,9 @@ function displayBoard() {
     // We loop through all the positions in the board object.
     // Each "position" is one of the keys, like a4 or g6. 
     for (const position in board) {
+
+        
+            
         // grab the proper html element for this position
         const getPosition = document.getElementById(position);
         // make a new button to replace it
@@ -255,12 +264,14 @@ function renderPlayable(position) {
         const positionEl = document.getElementById(position);
         
         positionEl.addEventListener('click', () => {
-            // if the piece is a pawn
-            if (board[position].piece === 'pawn') {
+
+
+            
+
                 // refresh the board
                 displayBoard();
                 // get the positions the pawn functions determines are viable moves
-                const moves = pawn(position);
+                const moves = board[position].piece(position);
                 // loop through those moves
                 for (let move of moves) {
                     // if the positions is empty, give it a move button
@@ -272,107 +283,47 @@ function renderPlayable(position) {
                         attackButton(position, move.space);
                     }
                 }
-            }
 
-            if (board[position].piece === 'king') {
-                displayBoard();
-                const moves = king(position);
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
-
-            if (board[position].piece === 'queen') {
-                displayBoard();
-                const moves = queen(position);
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
-
-            if (board[position].piece === 'rook') {
-                displayBoard();
-                const moves = rook(position);
-                for (let move of moves) {
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space);
-                    }
-                }
-            }
-
-            if (board[position].piece === 'bishop') {
-                displayBoard();
-                const moves = bishop(position);
-
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
-
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
-
-            if (board[position].piece === 'knight') {
-                displayBoard();
-                const moves = knight(position);
-
-                for (let move of moves) {
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space) ;
-                    }
-
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                }
-            }
+            
         });
 }
 
-// this function moves the piece from its current position to the target position
-    function moveButton(currentPosition, targetPosition) {
-    // grab the element of the target position
+
+
+function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
-    // make the target positions have an x in it
     targetPositionEl.textContent = 'x';
-    // make the position an event listener that on click moves the piece in the current position to the target position
     targetPositionEl.addEventListener('click', () => {
-        // save the piece in a variable so you can delete it off of its current position without losing what was there
         const savePiece = board[currentPosition];
-        // replace the current position with false
         board[currentPosition] = false;
-        // put the saved piece that was on the current position onto the target position
         board[targetPosition] = savePiece;
         changePlayer();
         displayBoard();
+        checkCheck();
     })
 }
 
-// mostly same as above but the target position has an enemy piece to remove and push to its array of captured pieces
+function kingMoveButton(currentPosition, targetPosition) {
+    const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.textContent = 'x';
+    targetPositionEl.addEventListener('click', () => {
+        kings[currentPlayer] = targetPosition;
+        const savePiece = board[currentPosition];
+        board[currentPosition] = false;
+        board[targetPosition] = savePiece;
+        console.log(kings);
+        changePlayer();
+        displayBoard();
+        console.log(kings);
+    })
+}
+
 function attackButton(currentPosition, targetPosition) {
     
     const targetPositionEl = document.getElementById(targetPosition);
-    // put x next to the text of the piece on the target position
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
         const savePiece = board[targetPosition];
-        // push piece to the right color of array
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
         } else {
@@ -382,38 +333,118 @@ function attackButton(currentPosition, targetPosition) {
         board[currentPosition] = false;
         changePlayer();
         displayBoard();
+        checkCheck();
     })
 }
+
+function kingAttackButton(currentPosition, targetPosition) {
     
-// the pawn function takes the current position it's on and returns an array of positions the pawn can move to
+    const targetPositionEl = document.getElementById(targetPosition);
+    targetPositionEl.textContent = `x${board[targetPosition].image}`;
+    targetPositionEl.addEventListener('click', () => {
+        kings[currentPlayer] = targetPosition;
+        const savePiece = board[targetPosition];
+        if (savePiece.color === 'white') {
+            whiteCaptured.push(savePiece);
+        } else {
+            blackCaptured.push(savePiece);
+        }
+        board[targetPosition] = board[currentPosition];
+        board[currentPosition] = false;
+        changePlayer();
+        displayBoard();
+        console.log(kings);
+    })
+}
+
+
+
+function checkWhite(findWhiteKing, position) {
+    let enemyMovesArr = [];
+    
+    // loop through pieces array
+    console.log('piece', position.piece);
+    if (position.piece === 'pawn') {
+        let pawnMoves = pawn(position);
+        console.log('pawnmoves', pawnMoves);
+        for (let move of pawnMoves) {
+            enemyMovesArr.push(move);
+        }
+        
+    }
+    if (position.piece === 'rook') {
+        console.log('rook position', position);
+        let rook = rook(position);
+        enemyMovesArr.push(rook);
+    }
+    if (position.piece === 'queen') {
+        let queen = queen(position);
+        enemyMovesArr.push(queen);
+    }
+    if (position.piece === 'bishop') {
+        let bishop = bishop(position);
+        enemyMovesArr.push(bishop);
+    }
+    if (position.piece === 'knight') {
+        let knight = knight(position);
+        enemyMovesArr.push(knight);
+    }
+
+    // let kingPosition = findWhiteKing();
+
+    // console.log(enemyMoves, kingPosition);
+    for (let move of enemyMovesArr) {
+        if (move === kingPosition) {
+            alert('check');
+            
+            check = true;
+            break;
+        }
+
+    console.log('enemy moves array', enemyMovesArr);
+    return enemyMovesArr;
+
+    
+}
+}
+
+
+
+function findWhiteKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♔')) {
+            return location.id;
+        }
+    } 
+}
+
+function findBlackKing(){
+    for (let location of document.querySelectorAll('button')) {
+        if (location.textContent.includes('♚')) {
+            return location.id;
+        }
+    } 
+}
+
+
+
+
+
+    
 function pawn(position) {
     
-    // this is array the valid moved will be pushed to
     let moves = [];
-
-    // we convert the board notion of the current position into a length-2 array, ie algebraic coordinates
     const coords = stringToCoords(position);
-    // x is the first coordinate
     let x = coords[0];
-    // y is the second coordinate
     let y = coords[1];
     
-    //white pawn
     if (currentPlayer === 'white') {
-        // check if the the row ahead of the current positions is still on the board
-        // i.e. checking if the current position is already on the last row and moving forward goes off the board
         if (inRange(y+1)) {
-            //attack
-            // check if column to the left is on the board
             if (inRange(x-1)) {
-                // here we take x-1 and y+1 and convert those to the chess board notation of that position
-                //we call it test because we're testing what's going on at that position
+
                 const test = coordsToString([x-1, y+1]);
-                //here we call inspectSpace, which looks at the space and tells us if it's empty or has an enemy on it
-                // inspectSpace returns objects that look like {space: g5, condition: 'enemy'}.
-                // this tells you that at g5 there's an enemy
+
                 if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
-                    // push this object from inspectSpace into the moves array
                     moves.push(inspectSpace(test));
                 } 
             }
@@ -423,23 +454,20 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            //move one space
-            console.log(inspectSpace(coordsToString([x,y+1])));
-            if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
+
+            if (inspectSpace(coordsToString([x, y+1])) && inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
-                //move two spaces if in starting row
-                if (y === 2 && inspectSpace(coordsToString([x, y+2])).condition === 'empty') {
+                if (y === 2 && inspectSpace(coordsToString([x, y+2])) && inspectSpace(coordsToString([x, y+2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y+2])))
                 }
             }
         }
     }
 
-         //black pawn
     if (currentPlayer === 'black') {
+        
         if (inRange(y-1)) {
-            //attack
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y-1]);
                 if (inspectSpace(test) && inspectSpace(test).condition  === 'enemy') {
@@ -452,20 +480,16 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            //move one space
-            if (inspectSpace(coordsToString([x, y-1])).condition === 'empty') {
+            if (inspectSpace(coordsToString([x, y-1])) && inspectSpace(coordsToString([x, y-1])).condition === 'empty') {
                 moves.push(inspectSpace(coordsToString([x, y-1])));
-                //move two spaces if in starting row
-                if (y === 7 && inspectSpace(coordsToString([x, y-2])).condition === 'empty') {
+                if (y === 7 && inspectSpace(coordsToString([x, y-2])) && inspectSpace(coordsToString([x, y-2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y-2])))
                 }
             }
         }
     }
-    // this condition doesn't work because [] is actually truthy, so this needs to change
-    // the idea though is that if there were no valid moves and nothing went in the moves array by the end then give an alert
     
-        return moves;
+    return moves;
     
 }  
 
@@ -476,66 +500,71 @@ function king(position) {
     let x = coords[0];
     let y = coords[1];
 
-    if (inRange(y+1)) {
-        if (inRange(x-1)) {
-            const test = coordsToString([x-1, y+1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-            const testSide = coordsToString([x-1, y]);
-            if (inspectSpace(testSide)) {
-                moves.push(inspectSpace(testSide));
-            }
-        }
-        if (inRange(x+1)) {
-            const test = coordsToString([x+1, y+1]);
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                }
-            const testSide = coordsToString([x+1, y]);
-                if (inspectSpace(testSide)) {
-                    moves.push(inspectSpace(testSide));
-                }
-        }
-        const test = coordsToString([x, y+1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
+    if (testSpace(x, y+1)) {
+        moves.push(testSpace(x, y+1))
     }
-    if (inRange(y-1)) {
-        if (inRange(x-1)) {
-            const test = coordsToString([x-1, y-1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if (inRange(x+1)) {
-            const test = coordsToString([x+1, y-1]);
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                }
-        }
-        const test = coordsToString([x, y-1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
+    if (testSpace(x, y-1)) {
+        moves.push(testSpace(x, y-1))
+    }
+    if (testSpace(x+1, y+1)) {
+        moves.push(testSpace(x+1, y+1))
+    }
+    if (testSpace(x+1, y-1)) {
+        moves.push(testSpace(x+1, y-1))
+    }
+    if (testSpace(x+1, y)) {
+        moves.push(testSpace(x+1, y))
+    }
+    if (testSpace(x-1, y+1)) {
+        moves.push(testSpace(x-1, y+1))
+    }
+    if (testSpace(x-1, y-1)) {
+        moves.push(testSpace(x-1, y-1))
+    }
+    if (testSpace(x-1, y)) {
+        moves.push(testSpace(x-1, y))
     }
 
-    console.log(moves);
 
     
-         return moves;
+    return moves;
+
     
-    
-} 
+}
 
+function knight(position) {
+    let moves = [];
+    const coords = stringToCoords(position);
+    let x = coords[0];
+    let y = coords[1];
 
-
-function queen(position) {
-    let moves = bishop(position).concat(rook(position));
+    if (testSpace(x+1, y+2)) {
+        moves.push(testSpace(x+1, y+2))
+    }
+    if (testSpace(x+1, y-2)) {
+        moves.push(testSpace(x+1, y-2))
+    }
+    if (testSpace(x+2, y+1)) {
+        moves.push(testSpace(x+2, y+1))
+    }
+    if (testSpace(x+2, y-1)) {
+        moves.push(testSpace(x+2, y-1))
+    }
+    if (testSpace(x-1, y+2)) {
+        moves.push(testSpace(x-1, y+2))
+    }
+    if (testSpace(x-1, y-2)) {
+        moves.push(testSpace(x-1, y-2))
+    }
+    if (testSpace(x-2, y+1)) {
+        moves.push(testSpace(x-2, y+1))
+    }
+    if (testSpace(x-2, y-1)) {
+        moves.push(testSpace(x-2, y-1))
+    }
     return moves;
 }
-   
+
 function bishop(position) {
     let moves = [];
     moves = moves.concat(continueMove(position, minusOne, plusOne));
@@ -545,9 +574,30 @@ function bishop(position) {
     return moves;
 }
 
-console.log(bishop('c3'));
+function rook(position) {
+    let moves = [];
 
-console.log('hello');
+    moves = moves.concat(continueMove(position, constantFunction, plusOne));
+    moves = moves.concat(continueMove(position, constantFunction, minusOne));
+    moves = moves.concat(continueMove(position, plusOne, constantFunction));
+    moves = moves.concat(continueMove(position, minusOne, constantFunction));
+    
+    return moves;
+}
+
+function queen(position) {
+    let moves = bishop(position).concat(rook(position));
+    return moves;
+}
+
+function testSpace(x, y) {
+    if (inRange(x) && inRange(y)) {
+        const test = coordsToString([x, y]);
+        if (inspectSpace(test)) {
+            return inspectSpace(test)
+        }
+    }
+}    
 
 function continueMove(position, deltaXFunction, deltaYFunction) {
     let newMoves = [];
@@ -600,176 +650,6 @@ function inverseFunction(fn) {
     return inverter[fn];
 }
 
-
-
-function rook(position) {
-    let moves = [];
-    const coords = stringToCoords(position);
-    let x = coords[0];
-    let y = coords[1];
-
-    if (inRange(y+1)) {
-        let open = true;
-        let testY = y + 1;
-        while (open === true) {
-            if (inRange(testY)) {
-                const test = coordsToString([x, testY])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testY++;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-    if (inRange(y-1)) {
-        let open = true;
-        let testY = y - 1;
-        while (open === true) {
-            if (inRange(testY)) {
-                const test = coordsToString([x, testY])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testY--;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-    if (inRange(x+1)) {
-        let open = true;
-        let testX = x + 1;
-        while (open === true) {
-            if (inRange(testX)) {
-                const test = coordsToString([testX, y])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testX++;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-
-
-
-
-    if (inRange(x-1)) {
-        let open = true;
-        let testX = x - 1;
-        while (open === true) {
-            if (inRange(testX)) {
-                const test = coordsToString([testX, y])
-                if (inspectSpace(test)) {
-                    moves.push(inspectSpace(test));
-                    if (inspectSpace(test).condition === 'empty') {
-                        testX--;
-                    } else {
-                        open = false;
-                    }
-                } else {
-                    open = false;
-                }
-            } else {
-                open = false;
-            }
-        }
-    }
-    
-         return moves;
-    
-}
-
-function knight(position) {
-    let moves = [];
-    const coords = stringToCoords(position);
-    let x = coords[0];
-    let y = coords[1];
-    if(inRange(y+1)) {
-
-        if(inRange(x+2)) {
-            const test = coordsToString([x+2, y+1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(x-2)) {
-            const test = coordsToString([x-2, y+1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-                }   
-        }
-        
-    }
-    if(inRange(y-1)) {
-        if(inRange(x-2)) {
-            const test = coordsToString([x-2, y-1]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(x+2)) {
-            const test = coordsToString([x+2, y-1])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }   
-        }
-        
-    }
-    if(inRange(x+1)) {
-        if(inRange(y+2)) {
-            const test = coordsToString([x+1, y+2]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(y-2)) {
-            const test = coordsToString([x+1, y-2])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }   
-        }
-        
-    }
-    if(inRange(x-1)) {
-        if(inRange(y-2)) {
-            const test = coordsToString([x-1, y-2]);
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }
-        }
-        if(inRange(y+2)) {
-            const test = coordsToString([x-1, y+2])
-            if (inspectSpace(test)) {
-                moves.push(inspectSpace(test));
-            }   
-        }
-        
-    }
-    return moves;
-}
-
 // this just makes sure that any coordinate we look at is between 0 and 8, i.e. on the board
 function inRange(number) {
     if (0 < number && number <= 8) {
@@ -812,6 +692,109 @@ function changePlayer() {
     }
 }
 
+function polarityChecker(number) {
+    if (number < 0) {
+        return minusOne;
+    }
+    if (number > 0) {
+        return plusOne;
+    } 
+    else {
+        return constantFunction;
+    }
+}
+
+function checkCheck() {
+    let kingPosition = '';
+    let threatMoves = [];
+    //loop through your pieces to find king
+    for (let position in board) {
+        //if the piece is a king and its color is the current color
+        if (board[position].piece === king && board[position].color === currentPlayer) {
+            //make kingposition equal to the position that we found
+            kingPosition = position;
+            break
+        } 
+    }
+    
+    //get its coordinates
+    const kingX = stringToCoords(kingPosition)[0];
+    const kingY = stringToCoords(kingPosition)[1];
+
+    //loop through pieces again
+    changePlayer();
+    for (let position in board) {
+        if (board[position].color === currentPlayer) {
+            const checkArray = board[position].piece(position);
+            // console.log(checkArray)
+            for (let move of checkArray) {
+                    if (move.space === kingPosition) {
+                        // if that piece is a pawn or a knight
+                        //(because those two don't have continuing moves)
+                        if (board[position].piece === pawn || board[position].piece === knight) {
+                            //
+                            threatMoves.push({space: position, condition: 'enemy'})
+                        } else {
+                            // console.log('hi')
+                            const threatX = stringToCoords(position)[0];
+                            const threatY = stringToCoords(position)[1];
+                            // console.log(stringToCoords(position));
+                            // console.log(threatX);
+                            // console.log(threatY);
+                            const deltaXFunction = polarityChecker(threatX-kingX);
+                            const deltaYFunction = polarityChecker(threatY-kingY);
+                            // console.log(deltaXFunction, deltaYFunction);
+                            changePlayer();
+
+                            const newThreatMoves = threatMoves.concat(continueMove(kingPosition, deltaXFunction, deltaYFunction)) 
+                            threatMoves = newThreatMoves;
+                            changePlayer();
+                        }
+                    }
+
+            }
+        }
+    }
+    changePlayer();
+    const defenseMoves = [];
+
+    if (threatMoves.length > 0) {
+        alert("you're in check")
+        for (let position in board) {
+            if (board[position].color === currentPlayer) {
+                const newDefenseMoves = board[position].piece(position);
+                console.log(newDefenseMoves)
+                console.log(threatMoves)
+                const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
+                console.log(solutionForCheck)
+                // console.log(board[position], solutionForCheck)
+                // defenseMoves.push(solutionForCheck);
+            }
+        }
+        if (defenseMoves.length === 0)
+        console.log("you're in *checkmate")
+
+    }
+}
+
+
+function performIntersection(arr1, arr2) {
+
+    const intersectionResult = arr1.filter(x => arr2.indexOf(x) !== -1);
+ 
+    return intersectionResult;
+
+}
+
+const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
+const array2 = [{space: 'd7', condition: 'empty'},
+                {space: 'c6', condition: 'empty'},
+                {space: 'b5', condition: 'empty'},
+                {space: 'a4', condition: 'enemy'}      
+];
+
+const result = performIntersection(array1, array2);
+console.log(result);
 
 
 
@@ -839,7 +822,4 @@ function changePlayer() {
 
 
 
-
-
-// rook code lower
 
