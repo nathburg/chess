@@ -293,7 +293,7 @@ function renderPlayable(position) {
                             const savePiece = board['a4'];
                             // push piece to the right color of array
                             whiteCaptured.push(savePiece);
-                            board['c4'] = false;
+                            board['a4'] = false;
                         }
                         if (enPassantMoves[0][0] === 'c2' && enPassantMoves[0][1] === 'c4') {
                             moveButton('b4', 'c3')
@@ -1210,6 +1210,7 @@ function checkCheck() {
 
     // grab ending tile
     const tileMovedTo = lastPosition[0][1];
+
     //grab king locations
     const blackKing = findBlackKing();
     const whiteKing = findWhiteKing();
@@ -1362,6 +1363,7 @@ function findBlackKing(){
 function getAllBlackMoves() {
     let enemyArray = [];
     let test = Object.keys(board);
+    // console.log(test);
     for (let position of test) {
         if (board[position].color === 'black') {
             if (board[position].piece === 'queen') {
@@ -1369,28 +1371,28 @@ function getAllBlackMoves() {
                 for (let i = 0; i < queenMoves.length; i++) {
                     enemyArray.push(queenMoves[i].space)
                 }
-                console.log('queen moves' + enemyArray + ' ')
+                // console.log('queen moves' + enemyArray + ' ')
             } 
             if (board[position].piece === 'rook') {
                 let rookMoves = rook(position)
                 for (let i = 0; i < rookMoves.length; i++) {
                     enemyArray.push(rookMoves[i].space)
                 }
-                console.log('rook moves' + enemyArray + ' ')
+                // console.log('rook moves' + enemyArray + ' ')
             } 
             if (board[position].piece === 'bishop') {
                 let bishopMoves = bishop(position)
                 for (let i = 0; i < bishopMoves.length; i++) {
                     enemyArray.push(bishopMoves[i].space)
                 }
-                console.log('bishop moves' + enemyArray + ' ')
+                // console.log('bishop moves' + enemyArray + ' ')
             } 
             if (board[position].piece === 'knight') {
                 let knightMoves = knight(position)
                 for (let i = 0; i < knightMoves.length; i++) {
                     enemyArray.push(knightMoves[i].space)
                 }
-                console.log('knight moves' + enemyArray + ' ')
+                // console.log('knight moves' + enemyArray + ' ')
             } 
             // having issue with pawns
             // if (board[position].piece === 'pawn') {
@@ -1405,7 +1407,7 @@ function getAllBlackMoves() {
                 for (let i = 0; i < kingMoves.length; i++) {
                     enemyArray.push(kingMoves[i].space)
                 }
-                console.log('king moves' + enemyArray + ' ')
+                // console.log('king moves' + enemyArray + ' ')
             } 
         }
     }   return enemyArray;
