@@ -206,8 +206,6 @@ let kings = {
     black: 'e8'
 }
 
-console.log(kings[currentPlayer])
-
 displayBoard()
 
 // the point of displayBoard is to update the display with the current state of the board object
@@ -277,75 +275,6 @@ function renderPlayable(position) {
                     }
                 }
             
-
-        //     if (board[position].piece === 'king') {
-        //         displayBoard();
-        //         const moves = king(position);
-        //         for (let move of moves) {
-        //             if (move.condition === 'enemy') {
-        //                 kingAttackButton(position, move.space) ;
-        //             }
-        //             if (move.condition === 'empty') {
-        //                 kingMoveButton(position, move.space);
-        //             }
-        //         }
-        //     }
-
-        //     if (board[position].piece === 'queen') {
-        //         displayBoard();
-        //         const moves = queen(position);
-        //         for (let move of moves) {
-        //             if (move.condition === 'enemy') {
-        //                 attackButton(position, move.space) ;
-        //             }
-        //             if (move.condition === 'empty') {
-        //                 moveButton(position, move.space);
-        //             }
-        //         }
-        //     }
-
-        //     if (board[position].piece === 'rook') {
-        //         displayBoard();
-        //         const moves = rook(position);
-        //         for (let move of moves) {
-        //             if (move.condition === 'empty') {
-        //                 moveButton(position, move.space);
-        //             }
-        //             if (move.condition === 'enemy') {
-        //                 attackButton(position, move.space);
-        //             }
-        //         }
-        //     }
-
-        //     if (board[position].piece === 'bishop') {
-        //         displayBoard();
-        //         const moves = bishop(position);
-
-        //         for (let move of moves) {
-        //             if (move.condition === 'enemy') {
-        //                 attackButton(position, move.space) ;
-        //             }
-
-        //             if (move.condition === 'empty') {
-        //                 moveButton(position, move.space);
-        //             }
-        //         }
-        //     }
-
-        //     if (board[position].piece === 'knight') {
-        //         displayBoard();
-        //         const moves = knight(position);
-
-        //         for (let move of moves) {
-        //             if (move.condition === 'enemy') {
-        //                 attackButton(position, move.space) ;
-        //             }
-
-        //             if (move.condition === 'empty') {
-        //                 moveButton(position, move.space);
-        //             }
-        //         }
-        //     }
         });
 }
 
@@ -357,9 +286,9 @@ function moveButton(currentPosition, targetPosition) {
         const savePiece = board[currentPosition];
         board[currentPosition] = false;
         board[targetPosition] = savePiece;
-        console.log(kings);
         changePlayer();
         displayBoard();
+        checkCheck();
     })
 }
 
@@ -393,6 +322,7 @@ function attackButton(currentPosition, targetPosition) {
         board[currentPosition] = false;
         changePlayer();
         displayBoard();
+        checkCheck();
     })
 }
 
@@ -439,10 +369,10 @@ function pawn(position) {
                     moves.push(inspectSpace(test));
                 }
             }
-            if (inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
+            if (inspectSpace(coordsToString([x, y+1])) && inspectSpace(coordsToString([x, y+1])).condition === 'empty') {
                 
                 moves.push(inspectSpace(coordsToString([x, y+1])));
-                if (y === 2 && inspectSpace(coordsToString([x, y+2])).condition === 'empty') {
+                if (y === 2 && inspectSpace(coordsToString([x, y+2])) && inspectSpace(coordsToString([x, y+2])).condition === 'empty') {
                     moves.push(inspectSpace(coordsToString([x, y+2])))
                 }
             }
@@ -672,15 +602,99 @@ function changePlayer() {
     }
 }
 
-// function checkCheck() {
-//     const kingSpaceArray = [kings[currentPlayer]];
-//     for (let position in board) {
-//         if (board[position].color != currentPlayer) {
-//             const checkArray = 
-//         }
-//     }
+function polarityChecker(number) {
+    if (number < 0) {
+        return minusOne;
+    }
+    if (number > 0) {
+        return plusOne;
+    } 
+    else {
+        return constantFunction;
+    }
+}
 
-// }
+function checkCheck() {
+    let kingPosition = '';
+    let threatMoves = [];
+    //loop through your pieces to find king
+    for (let position in board) {
+        //if the piece is a king and its color is the current color
+        if (board[position].piece === king && board[position].color === currentPlayer) {
+            //make kingposition equal to the position that we found
+            kingPosition = position;
+            break
+        } 
+    }
+    
+    //get its coordinates
+    const kingX = stringToCoords(kingPosition)[0];
+    const kingY = stringToCoords(kingPosition)[1];
+
+    //loop through pieces again
+    changePlayer();
+    for (let position in board) {
+        if (board[position].color === currentPlayer) {
+            const checkArray = board[position].piece(position);
+            console.log(checkArray)
+            for (let move of checkArray) {
+                    if (move.space === kingPosition) {
+                        // if that piece is a pawn or a knight
+                        //(because those two don't have continuing moves)
+                        if (board[position].piece === pawn || board[position].piece === knight) {
+                            //
+                            threatMoves.push({space: position, condition: 'enemy'})
+                        } else {
+                            console.log('hi')
+                            const threatX = stringToCoords(position)[0];
+                            const threatY = stringToCoords(position)[1];
+                            console.log(stringToCoords(position));
+                            console.log(threatX);
+                            console.log(threatY);
+                            const deltaXFunction = polarityChecker(threatX-kingX);
+                            const deltaYFunction = polarityChecker(threatY-kingY);
+                            console.log(deltaXFunction, deltaYFunction);
+                            changePlayer();
+                            threatMoves.push(continueMove(kingPosition, deltaXFunction, deltaYFunction)) 
+                            console.log(continueMove(kingPosition, deltaXFunction, deltaYFunction))
+                            changePlayer();
+                        }
+                    }
+
+            }
+        }
+    }
+    console.log(threatMoves);
+    changePlayer();
+
+    if (threatMoves.length > 0) {
+        console.log("you're in check")
+    //     const defenseMoves = [];
+    //     for (let position in board) {
+    //         if (board[position].color === currentPlayer) {
+    //             defenseMoves.push(board[position].piece(position))
+    //         }
+    //     const solutionForCheck = performIntersection(threatMoves, defenseMoves);
+    //         if (solutionForCheck.length === 0)
+    //         console.log("you're in checkmate")
+    //     }
+
+    }
+}
+
+
+function performIntersection(arr1, arr2) {
+
+    const intersectionResult = arr1.filter(x => arr2.indexOf(x) !== -1);
+ 
+    return intersectionResult;
+
+}
+
+const array1 = [1, 2, 3, 5, 9];
+const array2 = [1, 3, 5, 8];
+
+const result = performIntersection(array1, array2);
 
 
 
