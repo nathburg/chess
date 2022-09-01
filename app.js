@@ -627,9 +627,7 @@ function moveButton(currentPosition, targetPosition) {
         let spot8 = '';
         spot7 = stringToCoords(currentPosition);
         spot8 = stringToCoords(targetPosition);
-        console.log(spot7[1]);
-        console.log(spot8[1]);
-        console.log(board[currentPosition].piece)
+
         if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
             console.log('in if')
             let test = [];
@@ -739,6 +737,11 @@ function attackButton(currentPosition, targetPosition) {
     // put x next to the text of the piece on the target position
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
+        let spot7 = '';
+        let spot8 = '';
+        spot7 = stringToCoords(currentPosition);
+        spot8 = stringToCoords(targetPosition);
+
         pastMoves.push([currentPosition, targetPosition]);
         const savePiece = board[targetPosition];
         // push piece to the right color of array
@@ -747,10 +750,37 @@ function attackButton(currentPosition, targetPosition) {
         } else {
             blackCaptured.push(savePiece);
         }
+        if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'white') {
+                test = { 
+                    color: 'white',
+                    piece: 'queen',
+                    image: '♕'
+                    } 
+            }
+            board[currentPosition] = false;
+            board[targetPosition] = test;
+        } 
+        else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    } 
+            }
+            board[currentPosition] = false;
+            board[targetPosition] = test;
+            
+        } else {
+        
         board[targetPosition] = board[currentPosition];
         board[currentPosition] = false;
-        let test = getAllBlackMoves();
-        console.log(test);
+    }
         changePlayer();
         displayBoard();
 
