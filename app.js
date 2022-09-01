@@ -878,7 +878,7 @@ function displayWhiteCaptured() {
 
 
 saveGameBtn.addEventListener('click', async () => {
-    conwhiteCapturedst response = await saveGame(id, board, blackCaptured, );
+    const response = await saveGame(id, board, blackCaptured, );
     
     console.log(response);
 });
