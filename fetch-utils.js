@@ -72,6 +72,6 @@ export async function getPlayerNames(id) {
 
 export async function saveGame(id, boardState) {
     const response = await client.from('games').update({ board_state: boardState }).match({ id: id }).single();
-
+    console.log(response);
     return response.data;
 }

@@ -12,7 +12,9 @@ signOut.addEventListener('click', async () => {
 
 
 
+
 const user = getUser();
+
 displayUserGames();
 
 form.addEventListener('submit', async (e) => {
@@ -23,15 +25,14 @@ form.addEventListener('submit', async (e) => {
     const playerOneName = data.get('player-one-name');
     const playerTwoName = data.get('player-two-name');
 
-    await startNewGame(playerOneName, playerTwoName);
-    // gameId = response.data.id;
-    
+    const gameData = await startNewGame(playerOneName, playerTwoName);
+    const gameIdCont = gameData.data.id;
     await displayUserGames();
-
-    window.location.replace('../');
+    window.location.replace(`../?id=${gameIdCont}`);
     
-    form.reset();
+    // form.reset();
 });
+
 
 async function displayUserGames() {
     gamesList.textContent = '';
@@ -42,12 +43,12 @@ async function displayUserGames() {
     }
 }
 
-getNames.addEventListener('click', async () => {
-    const games = await getGames();
-    for (let game of games) {
-    const response = await getPlayerNames(user.id);
-    console.log(response);
-    }
-})
+// getNames.addEventListener('click', async () => {
+//     const games = await getGames();
+//     for (let game of games) {
+//     const response = await getPlayerNames(user.id);
+//     console.log(response);
+//     }
+// })
 
 

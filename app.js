@@ -1,7 +1,7 @@
-// import { saveGame, getUser, getPlayerNames, getGameId } from "./fetch-utils.js";
-// const saveGameBtn = document.getElementById('save-game-btn');
-// // import { gameId } from "./home-page/home.js";
-// const user = getUser();
+import { saveGame, getUser, getPlayerNames, getGameId } from "./fetch-utils.js";
+const saveGameBtn = document.getElementById('save-game-btn');
+// import { gameId } from "./home-page/home.js";
+const user = getUser();
 
 import { renderCapturedBlack, renderCapturedwhite } from "./render-utils.js";
 
@@ -13,8 +13,10 @@ const whiteCapturedContainer = document.querySelector('.white-captured')
 // console.log(response);
 
 
+const params = new URLSearchParams(window.location.search);
 
 
+const id = params.get('id');
 
 
 let board = {
@@ -860,11 +862,11 @@ function displayWhiteCaptured() {
 
 
 
-// saveGameBtn.addEventListener('click', async () => {
-//     const response = await saveGame(gameId, board);
+saveGameBtn.addEventListener('click', async () => {
+    const response = await saveGame(id, board);
     
-//     console.log(response);
-// });
+    console.log(response);
+});
 
 
 
