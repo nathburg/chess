@@ -200,6 +200,11 @@ let board = {
 let whiteCaptured = [];
 let blackCaptured = [];
 
+let whiteKingSideCastling = true;
+let whiteQueenSideCastling = true;
+let blackKingSideCastling = true;
+let blackQueenSideCastling = true;
+
 let check = false;
 let checkDefense = [];
 
@@ -497,20 +502,23 @@ function renderPlayable(position) {
                     }
                 }
             } 
-        } 
-            else {
-                for (let move of moves) {
-                    // if the positions is empty, give it a move button
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                    // if the position has an enemy piece, give it an attack button
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space);
-                    }
-                }
-            }           
+        } else         
         if (board[position].piece === king) {
+            if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === rook) {
+                moveButton('e1', 'g1')
+        }
+            // white castling queen side
+            if (currentPlayer === 'white' && whiteQueenSideCastling === true && board.a1.piece === rook && board.b1 === false && board.c1 === false && board.d1 === false) {
+                moveButton('e1', 'c1')
+        }
+            // black castling king side
+            if (currentPlayer === 'black' && blackKingSideCastling === true && board.f8 === false && board.g8 === false && board.h8.piece === rook) {
+                moveButton('e8', 'g8')
+        }  
+            // black castling queen side
+            if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === rook && board.b8 === false && board.c8 === false && board.d8 === false) {
+                moveButton('e8', 'c8')
+        } 
             let safeMoves = [];
             for (let move of moves) {
                 if (checkChecker(move.space)) {
@@ -518,6 +526,8 @@ function renderPlayable(position) {
                 }
             }
             moves = safeMoves;
+            // white castling king side
+
         }
         if (check && board[position].piece != king) {
             moves = performIntersection(moves, checkDefense)
@@ -539,44 +549,170 @@ function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = 'x';
     targetPositionEl.addEventListener('click', () => {
-        const savePiece = board[currentPosition];
-        board[currentPosition] = false;
-        board[targetPosition] = savePiece;
-        pastMoves.push([currentPosition, targetPosition]);    
-        changePlayer();
-        displayBoard();
-        checkDefense = [];
-        check = false;
-        fullCheck();
+        let spot7 = '';
+        let spot8 = '';
+        spot7 = stringToCoords(currentPosition);
+        spot8 = stringToCoords(targetPosition);
+        pastMoves.push([currentPosition, targetPosition]);  
+
+        if (board[currentPosition].piece === pawn && spot7[1] === 7 && spot8[1] === 8) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'white') {
+                test = { 
+                    color: 'white',
+                    piece: 'queen',
+                    image: '♕'
+                    } 
+                    board[currentPosition] = false;
+                    board[targetPosition] = test;
+            }
+
+        } 
+        if (board[currentPosition].piece === pawn && spot7[1] === 2 && spot8[1] === 1) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    } 
+                    board[currentPosition] = false;
+                    board[targetPosition] = test;
+            }
+
+
+
+
+
+
+        } else {
+            pastMoves.push([currentPosition, targetPosition]);  
+            const savePiece = board[currentPosition];
+            board[currentPosition] = false;
+            board[targetPosition] = savePiece;
+  
+            if (whiteKingSideCastling === true && currentPosition === 'e1' && targetPosition === 'g1') {
+                board['f1'] = board['h1']
+                board['h1'] = false;
+                whiteKingSideCastling = false;
+            }
+            if (whiteQueenSideCastling === true && currentPosition === 'e1' && targetPosition === 'c1') {
+                board['d1'] = board['a1']
+                board['a1'] = false;
+                whiteQueenSideCastling = false;
+            }
+            if (blackKingSideCastling === true && currentPosition === 'e8' && targetPosition === 'g8') {
+                board['f8'] = board['h8']
+                board['h8'] = false;
+                blackKingSideCastling = false;
+            }
+            if (blackQueenSideCastling === true && currentPosition === 'e8' && targetPosition === 'c8') {
+                board['d8'] = board['a8']
+                board['a8'] = false;
+                blackQueenSideCastling = false;
+            }
+
+       // make castling impossible if white or black king moves
+       if (board[targetPosition].piece === king)  {
+        if (currentPlayer === 'white') {
+            if (targetPosition != 'g1') {
+                whiteKingSideCastling = false;
+                whiteQueenSideCastling = false;
+            }
+        }
+    }
+    if (board[targetPosition].piece === king)  {
+        if (currentPlayer === 'black') {
+            if (targetPosition != 'c8') {
+                blackKingSideCastling = false;
+                blackQueenSideCastling = false;
+            }
+        }
+    }
+
+    // make castling impossible if white or black rooks move
+    // need to clarify which rook has moved, currently if any white rook moves white can no longer castle (vice versa)
+    if (board[targetPosition].piece === rook)  {
+        if (currentPlayer === 'white') {
+                whiteKingSideCastling = false;
+                whiteQueenSideCastling = false;
+        }
+    }
+    if (board[targetPosition].piece === rook)  {
+        if (currentPlayer === 'black') {
+                blackKingSideCastling = false;
+                blackQueenSideCastling = false;
+        }
+    }
+            changePlayer();
+            displayBoard();
+            checkDefense = [];
+            check = false;
+            fullCheck();
+        }
     })
 }
 
 
 function attackButton(currentPosition, targetPosition) {
-    
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
+        let spot7 = '';
+        let spot8 = '';
+        spot7 = stringToCoords(currentPosition);
+        spot8 = stringToCoords(targetPosition);
+
+        pastMoves.push([currentPosition, targetPosition]);  
         const savePiece = board[targetPosition];
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
         } else {
             blackCaptured.push(savePiece);
         }
-        board[targetPosition] = board[currentPosition];
-        board[currentPosition] = false;
-        pastMoves.push([currentPosition, targetPosition]);    
-        changePlayer();
-        displayBoard();
-        checkDefense = [];
-        check = false;
-        fullCheck();
+        if (board[currentPosition].piece === pawn && spot7[1] === 7 && spot8[1] === 8) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'white') {
+                test = { 
+                    color: 'white',
+                    piece: 'queen',
+                    image: '♕'
+                    } 
+            }
+            board[currentPosition] = false;
+            board[targetPosition] = test;
+        } 
+        else if (board[currentPosition].piece === pawn && spot7[1] === 2 && spot8[1] === 1) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    } 
+            }
+            board[currentPosition] = false;
+            board[targetPosition] = test;
+            
+        } else {
+            pastMoves.push([currentPosition, targetPosition]);  
+            board[targetPosition] = board[currentPosition];
+            board[currentPosition] = false;
+        }
+            changePlayer();
+            displayBoard();
+            checkDefense = [];
+            check = false;
+            fullCheck();
     })
 }
 
     
 function pawn(position) {
-    
     let moves = [];
     const coords = stringToCoords(position);
     let x = coords[0];
@@ -608,9 +744,7 @@ function pawn(position) {
             }
         }
     }
-
     if (currentPlayer === 'black') {
-        
         if (inRange(y-1)) {
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y-1]);
