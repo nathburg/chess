@@ -51,13 +51,13 @@ function checkError({ data, error }) {
 // }
 
 export async function startNewGame(player1, player2) {
-    const response = await client.from('games').insert({ player_one_name: player1, player_two_name: player2 });
+    const response = await client.from('games').insert({ player_one_name: player1, player_two_name: player2 }).single();
     return response;
 }
 
 export async function getGameId() {
-    const response = client.from('games').select(id);
-    return response;
+    const response = client.from('games').select('*').single();
+    return response.data.id;
 }
 
 export async function getGames() {
@@ -71,7 +71,7 @@ export async function getPlayerNames(id) {
 }
 
 export async function saveGame(id, boardState) {
-    const response = await client.from('games').upsert({ board_state: boardState }).match({ user_id: id }).single();
+    const response = await client.from('games').update({ board_state: boardState }).match({ id: id }).single();
 
     return response.data;
 }

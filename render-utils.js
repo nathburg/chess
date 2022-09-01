@@ -20,5 +20,27 @@ export function renderGame(game, user) {
 }
 
 export function renderPlayerNames(game, user) {
-    
+
 }
+
+export function renderCapturedBlack(piece) {
+    
+    const pieceEl = document.createElement('p');
+
+    pieceEl.textContent = piece.image;
+
+    
+
+    return pieceEl;
+}
+
+export function renderCapturedwhite(piece) {
+    
+    const pieceEl = document.createElement('p');
+
+    pieceEl.textContent = piece.image;
+
+    return pieceEl;
+}
+
+

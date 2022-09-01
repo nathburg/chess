@@ -1,12 +1,16 @@
-import { saveGame, getUser, getPlayerNames } from "./fetch-utils.js";
-const saveGameBtn = document.getElementById('save-game-btn');
+// import { saveGame, getUser, getPlayerNames, getGameId } from "./fetch-utils.js";
+// const saveGameBtn = document.getElementById('save-game-btn');
+// // import { gameId } from "./home-page/home.js";
+// const user = getUser();
 
-const user = getUser();
-console.log(user);
+import { renderCapturedBlack, renderCapturedwhite } from "./render-utils.js";
+
+const blackCapturedContainer = document.querySelector('.black-captured')
+const whiteCapturedContainer = document.querySelector('.white-captured')
 
 
-
-
+// const response = await getGameId();
+// console.log(response);
 
 
 
@@ -228,6 +232,8 @@ displayBoard()
 
 // the point of displayBoard is to update the display with the current state of the board object
 function displayBoard() {
+    blackCapturedContainer.textContent = '';
+    whiteCapturedContainer.textContent = '';
     let white = false;
     let counter = 0;
     // We loop through all the positions in the board object.
@@ -267,7 +273,10 @@ function displayBoard() {
         white = !white;
         }
 
-    }
+    } 
+    displayBlackCaptured();
+    displayWhiteCaptured();
+
 
 }
 
@@ -705,7 +714,7 @@ function changePlayer() {
     } else {
         currentPlayer = 'white';
     }
-    console.log(board);
+    
 }
 
 function polarityChecker(number) {
@@ -816,6 +825,25 @@ function performIntersection(arr1, arr2) {
 
 }
 
+function displayBlackCaptured() {
+    blackCapturedContainer.textContent = '';
+    for (let piece of blackCaptured) {
+        const renderedBlack = renderCapturedBlack(piece);
+        blackCapturedContainer.append(renderedBlack);
+    }
+
+}
+function displayWhiteCaptured() {
+    whiteCaptured.textContent = '';
+    for (let piece of whiteCaptured) {
+        const renderedWhite = renderCapturedwhite(piece);
+        whiteCapturedContainer.append(renderedWhite);
+    }
+
+}
+
+
+
 // const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
 // const array2 = [{space: 'd7', condition: 'empty'},
 //                 {space: 'c6', condition: 'empty'},
@@ -828,15 +856,15 @@ function performIntersection(arr1, arr2) {
 
 
 
+// console.log(gameId);
 
 
 
-
-saveGameBtn.addEventListener('click', async () => {
-    const response = await saveGame(user.id, board);
+// saveGameBtn.addEventListener('click', async () => {
+//     const response = await saveGame(gameId, board);
     
-    console.log(response);
-});
+//     console.log(response);
+// });
 
 
 

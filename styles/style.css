@@ -52,8 +52,9 @@ header a {
     display: flex;
     flex-direction: column;
     font-family: 'Aboreto', cursive;
+
     grid-template-rows: 50% 50%;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background-color: rgb(63, 78, 79);
     background-image: url(../assets/green-felt.jpg);
@@ -138,3 +139,38 @@ body {
     display:flex;
 }
 
+.save-container {
+    
+    margin: 30px;
+    text-align: center;
+    
+
+}
+
+#save-game-btn {
+    padding: 20px;
+    background-color: rgb(63, 78, 79);
+    font-family: 'Aboreto', cursive;
+    color: rgb(216, 204, 163);
+    border: 2px solid black;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.white-captured {
+    display: flex;
+    font-size: 30px;
+    flex-wrap: wrap;
+}
+
+.black-captured {
+    display: flex;
+    font-size: 30px;
+    flex-wrap: wrap;
+}
+
+.captured-pieces {
+
+}

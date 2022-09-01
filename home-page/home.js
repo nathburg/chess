@@ -8,7 +8,8 @@ const getNames = document.getElementById('names-btn');
 
 signOut.addEventListener('click', async () => {
     await signOutUser();
-})
+});
+
 
 
 const user = getUser();
@@ -23,13 +24,14 @@ form.addEventListener('submit', async (e) => {
     const playerTwoName = data.get('player-two-name');
 
     await startNewGame(playerOneName, playerTwoName);
+    // gameId = response.data.id;
     
     await displayUserGames();
 
     window.location.replace('../');
     
     form.reset();
-})
+});
 
 async function displayUserGames() {
     gamesList.textContent = '';
