@@ -19,88 +19,96 @@ const id = params.get('id');
 const boardState = await getBoardStateById(id);
 console.table(boardState);
 
+const stringToFunction = {
+    'pawn': pawn,
+    'rook': rook,
+    'knight': knight,
+    'bishop': bishop,
+    'queen': queen,
+    'king': king
+}
 
 
 let board = {
     
     a1: {
         color: 'white',
-        piece: rook,
+        piece: 'rook',
         image: '♖'
         },
     b1:  {
         color: 'white',
-        piece: knight,
+        piece: 'knight',
         image: '♘'
         },
     c1:  {
         color: 'white',
-        piece: bishop,
+        piece: 'bishop',
         image: '♗'
         },
     d1:  {
         color: 'white',
-        piece: queen,
+        piece: 'queen',
         image: '♕'
         },
     e1:  {
         color: 'white',
-        piece: king,
+        piece: 'king',
         image: '♔'
         },
     f1:  {
         color: 'white',
-        piece: bishop,
+        piece: 'bishop',
         image: '♗'
         },
     g1: {
         color: 'white',
-        piece: knight,
+        piece: 'knight',
         image: '♘'
         },
     h1: {
         color: 'white',
-        piece: rook,
+        piece: 'rook',
         image: '♖'
         },
     a2: {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     b2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     c2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     d2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     e2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     f2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     g2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     h2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     a3: false,
@@ -137,86 +145,87 @@ let board = {
     h6: false,
     a7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     b7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     c7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     d7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     e7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     f7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     g7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     h7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     a8:  {
         color: 'black',
-        piece: rook,
+        piece: 'rook',
         image: '♜'
         },
     b8:  {
         color: 'black',
-        piece: knight,
+        piece: 'knight',
         image: '♞'
         },
     c8:  {
         color: 'black',
-        piece: bishop,
+        piece: 'bishop',
         image: '♝'
         },
     d8:  {
         color: 'black',
-        piece: queen,
+        piece: 'queen',
         image: '♛'
         },
     e8:  { 
         color: 'black',
-        piece: king,
+        piece: 'king',
         image: '♚'
         },
     f8:  {
         color: 'black',
-        piece: bishop,
+        piece: 'bishop',
         image: '♝'
         },
     g8:  {
         color: 'black',
-        piece: knight,
+        piece: 'knight',
         image: '♞'
         },
     h8:  {
         color: 'black',
-        piece: rook,
+        piece: 'rook',
         image: '♜'
         } 
 }
 
+console.log(await JSON.stringify(board));
 board = boardState;
 
 
@@ -301,7 +310,9 @@ function renderPlayable(position) {
                 // refresh the board
                 displayBoard();
                 // get the positions the pawn functions determines are viable moves
-                const moves = board[position].piece(position);
+                console.log(position);
+                console.log(board[position]);
+                const moves = stringToFunction[board[position].piece](position);
                 // loop through those moves
                 for (let move of moves) {
                     // if the positions is empty, give it a move button
@@ -318,7 +329,7 @@ function renderPlayable(position) {
         });
 }
 
-
+console.log(stringToFunction['queen']);
 
 function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
@@ -741,7 +752,7 @@ function checkCheck() {
     //loop through your pieces to find king
     for (let position in board) {
         //if the piece is a king and its color is the current color
-        if (board[position].piece === king && board[position].color === currentPlayer) {
+        if (stringToFunction[board[position].piece] === king && board[position].color === currentPlayer) {
             //make kingposition equal to the position that we found
             kingPosition = position;
             break
@@ -756,17 +767,17 @@ function checkCheck() {
     changePlayer();
     for (let position in board) {
         if (board[position].color === currentPlayer) {
-            const checkArray = board[position].piece(position);
+            const checkArray = stringToFunction[board[position].piece](position);
             // console.log(checkArray)
             for (let move of checkArray) {
                     if (move.space === kingPosition) {
                         // if that piece is a pawn or a knight
                         //(because those two don't have continuing moves)
-                        if (board[position].piece === pawn || board[position].piece === knight) {
+                        if (stringToFunction[board[position].piece] === pawn || stringToFunction[board[position].piece] === knight) {
                             //
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
-                        else if (board[position].piece != king) {
+                        else if (stringToFunction[board[position].piece] != king) {
                             // console.log('hi')
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
@@ -793,8 +804,8 @@ function checkCheck() {
     if (threatMoves.length > 0) {
         alert("you're in check")
         for (let position in board) {
-            if (board[position].piece != king && board[position].color === currentPlayer) {
-                const newDefenseMoves = board[position].piece(position);
+            if (stringToFunction[board[position].piece] != king && board[position].color === currentPlayer) {
+                const newDefenseMoves = stringToFunction[board[position].piece](position);
                 // console.log(newDefenseMoves)
                 // console.log(threatMoves)
                 const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);

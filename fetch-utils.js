@@ -72,6 +72,8 @@ export async function getGameById(id) {
 
 export async function getBoardStateById(id) {
     const response  =  await client.from('games').select('*').match({ id }).single();
+    // console.log(response.data.board_state);
+    // const json = await JSON.parse(response.data.board_state);
     return response.data.board_state;
 }
 

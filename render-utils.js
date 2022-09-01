@@ -13,6 +13,9 @@ export function renderGame(game, user) {
     viewGameBtn.textContent = 'View Game';
     resumeGameBtn.href = `../?id=${game.id}`;
     resumeGameBtn.classList.add('link-button')
+    viewGameBtn.href = `../?id=${game.id}`;
+    viewGameBtn.classList.add('link-button');
+
     if (user.id === game.user_id) {
         gamesDiv.append(playerOneNameEl, playerTwoNameEl, gameEl, resumeGameBtn);
     } else {
