@@ -1,3 +1,5 @@
+// here we go
+
 let board = {
     
     a1: {
