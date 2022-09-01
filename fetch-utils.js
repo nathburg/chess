@@ -51,7 +51,7 @@ function checkError({ data, error }) {
 // }
 
 export async function startNewGame(player1, player2) {
-    const response = await client.from('games').insert({ player_one_name: player1, player_two_name: player2 }).single();
+    const response = await client.from('games').insert({ player_one_name: player1, player_two_name: player2, black_captured: [], white_captured: [] }).single();
     return response;
 }
 
@@ -77,15 +77,24 @@ export async function getBoardStateById(id) {
     return response.data.board_state;
 }
 
-export async function getPlayerNames(id) {
-    const response = await client.from('games').select({ player_one_name, player_two_name }).match({user_id: id});
-    return response.data;
-}
+
 
 export async function saveGame(id, boardState, blackCaptured, whiteCaptured) {
     const response = await client.from('games').update({ board_state: boardState, black_captured: blackCaptured, white_captured: whiteCaptured }).match({ id: id }).single();
     console.log(response);
     return response.data;
+}
+
+export async function getWhiteCaptured(id) {
+    const response = await client.from('games').select('*').match({ id }).single();
+    return response.data.white_captured;
+
+}
+
+export async function getBlackCaptured(id) {
+    const response = await client.from('games').select('*').match({ id }).single();
+    return response.data.black_captured;
+
 }
 
 

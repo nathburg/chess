@@ -1,4 +1,4 @@
-import { saveGame, getUser, getPlayerNames, getGameId, getBoardStateById } from "./fetch-utils.js";
+import { saveGame, getUser, getGameId, getBoardStateById, getWhiteCaptured, getBlackCaptured } from "./fetch-utils.js";
 const saveGameBtn = document.getElementById('save-game-btn');
 // import { gameId } from "./home-page/home.js";
 const user = getUser();
@@ -17,7 +17,13 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 
 const boardState = await getBoardStateById(id);
-console.table(boardState);
+// console.table(boardState);
+
+const whiteCapturedRes = await getWhiteCaptured(id);
+const blackCapturedRes = await getBlackCaptured(id);
+console.log(whiteCapturedRes);
+console.log(blackCapturedRes);
+
 
 const stringToFunction = {
     'pawn': pawn,
@@ -225,12 +231,17 @@ let board = {
         } 
 }
 
-console.log(await JSON.stringify(board));
+// console.log(await JSON.stringify(board));
 board = boardState;
 
 
 let whiteCaptured = [];
 let blackCaptured = [];
+whiteCaptured = whiteCapturedRes;
+blackCaptured = blackCapturedRes;
+
+
+console.log(whiteCaptured);
 let check = false;
 
 let currentPlayer = 'white';
@@ -310,7 +321,7 @@ function renderPlayable(position) {
                 // refresh the board
                 displayBoard();
                 // get the positions the pawn functions determines are viable moves
-                console.log(position);
+                // console.log(position);
                 console.log(board[position]);
                 const moves = stringToFunction[board[position].piece](position);
                 // loop through those moves
@@ -842,22 +853,36 @@ function performIntersection(arr1, arr2) {
 
 }
 
+
+
+console.log(blackCapturedRes)
+
 function displayBlackCaptured() {
     blackCapturedContainer.textContent = '';
-    for (let piece of blackCaptured) {
-        const renderedBlack = renderCapturedBlack(piece);
-        blackCapturedContainer.append(renderedBlack);
+        if (blackCapturedRes !== null) {
+            for (let piece of blackCapturedRes) {
+                const renderedBlack = renderCapturedBlack(piece);
+                blackCapturedContainer.append(renderedBlack);
+            }
+        }
+        
     }
+    
 
-}
+
 function displayWhiteCaptured() {
-    whiteCaptured.textContent = '';
-    for (let piece of whiteCaptured) {
-        const renderedWhite = renderCapturedwhite(piece);
-        whiteCapturedContainer.append(renderedWhite);
+    whiteCapturedContainer.textContent = '';
+        if (whiteCapturedRes !== null) {
+            for (let piece of whiteCapturedRes) {
+                const renderedWhite = renderCapturedwhite(piece);
+                whiteCapturedContainer.append(renderedWhite);
+            }
+        }
+        
     }
+    
 
-}
+
 
 
 
@@ -878,7 +903,7 @@ function displayWhiteCaptured() {
 
 
 saveGameBtn.addEventListener('click', async () => {
-    const response = await saveGame(id, board, blackCaptured, );
+    const response = await saveGame(id, board, blackCaptured, whiteCaptured);
     
     console.log(response);
 });

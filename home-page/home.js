@@ -1,4 +1,4 @@
-import { startNewGame, getUser, getGames, signOutUser, getPlayerNames, getGameById } from "../fetch-utils.js";
+import { startNewGame, getUser, getGames, signOutUser, getGameById } from "../fetch-utils.js";
 import { renderGame } from "../render-utils.js";
 
 const form = document.getElementById('new-game-form');
