@@ -1,9 +1,10 @@
-import { startNewGame, getUser, getGames, signOutUser } from "../fetch-utils.js";
+import { startNewGame, getUser, getGames, signOutUser, getPlayerNames } from "../fetch-utils.js";
 import { renderGame } from "../render-utils.js";
 
 const form = document.getElementById('new-game-form');
 const gamesList = document.getElementById('past-games-el');
 const signOut = document.getElementById('sign-out');
+const getNames = document.getElementById('names-btn');
 
 signOut.addEventListener('click', async () => {
     await signOutUser();
@@ -38,5 +39,13 @@ async function displayUserGames() {
         gamesList.append(gamesDiv);
     }
 }
+
+getNames.addEventListener('click', async () => {
+    const games = await getGames();
+    for (let game of games) {
+    const response = await getPlayerNames(user.id);
+    console.log(response);
+    }
+})
 
 

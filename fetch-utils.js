@@ -55,13 +55,23 @@ export async function startNewGame(player1, player2) {
     return response;
 }
 
+export async function getGameId() {
+    const response = client.from('games').select(id);
+    return response;
+}
+
 export async function getGames() {
     const response = await client.from('games').select('*');
     return response.data;
 }
 
+export async function getPlayerNames(id) {
+    const response = await client.from('games').select({ player_one_name, player_two_name }).match({user_id: id});
+    return response.data;
+}
+
 export async function saveGame(id, boardState) {
-    const response = await client.from('games').upsert({ board_state: boardState }).match({ user_id: id}).single();
+    const response = await client.from('games').upsert({ board_state: boardState }).match({ user_id: id }).single();
 
     return response.data;
 }

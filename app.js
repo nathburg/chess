@@ -1,3 +1,18 @@
+import { saveGame, getUser, getPlayerNames } from "./fetch-utils.js";
+const saveGameBtn = document.getElementById('save-game-btn');
+
+const user = getUser();
+console.log(user);
+
+
+
+
+
+
+
+
+
+
 let board = {
     
     a1: {
@@ -690,6 +705,7 @@ function changePlayer() {
     } else {
         currentPlayer = 'white';
     }
+    console.log(board);
 }
 
 function polarityChecker(number) {
@@ -815,6 +831,12 @@ function performIntersection(arr1, arr2) {
 
 
 
+
+saveGameBtn.addEventListener('click', async () => {
+    const response = await saveGame(user.id, board);
+    
+    console.log(response);
+});
 
 
 

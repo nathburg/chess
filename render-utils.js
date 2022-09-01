@@ -18,3 +18,7 @@ export function renderGame(game, user) {
     
     return gamesDiv;
 }
+
+export function renderPlayerNames(game, user) {
+    
+}
