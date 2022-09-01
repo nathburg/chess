@@ -195,6 +195,7 @@ let board = {
 }
 
 
+
 let whiteCaptured = [];
 let blackCaptured = [];
 let whiteKingSideCastling = true;
@@ -397,6 +398,8 @@ function renderPlayable(position) {
                             board['g4'] = false;
                         }
                     }
+                    //promotion
+
                 } else 
                 // white pawns can capture en passant
                         {
@@ -620,6 +623,29 @@ function moveButton(currentPosition, targetPosition) {
     targetPositionEl.textContent = 'x';
     // make the position an event listener that on click moves the piece in the current position to the target position
     targetPositionEl.addEventListener('click', () => {
+
+        if (currentPosition === 'b1' && targetPosition === 'a3') {
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    }
+            } 
+            if (currentPlayer === 'white') {
+                test = { 
+                    color: 'white',
+                    piece: 'queen',
+                    image: '♕'
+                    } 
+            }
+            board[currentPosition] = false;
+            board[targetPosition] = test;
+            console.log(board);
+        } 
+        else 
+        {
         pastMoves.push([currentPosition, targetPosition]);        
         // save the piece in a variable so you can delete it off of its current position without losing what was there
         const savePiece = board[currentPosition];
@@ -645,7 +671,10 @@ function moveButton(currentPosition, targetPosition) {
             board['d8'] = board['a8']
             board['a8'] = false;
         }
-        checkCheck();
+
+        }
+
+
         let test = getAllBlackMoves();
         console.log(test);
         changePlayer();
@@ -709,7 +738,6 @@ function attackButton(currentPosition, targetPosition) {
         }
         board[targetPosition] = board[currentPosition];
         board[currentPosition] = false;
-        checkCheck();
         let test = getAllBlackMoves();
         console.log(test);
         changePlayer();
@@ -1203,145 +1231,6 @@ function changePlayer() {
     }
 }
 
-function checkCheck() {
-    // check last turn only
-    // grab last move: [starting tile, ending tile]
-    const lastPosition = pastMoves.slice(-1)
-
-    // grab ending tile
-    const tileMovedTo = lastPosition[0][1];
-
-    //grab king locations
-    const blackKing = findBlackKing();
-    const whiteKing = findWhiteKing();
-
-    // feel like should be able to query storedPieces[] instead of re-writing for all pieces,
-    // but I couldn't figure out how to call the piece functions, i.e. queen(tileMoveTo)
-
-    // check what piece moved
-    if (board[tileMovedTo].piece === 'queen') {
-        if (currentPlayer === 'white') {
-            // grab queen moves
-            let moves = queen(tileMovedTo);
-            // query queen moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === blackKing) {
-                    console.log('check!')
-                    blackChecked = true;
-                    // if queen can move to e8 then call check
-                }
-            }
-        }   else {
-            let moves = queen(tileMovedTo);
-            // query queen moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === whiteKing) {
-                    console.log('check!')
-                    whiteChecked = true;
-                    // if queen can move to e8 then call check
-                }
-            }
-        } 
-    } 
-    if (board[tileMovedTo].piece === 'bishop') {
-        if (currentPlayer === 'white') {
-            // grab bishop moves
-            let moves = bishop(tileMovedTo);
-            // query bishop moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === blackKing) {
-                    console.log('check!')
-                    blackChecked = true;
-                    // if bishop can move to e8 then call check
-                }
-            }
-        }    else {
-            let moves = bishop(tileMovedTo);
-            // query bishop moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === whiteKing) {
-                    console.log('check!')
-                    whiteChecked = true;
-                    // if bishop can move to e8 then call check
-                }
-            }
-
-        }
-    } 
-    if (board[tileMovedTo].piece === 'knight') {
-        if (currentPlayer === 'white') {
-            // grab knight moves
-            let moves = knight(tileMovedTo);
-            // query knight moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === blackKing) {
-                    console.log('check!')
-                    blackChecked = true;
-                    // if knight can move to e8 then call check
-                }
-            }
-        }    else {
-            let moves = knight(tileMovedTo);
-            // query knight moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === whiteKing) {
-                    console.log('check!')
-                    whiteChecked = true;
-                    // if knight can move to e8 then call check
-                }
-            }
-        }
-    } 
-    if (board[tileMovedTo].piece === 'pawn') {
-        if (currentPlayer === 'white') {
-            // grab pawn moves
-            let moves = pawn(tileMovedTo);
-            // query pawn moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === blackKing) {
-                    console.log('check!')
-                    blackChecked = true;
-                    // if pawn can move to e8 then call check
-                }
-            }
-        }    else {
-            let moves = pawn(tileMovedTo);
-            // query pawn moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === whiteKing) {
-                    console.log('check!')
-                    whiteChecked = true;
-                    // if pawn can move to e8 then call check
-                }
-            }
-        }
-    } 
-    if (board[tileMovedTo].piece === 'rook') {
-        if (currentPlayer === 'white') {
-            // grab rook moves
-            let moves = rook(tileMovedTo);
-            // query rook moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === blackKing) {
-                    console.log('check!')
-                    blackChecked = true;
-                    // if rook can move to e8 then call check
-                }
-            }
-        }   else {
-            let moves = rook(tileMovedTo);
-            // query rook moves for blackKing location
-            for (let i = 0; i < moves.length; i++) {
-                if (moves[i].space === whiteKing) {
-                    console.log('check!')
-                    whiteChecked = true;
-                    // if rook can move to e8 then call check
-                }
-            }
-        } 
-    } 
-}
-
 
 function findWhiteKing(){
     for (let location of document.querySelectorAll('button')) {
@@ -1411,43 +1300,3 @@ function getAllBlackMoves() {
         }
     }   return enemyArray;
 }
-    // for (let i = 0; i < size; i++) {
-    //     if (test[i] === 'black') {
-    //     }
-    //     return test;
-    // } 
-
-
-// function getAllEnemyMoves() {
-//     let enemyMovesArr = [];
-//     // loop through pieces array
-//     console.log('piece', position.piece);
-
-//     if (position.piece === 'pawn') {
-//         let pawnMoves = pawn(position);
-//         for (let move of pawnMoves) {
-//             enemyMovesArr.push(move);
-//         }
-        
-//     }
-//     if (position.piece === 'rook') {
-//         console.log('rook position', position);
-//         let rook = rook(position);
-//         enemyMovesArr.push(rook);
-//     }
-//     if (position.piece === 'queen') {
-//         let queen = queen(position);
-//         enemyMovesArr.push(queen);
-//     }
-//     if (position.piece === 'bishop') {
-//         let bishop = bishop(position);
-//         enemyMovesArr.push(bishop);
-//     }
-//     if (position.piece === 'knight') {
-//         let knight = knight(position);
-//         enemyMovesArr.push(knight);
-//     }
-//     console.log('enemy moves array', enemyMovesArr);
-//     return enemyMovesArr;
-// }
-
