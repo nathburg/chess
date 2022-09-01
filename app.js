@@ -607,7 +607,12 @@ function findKing(color) {
 
 function partialCheck(space) {
     let threatMoves = [];
-    
+    const savePiece = board[space];
+    board[space] = {
+        color: currentPlayer,
+        piece: 'pawn',
+        image: '♟'
+        }
     const kingX = stringToCoords(space)[0];
     const kingY = stringToCoords(space)[1];
 
@@ -636,6 +641,7 @@ function partialCheck(space) {
         }
     }
     changePlayer();
+    board[space] = savePiece;
     return threatMoves;
     
 }
