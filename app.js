@@ -2,82 +2,82 @@ let board = {
     
     a1: {
         color: 'white',
-        piece: rook,
+        piece: 'rook',
         image: '♖'
         },
     b1:  {
         color: 'white',
-        piece: knight,
+        piece: 'knight',
         image: '♘'
         },
     c1:  {
         color: 'white',
-        piece: bishop,
+        piece: 'bishop',
         image: '♗'
         },
     d1:  {
         color: 'white',
-        piece: queen,
+        piece: 'queen',
         image: '♕'
         },
     e1:  {
         color: 'white',
-        piece: king,
+        piece: 'king',
         image: '♔'
         },
     f1:  {
         color: 'white',
-        piece: bishop,
+        piece: 'bishop',
         image: '♗'
         },
     g1: {
         color: 'white',
-        piece: knight,
+        piece: 'knight',
         image: '♘'
         },
     h1: {
         color: 'white',
-        piece: rook,
+        piece: 'rook',
         image: '♖'
         },
     a2: {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     b2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     c2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     d2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     e2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     f2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     g2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     h2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     a3: false,
@@ -114,86 +114,96 @@ let board = {
     h6: false,
     a7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     b7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     c7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     d7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     e7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     f7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     g7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     h7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     a8:  {
         color: 'black',
-        piece: rook,
+        piece: 'rook',
         image: '♜'
         },
     b8:  {
         color: 'black',
-        piece: knight,
+        piece: 'knight',
         image: '♞'
         },
     c8:  {
         color: 'black',
-        piece: bishop,
+        piece: 'bishop',
         image: '♝'
         },
     d8:  {
         color: 'black',
-        piece: queen,
+        piece: 'queen',
         image: '♛'
         },
     e8:  { 
         color: 'black',
-        piece: king,
+        piece: 'king',
         image: '♚'
         },
     f8:  {
         color: 'black',
-        piece: bishop,
+        piece: 'bishop',
         image: '♝'
         },
     g8:  {
         color: 'black',
-        piece: knight,
+        piece: 'knight',
         image: '♞'
         },
     h8:  {
         color: 'black',
-        piece: rook,
+        piece: 'rook',
         image: '♜'
         } 
 }
 
+const stringToFunction = {
+    'pawn': pawn,
+    'rook': rook,
+    'knight': knight,
+    'bishop': bishop,
+    'queen': queen,
+    'king': king
+}
+
+console.log(stringToFunction['rook'])
 
 let whiteCaptured = [];
 let blackCaptured = [];
@@ -248,8 +258,8 @@ function renderPlayable(position) {
     
     positionEl.addEventListener('click', () => {
         displayBoard();
-        let moves = board[position].piece(position);
-        if (board[position].piece === king) {
+        let moves = stringToFunction[board[position].piece](position);
+        if (stringToFunction[board[position].piece] === king) {
             let safeMoves = [];
             for (let move of moves) {
                 if (checkChecker(move.space)) {
@@ -258,7 +268,7 @@ function renderPlayable(position) {
             }
             moves = safeMoves;
         }
-        if (check && board[position].piece != king) {
+        if (check && stringToFunction[board[position].piece] != king) {
             moves = performIntersection(moves, checkDefense)
         }
         for (let move of moves) {
@@ -587,7 +597,7 @@ function polarityChecker(number) {
 
 function findKing(color) {
     for (let position in board) {
-        if (board[position].piece === king
+        if (stringToFunction[board[position].piece] === king
             && board[position].color === color) {
             
             return position;
@@ -604,13 +614,13 @@ function partialCheck(space) {
     changePlayer();
     for (let position in board) {
         if (board[position].color === currentPlayer) {
-            const checkArray = board[position].piece(position);
+            const checkArray = stringToFunction[board[position].piece](position);
             for (let move of checkArray) {
                     if (move.space === space) {
-                        if (board[position].piece === pawn || board[position].piece === knight) {
+                        if (stringToFunction[board[position].piece] === pawn || stringToFunction[board[position].piece] === knight) {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
-                        else if (board[position].piece != king) {
+                        else if (stringToFunction[board[position].piece] != king) {
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
                             const deltaXFunction = polarityChecker(threatX-kingX);
@@ -653,7 +663,7 @@ function fullCheck() {
                     }
                 }
             } else if (board[position].color === currentPlayer) {
-                const newDefenseMoves = board[position].piece(position);
+                const newDefenseMoves = stringToFunction[board[position].piece](position);
                 const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
                 const sendDefenseMoves = defenseMoves.concat(solutionForCheck);
                 defenseMoves = sendDefenseMoves;
