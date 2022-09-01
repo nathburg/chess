@@ -1,4 +1,4 @@
-import { saveGame, getUser, getPlayerNames, getGameId } from "./fetch-utils.js";
+import { saveGame, getUser, getPlayerNames, getGameId, getBoardStateById } from "./fetch-utils.js";
 const saveGameBtn = document.getElementById('save-game-btn');
 // import { gameId } from "./home-page/home.js";
 const user = getUser();
@@ -14,9 +14,11 @@ const whiteCapturedContainer = document.querySelector('.white-captured')
 
 
 const params = new URLSearchParams(window.location.search);
-
-
 const id = params.get('id');
+
+const boardState = await getBoardStateById(id);
+console.table(boardState);
+
 
 
 let board = {
@@ -214,6 +216,8 @@ let board = {
         image: '♜'
         } 
 }
+
+board = boardState;
 
 
 let whiteCaptured = [];

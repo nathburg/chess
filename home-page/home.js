@@ -1,4 +1,4 @@
-import { startNewGame, getUser, getGames, signOutUser, getPlayerNames } from "../fetch-utils.js";
+import { startNewGame, getUser, getGames, signOutUser, getPlayerNames, getGameById } from "../fetch-utils.js";
 import { renderGame } from "../render-utils.js";
 
 const form = document.getElementById('new-game-form');
@@ -33,15 +33,28 @@ form.addEventListener('submit', async (e) => {
     // form.reset();
 });
 
-
 async function displayUserGames() {
     gamesList.textContent = '';
     const games = await getGames();
     for (let game of games) {
         const gamesDiv = renderGame(game, user);
+        const gameButton = gamesDiv.children[3];
+        if (gameButton.textContent === 'Resume Game') {
+            gameButton.addEventListener('click', () => {
+                console.log('resume clicked');
+                
+            })
+        } else {
+            gameButton.addEventListener('click', () => {
+                console.log('view clicked');
+                
+            })
+        }
         gamesList.append(gamesDiv);
     }
 }
+
+
 
 // getNames.addEventListener('click', async () => {
 //     const games = await getGames();

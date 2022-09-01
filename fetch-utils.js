@@ -65,6 +65,16 @@ export async function getGames() {
     return response.data;
 }
 
+export async function getGameById(id) {
+    const response = await client.from('games').select('*').match({ id }).single();
+    return response.data;
+}
+
+export async function getBoardStateById(id) {
+    const response  =  await client.from('games').select('*').match({ id }).single();
+    return response.data.board_state;
+}
+
 export async function getPlayerNames(id) {
     const response = await client.from('games').select({ player_one_name, player_two_name }).match({user_id: id});
     return response.data;
@@ -75,3 +85,5 @@ export async function saveGame(id, boardState) {
     console.log(response);
     return response.data;
 }
+
+
