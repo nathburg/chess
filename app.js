@@ -200,11 +200,9 @@ let blackCaptured = [];
 
 let check = false;
 let checkDefense = [];
-let kingEvasionMoves = [];
 
 let currentPlayer = 'white';
 const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-
 
 
 let kings = {
@@ -219,9 +217,6 @@ function displayBoard() {
     let counter = 0;
 
     for (const position in board) {
-
-        
-            
         const getPosition = document.getElementById(position);
         const newPosition = document.createElement('button');
         newPosition.id = position;
@@ -232,7 +227,6 @@ function displayBoard() {
             newPosition.classList.add('black');
         }
         getPosition.replaceWith(newPosition);
-
         if (board[position]) {
             newPosition.textContent = `${board[position].image}`;
             if (board[position].color === currentPlayer) {
@@ -250,29 +244,32 @@ function displayBoard() {
 
 
 function renderPlayable(position) {
-        const positionEl = document.getElementById(position);
-        
-        positionEl.addEventListener('click', () => {
-
-
-            
-
-                displayBoard();
-                let moves = board[position].piece(position);
-                if (check) {
-                    moves = performIntersection(moves, checkDefense)
+    const positionEl = document.getElementById(position);
+    
+    positionEl.addEventListener('click', () => {
+        displayBoard();
+        let moves = board[position].piece(position);
+        if (board[position].piece === king) {
+            let safeMoves = [];
+            for (let move of moves) {
+                if (checkChecker(move.space)) {
+                    safeMoves.push(move);
                 }
-                for (let move of moves) {
-                    if (move.condition === 'empty') {
-                        moveButton(position, move.space);
-                    }
-                    if (move.condition === 'enemy') {
-                        attackButton(position, move.space);
-                    }
-                }
-
-            
-        });
+            }
+            moves = safeMoves;
+        }
+        if (check && board[position].piece != king) {
+            moves = performIntersection(moves, checkDefense)
+        }
+        for (let move of moves) {
+            if (move.condition === 'empty') {
+                moveButton(position, move.space);
+            }
+            if (move.condition === 'enemy') {
+                attackButton(position, move.space);
+            }
+        }
+    });
 }
 
 
@@ -287,7 +284,6 @@ function moveButton(currentPosition, targetPosition) {
         changePlayer();
         displayBoard();
         checkDefense = [];
-        kingEvasionMoves = [];
         check = false;
         fullCheck();
     })
@@ -310,7 +306,6 @@ function attackButton(currentPosition, targetPosition) {
         changePlayer();
         displayBoard();
         checkDefense = [];
-        kingEvasionMoves = [];
         check = false;
         fullCheck();
     })
@@ -386,7 +381,7 @@ function king(position) {
     let x = coords[0];
     let y = coords[1];
 
-    if (testSpace(x, y+1)) {
+    if (testSpace(x, y+1) ) {
         moves.push(testSpace(x, y+1))
     }
     if (testSpace(x, y-1)) {
@@ -410,12 +405,8 @@ function king(position) {
     if (testSpace(x-1, y)) {
         moves.push(testSpace(x-1, y))
     }
-
-
     
     return moves;
-
-    
 }
 
 function knight(position) {
@@ -448,6 +439,7 @@ function knight(position) {
     if (testSpace(x-2, y-1)) {
         moves.push(testSpace(x-2, y-1))
     }
+
     return moves;
 }
 
@@ -483,7 +475,16 @@ function testSpace(x, y) {
             return inspectSpace(test)
         }
     }
-}    
+}
+
+// function testSpaceKing(x, y) {
+//     if (inRange(x) && inRange(y)) {
+//         const test = coordsToString([x, y]);
+//         if (inspectSpace(test) && checkChecker(test)) {
+//             return inspectSpace(test)
+//         }
+//     }
+// }
 
 function continueMove(position, deltaXFunction, deltaYFunction) {
     let newMoves = [];
@@ -594,19 +595,18 @@ function findKing(color) {
     }
 }
 
-function partialCheck() {
-    let kingPosition = findKing(currentPlayer);
+function partialCheck(space) {
     let threatMoves = [];
     
-    const kingX = stringToCoords(kingPosition)[0];
-    const kingY = stringToCoords(kingPosition)[1];
+    const kingX = stringToCoords(space)[0];
+    const kingY = stringToCoords(space)[1];
 
     changePlayer();
     for (let position in board) {
         if (board[position].color === currentPlayer) {
             const checkArray = board[position].piece(position);
             for (let move of checkArray) {
-                    if (move.space === kingPosition) {
+                    if (move.space === space) {
                         if (board[position].piece === pawn || board[position].piece === knight) {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
@@ -616,8 +616,7 @@ function partialCheck() {
                             const deltaXFunction = polarityChecker(threatX-kingX);
                             const deltaYFunction = polarityChecker(threatY-kingY);
                             changePlayer();
-
-                            const newThreatMoves = threatMoves.concat(continueMove(kingPosition, deltaXFunction, deltaYFunction)) 
+                            const newThreatMoves = threatMoves.concat(continueMove(space, deltaXFunction, deltaYFunction)) 
                             threatMoves = newThreatMoves;
                             changePlayer();
                         }
@@ -627,30 +626,30 @@ function partialCheck() {
         }
     }
     changePlayer();
-    
-    if (threatMoves.length > 0) {
-        check = true;
-    }
-    
     return threatMoves;
+    
 }
 
-console.log(partialCheck())
+
+function checkChecker(position) {
+    return partialCheck(position).length === 0;
+}
+
 
 function fullCheck() {
     let kingPosition = findKing(currentPlayer);
     let defenseMoves = [];
-    const threatMoves = partialCheck();
+    let kingEvasionMoves = [];
+    const threatMoves = partialCheck(kingPosition);
     if (threatMoves.length > 0) {
+        check = true;
         alert('You\'re in check!')
-    }
         for (let position in board) {
             if (position === kingPosition) {
                 const kingMoves = king(position);
                 for (let move of kingMoves) {
-                    if (partialCheck(move).length === 0) {
+                    if (checkChecker(move.space)) {
                         kingEvasionMoves.push(move);
-                        console.log(move, kingEvasionMoves);
                     }
                 }
             } else if (board[position].color === currentPlayer) {
@@ -660,10 +659,8 @@ function fullCheck() {
                 defenseMoves = sendDefenseMoves;
             }
         }
-        console.log(defenseMoves);
         checkDefense = defenseMoves;
         const allDefense = kingEvasionMoves.concat(checkDefense);
-        console.log(kingEvasionMoves, checkDefense, allDefense);
         if (allDefense.length === 0 && threatMoves.length > 0) {
             alert('You\'re in checkmate!')
         } 
@@ -671,6 +668,7 @@ function fullCheck() {
             displayBoard();
         } 
     }
+}
 
 
 
