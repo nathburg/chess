@@ -631,6 +631,7 @@ function moveButton(currentPosition, targetPosition) {
         console.log(spot8[1]);
         console.log(board[currentPosition].piece)
         if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
+            console.log('in if')
             let test = [];
             if (currentPlayer === 'black') {
                 test = { 
