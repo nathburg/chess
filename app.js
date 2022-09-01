@@ -200,6 +200,7 @@ let blackCaptured = [];
 
 let check = false;
 let checkDefense = [];
+let kingEvasionMoves = [];
 
 let currentPlayer = 'white';
 const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -361,79 +362,6 @@ function kingAttackButton(currentPosition, targetPosition) {
         console.log(kings);
     })
 }
-
-
-
-function checkWhite(findWhiteKing, position) {
-    let enemyMovesArr = [];
-    
-    // loop through pieces array
-    console.log('piece', position.piece);
-    if (position.piece === 'pawn') {
-        let pawnMoves = pawn(position);
-        console.log('pawnmoves', pawnMoves);
-        for (let move of pawnMoves) {
-            enemyMovesArr.push(move);
-        }
-        
-    }
-    if (position.piece === 'rook') {
-        console.log('rook position', position);
-        let rook = rook(position);
-        enemyMovesArr.push(rook);
-    }
-    if (position.piece === 'queen') {
-        let queen = queen(position);
-        enemyMovesArr.push(queen);
-    }
-    if (position.piece === 'bishop') {
-        let bishop = bishop(position);
-        enemyMovesArr.push(bishop);
-    }
-    if (position.piece === 'knight') {
-        let knight = knight(position);
-        enemyMovesArr.push(knight);
-    }
-
-    // let kingPosition = findWhiteKing();
-
-    // console.log(enemyMoves, kingPosition);
-    for (let move of enemyMovesArr) {
-        if (move === kingPosition) {
-            alert('check');
-            
-            check = true;
-            break;
-        }
-
-    console.log('enemy moves array', enemyMovesArr);
-    return enemyMovesArr;
-
-    
-}
-}
-
-
-
-function findWhiteKing(){
-    for (let location of document.querySelectorAll('button')) {
-        if (location.textContent.includes('♔')) {
-            return location.id;
-        }
-    } 
-}
-
-function findBlackKing(){
-    for (let location of document.querySelectorAll('button')) {
-        if (location.textContent.includes('♚')) {
-            return location.id;
-        }
-    } 
-}
-
-
-
-
 
     
 function pawn(position) {
@@ -709,7 +637,19 @@ function polarityChecker(number) {
     }
 }
 
-function checkCheck() {
+function findKing(color) {
+    for (let position in board) {
+        if (board[position].piece === king
+            && board[position].color === color) {
+            
+            return position;
+        }
+    }
+}
+
+console.log(findKing(currentPlayer));
+
+function partialCheck() {
     let kingPosition = '';
     let threatMoves = [];
     //loop through your pieces to find king
@@ -766,29 +706,37 @@ function checkCheck() {
     if (threatMoves.length > 0) {
         check = true;
         alert("you're in check");
-        for (let position in board) {
-            if (board[position].piece != king && board[position].color === currentPlayer) {
-                const newDefenseMoves = board[position].piece(position);
-                // console.log(newDefenseMoves)
-                // console.log(threatMoves)
-                const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
-                const sendDefenseMoves = defenseMoves.concat(solutionForCheck);
-                defenseMoves = sendDefenseMoves;
-            }
-        }
-        console.log(defenseMoves);
-        if (defenseMoves.length === 0) {
-            console.log("you're in *checkmate")
-        } 
-        else {
-            checkDefense = defenseMoves;
-            console.log(checkDefense)
-        } 
     }
-        else {
-        check = false;
-    }
-}
+    
+    return threatMoves;
+}    
+
+// function fullCheck() {
+//     const threatMoves = partialCheck;
+//         for (let position in board) {
+//             if (board[position].piece != king && board[position].color === currentPlayer) {
+//                 const newDefenseMoves = board[position].piece(position);
+//                 // console.log(newDefenseMoves)
+//                 // console.log(threatMoves)
+//                 const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
+//                 const sendDefenseMoves = defenseMoves.concat(solutionForCheck);
+//                 defenseMoves = sendDefenseMoves;
+//             } (board[position].piece === king && )
+//         }
+//         console.log(defenseMoves);
+//         checkDefense = defenseMoves;
+//         if (checkDefense.length === 0) {
+//             console.log("you're in *checkmate")
+//         } 
+//         else {
+//             checkDefense = defenseMoves;
+//             console.log(checkDefense)
+//         } 
+//     }
+//         else {
+//         check = false;
+//     }
+// }
 
 
 
@@ -828,7 +776,72 @@ function performIntersection(arr1, arr2) {
 
 
 
-
+// function checkWhite(findWhiteKing, position) {
+    //     let enemyMovesArr = [];
+        
+    //     // loop through pieces array
+    //     console.log('piece', position.piece);
+    //     if (position.piece === 'pawn') {
+    //         let pawnMoves = pawn(position);
+    //         console.log('pawnmoves', pawnMoves);
+    //         for (let move of pawnMoves) {
+    //             enemyMovesArr.push(move);
+    //         }
+            
+    //     }
+    //     if (position.piece === 'rook') {
+    //         console.log('rook position', position);
+    //         let rook = rook(position);
+    //         enemyMovesArr.push(rook);
+    //     }
+    //     if (position.piece === 'queen') {
+    //         let queen = queen(position);
+    //         enemyMovesArr.push(queen);
+    //     }
+    //     if (position.piece === 'bishop') {
+    //         let bishop = bishop(position);
+    //         enemyMovesArr.push(bishop);
+    //     }
+    //     if (position.piece === 'knight') {
+    //         let knight = knight(position);
+    //         enemyMovesArr.push(knight);
+    //     }
+    
+    //     // let kingPosition = findWhiteKing();
+    
+    //     // console.log(enemyMoves, kingPosition);
+    //     for (let move of enemyMovesArr) {
+    //         if (move === kingPosition) {
+    //             alert('check');
+                
+    //             check = true;
+    //             break;
+    //         }
+    
+    //     console.log('enemy moves array', enemyMovesArr);
+    //     return enemyMovesArr;
+    
+        
+    // }
+    // }
+    
+    
+    
+    // function findWhiteKing(){
+    //     for (let location of document.querySelectorAll('button')) {
+    //         if (location.textContent.includes('♔')) {
+    //             return location.id;
+    //         }
+    //     } 
+    // }
+    
+    // function findBlackKing(){
+    //     for (let location of document.querySelectorAll('button')) {
+    //         if (location.textContent.includes('♚')) {
+    //             return location.id;
+    //         }
+    //     } 
+    // }
 
 
 
