@@ -633,13 +633,6 @@ function moveButton(currentPosition, targetPosition) {
         if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
             console.log('in if')
             let test = [];
-            if (currentPlayer === 'black') {
-                test = { 
-                    color: 'black',
-                    piece: 'queen',
-                    image: '♛'
-                    }
-            } 
             if (currentPlayer === 'white') {
                 test = { 
                     color: 'white',
@@ -650,8 +643,20 @@ function moveButton(currentPosition, targetPosition) {
             board[currentPosition] = false;
             board[targetPosition] = test;
         } 
-        else 
-        {
+        else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    } 
+            }
+            board[currentPosition] = false;
+            board[targetPosition] = test;
+            
+        } else {
         pastMoves.push([currentPosition, targetPosition]);        
         // save the piece in a variable so you can delete it off of its current position without losing what was there
         const savePiece = board[currentPosition];
