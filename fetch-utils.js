@@ -82,8 +82,8 @@ export async function getPlayerNames(id) {
     return response.data;
 }
 
-export async function saveGame(id, boardState) {
-    const response = await client.from('games').update({ board_state: boardState }).match({ id: id }).single();
+export async function saveGame(id, boardState, blackCaptured, whiteCaptured) {
+    const response = await client.from('games').update({ board_state: boardState, black_captured: blackCaptured, white_captured: whiteCaptured }).match({ id: id }).single();
     console.log(response);
     return response.data;
 }
