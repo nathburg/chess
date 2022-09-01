@@ -623,8 +623,14 @@ function moveButton(currentPosition, targetPosition) {
     targetPositionEl.textContent = 'x';
     // make the position an event listener that on click moves the piece in the current position to the target position
     targetPositionEl.addEventListener('click', () => {
-
-        if (currentPosition === 'b1' && targetPosition === 'a3') {
+        let spot7 = '';
+        let spot8 = '';
+        spot7 = stringToCoords(currentPosition);
+        spot8 = stringToCoords(targetPosition);
+        console.log(spot7[1]);
+        console.log(spot8[1]);
+        console.log(board[currentPosition].piece)
+        if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
             let test = [];
             if (currentPlayer === 'black') {
                 test = { 
@@ -642,7 +648,6 @@ function moveButton(currentPosition, targetPosition) {
             }
             board[currentPosition] = false;
             board[targetPosition] = test;
-            console.log(board);
         } 
         else 
         {
