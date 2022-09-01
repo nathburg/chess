@@ -4,82 +4,82 @@ let board = {
     
     a1: {
         color: 'white',
-        piece: rook,
+        piece: 'rook',
         image: '♖'
         },
     b1:  {
         color: 'white',
-        piece: knight,
+        piece: 'knight',
         image: '♘'
         },
     c1:  {
         color: 'white',
-        piece: bishop,
+        piece: 'bishop',
         image: '♗'
         },
     d1:  {
         color: 'white',
-        piece: queen,
+        piece: 'queen',
         image: '♕'
         },
     e1:  {
         color: 'white',
-        piece: king,
+        piece: 'king',
         image: '♔'
         },
     f1:  {
         color: 'white',
-        piece: bishop,
+        piece: 'bishop',
         image: '♗'
         },
     g1: {
         color: 'white',
-        piece: knight,
+        piece: 'knight',
         image: '♘'
         },
     h1: {
         color: 'white',
-        piece: rook,
+        piece: 'rook',
         image: '♖'
         },
     a2: {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     b2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     c2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     d2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     e2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     f2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     g2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     h2:  {
         color: 'white',
-        piece: pawn,
+        piece: 'pawn',
         image: '♙'
         },
     a3: false,
@@ -116,84 +116,93 @@ let board = {
     h6: false,
     a7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     b7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     c7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     d7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     e7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     f7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     g7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     h7:  {
         color: 'black',
-        piece: pawn,
+        piece: 'pawn',
         image: '♟'
         },
     a8:  {
         color: 'black',
-        piece: rook,
+        piece: 'rook',
         image: '♜'
         },
     b8:  {
         color: 'black',
-        piece: knight,
+        piece: 'knight',
         image: '♞'
         },
     c8:  {
         color: 'black',
-        piece: bishop,
+        piece: 'bishop',
         image: '♝'
         },
     d8:  {
         color: 'black',
-        piece: queen,
+        piece: 'queen',
         image: '♛'
         },
     e8:  { 
         color: 'black',
-        piece: king,
+        piece: 'king',
         image: '♚'
         },
     f8:  {
         color: 'black',
-        piece: bishop,
+        piece: 'bishop',
         image: '♝'
         },
     g8:  {
         color: 'black',
-        piece: knight,
+        piece: 'knight',
         image: '♞'
         },
     h8:  {
         color: 'black',
-        piece: rook,
+        piece: 'rook',
         image: '♜'
         } 
+}
+
+const stringToFunction = {
+    'pawn': pawn,
+    'rook': rook,
+    'knight': knight,
+    'bishop': bishop,
+    'queen': queen,
+    'king': king
 }
 
 
@@ -258,8 +267,10 @@ function renderPlayable(position) {
     positionEl.addEventListener('click', () => {
         const enPassantMoves = pastMoves.slice(-1);
         displayBoard();
-        let moves = board[position].piece(position);
-        if (board[position].piece === pawn) {
+        let moves = stringToFunction[board[position].piece](position);
+        console.log(board[position].piece)
+        console.log(stringToFunction[board[position].piece])
+        if (board[position].piece === 'pawn') {
             if (currentPlayer === 'black') {
                 // attempt at en passant for white
                 if (position === 'a4') {
@@ -384,7 +395,7 @@ function renderPlayable(position) {
                 //promotion
 
             } else 
-            // white pawns can capture en passant
+            // white 'pawn's can capture en passant
                     {
                 if (position === 'a5') {
                     if (enPassantMoves[0][0] === 'b7' && enPassantMoves[0][1] === 'b5') {
@@ -503,20 +514,20 @@ function renderPlayable(position) {
                 }
             } 
         } else         
-        if (board[position].piece === king) {
-            if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === rook) {
+        if (board[position].piece === 'king') {
+            if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === 'rook') {
                 moveButton('e1', 'g1')
         }
             // white castling queen side
-            if (currentPlayer === 'white' && whiteQueenSideCastling === true && board.a1.piece === rook && board.b1 === false && board.c1 === false && board.d1 === false) {
+            if (currentPlayer === 'white' && whiteQueenSideCastling === true && board.a1.piece === 'rook' && board.b1 === false && board.c1 === false && board.d1 === false) {
                 moveButton('e1', 'c1')
         }
             // black castling king side
-            if (currentPlayer === 'black' && blackKingSideCastling === true && board.f8 === false && board.g8 === false && board.h8.piece === rook) {
+            if (currentPlayer === 'black' && blackKingSideCastling === true && board.f8 === false && board.g8 === false && board.h8.piece === 'rook') {
                 moveButton('e8', 'g8')
         }  
             // black castling queen side
-            if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === rook && board.b8 === false && board.c8 === false && board.d8 === false) {
+            if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === 'rook' && board.b8 === false && board.c8 === false && board.d8 === false) {
                 moveButton('e8', 'c8')
         } 
             let safeMoves = [];
@@ -529,7 +540,7 @@ function renderPlayable(position) {
             // white castling king side
 
         }
-        if (check && board[position].piece != king) {
+        if (check && board[position].piece != 'king') {
             moves = performIntersection(moves, checkDefense)
         }
         for (let move of moves) {
@@ -553,10 +564,8 @@ function moveButton(currentPosition, targetPosition) {
         let spot8 = '';
         spot7 = stringToCoords(currentPosition);
         spot8 = stringToCoords(targetPosition);
-        pastMoves.push([currentPosition, targetPosition]);  
 
-        if (board[currentPosition].piece === pawn && spot7[1] === 7 && spot8[1] === 8) {
-            console.log('in if')
+        if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
             let test = [];
             if (currentPlayer === 'white') {
                 test = { 
@@ -569,8 +578,7 @@ function moveButton(currentPosition, targetPosition) {
             }
 
         } 
-        if (board[currentPosition].piece === pawn && spot7[1] === 2 && spot8[1] === 1) {
-            console.log('in if')
+        else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
             let test = [];
             if (currentPlayer === 'black') {
                 test = { 
@@ -581,12 +589,6 @@ function moveButton(currentPosition, targetPosition) {
                     board[currentPosition] = false;
                     board[targetPosition] = test;
             }
-
-
-
-
-
-
         } else {
             pastMoves.push([currentPosition, targetPosition]);  
             const savePiece = board[currentPosition];
@@ -615,7 +617,7 @@ function moveButton(currentPosition, targetPosition) {
             }
 
        // make castling impossible if white or black king moves
-       if (board[targetPosition].piece === king)  {
+       if (board[targetPosition].piece === 'king')  {
         if (currentPlayer === 'white') {
             if (targetPosition != 'g1') {
                 whiteKingSideCastling = false;
@@ -623,7 +625,7 @@ function moveButton(currentPosition, targetPosition) {
             }
         }
     }
-    if (board[targetPosition].piece === king)  {
+    if (board[targetPosition].piece === 'king')  {
         if (currentPlayer === 'black') {
             if (targetPosition != 'c8') {
                 blackKingSideCastling = false;
@@ -634,24 +636,26 @@ function moveButton(currentPosition, targetPosition) {
 
     // make castling impossible if white or black rooks move
     // need to clarify which rook has moved, currently if any white rook moves white can no longer castle (vice versa)
-    if (board[targetPosition].piece === rook)  {
+    if (board[targetPosition].piece === 'rook')  {
         if (currentPlayer === 'white') {
                 whiteKingSideCastling = false;
                 whiteQueenSideCastling = false;
         }
     }
-    if (board[targetPosition].piece === rook)  {
+    if (board[targetPosition].piece === 'rook')  {
         if (currentPlayer === 'black') {
                 blackKingSideCastling = false;
                 blackQueenSideCastling = false;
         }
     }
-            changePlayer();
-            displayBoard();
-            checkDefense = [];
-            check = false;
-            fullCheck();
+
         }
+        pastMoves.push([currentPosition, targetPosition]); 
+        changePlayer();
+        displayBoard();
+        checkDefense = [];
+        check = false;
+        fullCheck();
     })
 }
 
@@ -663,29 +667,32 @@ function attackButton(currentPosition, targetPosition) {
         let spot7 = '';
         let spot8 = '';
         spot7 = stringToCoords(currentPosition);
-        spot8 = stringToCoords(targetPosition);
-
-        pastMoves.push([currentPosition, targetPosition]);  
+        spot8 = stringToCoords(targetPosition); 
         const savePiece = board[targetPosition];
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
         } else {
             blackCaptured.push(savePiece);
         }
-        if (board[currentPosition].piece === pawn && spot7[1] === 7 && spot8[1] === 8) {
-            console.log('in if')
+        if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
+            console.log(currentPlayer);
             let test = [];
             if (currentPlayer === 'white') {
+                console.log('in if')
                 test = { 
                     color: 'white',
                     piece: 'queen',
                     image: '♕'
                     } 
+                // console.log(test);
+                // console.log(currentPosition);
+                // console.log(targetPosition);
+                board[currentPosition] = false;
+                board[targetPosition] = test;
             }
-            board[currentPosition] = false;
-            board[targetPosition] = test;
+
         } 
-        else if (board[currentPosition].piece === pawn && spot7[1] === 2 && spot8[1] === 1) {
+        else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
             console.log('in if')
             let test = [];
             if (currentPlayer === 'black') {
@@ -694,15 +701,15 @@ function attackButton(currentPosition, targetPosition) {
                     piece: 'queen',
                     image: '♛'
                     } 
+                board[currentPosition] = false;
+                board[targetPosition] = test;
             }
-            board[currentPosition] = false;
-            board[targetPosition] = test;
-            
         } else {
-            pastMoves.push([currentPosition, targetPosition]);  
             board[targetPosition] = board[currentPosition];
             board[currentPosition] = false;
         }
+            pastMoves.push([currentPosition, targetPosition]); 
+            console.log('hello')
             changePlayer();
             displayBoard();
             checkDefense = [];
@@ -874,14 +881,6 @@ function testSpace(x, y) {
     }
 }
 
-// function testSpaceKing(x, y) {
-//     if (inRange(x) && inRange(y)) {
-//         const test = coordsToString([x, y]);
-//         if (inspectSpace(test) && checkChecker(test)) {
-//             return inspectSpace(test)
-//         }
-//     }
-// }
 
 function continueMove(position, deltaXFunction, deltaYFunction) {
     let newMoves = [];
@@ -984,7 +983,7 @@ function polarityChecker(number) {
 
 function findKing(color) {
     for (let position in board) {
-        if (board[position].piece === king
+        if (board[position].piece === 'king'
             && board[position].color === color) {
             
             return position;
@@ -1001,13 +1000,13 @@ function partialCheck(space) {
     changePlayer();
     for (let position in board) {
         if (board[position].color === currentPlayer) {
-            const checkArray = board[position].piece(position);
+            const checkArray = stringToFunction[board[position].piece](position);
             for (let move of checkArray) {
                     if (move.space === space) {
-                        if (board[position].piece === pawn || board[position].piece === knight) {
+                        if (board[position].piece === 'pawn' || board[position].piece === 'knight') {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
-                        else if (board[position].piece != king) {
+                        else if (board[position].piece != 'king') {
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
                             const deltaXFunction = polarityChecker(threatX-kingX);
@@ -1050,7 +1049,7 @@ function fullCheck() {
                     }
                 }
             } else if (board[position].color === currentPlayer) {
-                const newDefenseMoves = board[position].piece(position);
+                const newDefenseMoves = stringToFunction[board[position].piece](position);
                 const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
                 const sendDefenseMoves = defenseMoves.concat(solutionForCheck);
                 defenseMoves = sendDefenseMoves;
@@ -1092,106 +1091,3 @@ function performIntersection(arr1, arr2) {
     
 
 }
-
-// const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
-// const array2 = [{space: 'd7', condition: 'empty'},
-//                 {space: 'c6', condition: 'empty'},
-//                 {space: 'b5', condition: 'empty'},
-//                 {space: 'a4', condition: 'enemy'}      
-// ];
-
-// const result = performIntersection(array1, array2);
-// console.log(result);
-
-
-
-// function checkWhite(findWhiteKing, position) {
-    //     let enemyMovesArr = [];
-        
-    //     // loop through pieces array
-    //     console.log('piece', position.piece);
-    //     if (position.piece === 'pawn') {
-    //         let pawnMoves = pawn(position);
-    //         console.log('pawnmoves', pawnMoves);
-    //         for (let move of pawnMoves) {
-    //             enemyMovesArr.push(move);
-    //         }
-            
-    //     }
-    //     if (position.piece === 'rook') {
-    //         console.log('rook position', position);
-    //         let rook = rook(position);
-    //         enemyMovesArr.push(rook);
-    //     }
-    //     if (position.piece === 'queen') {
-    //         let queen = queen(position);
-    //         enemyMovesArr.push(queen);
-    //     }
-    //     if (position.piece === 'bishop') {
-    //         let bishop = bishop(position);
-    //         enemyMovesArr.push(bishop);
-    //     }
-    //     if (position.piece === 'knight') {
-    //         let knight = knight(position);
-    //         enemyMovesArr.push(knight);
-    //     }
-    
-    //     // let kingPosition = findWhiteKing();
-    
-    //     // console.log(enemyMoves, kingPosition);
-    //     for (let move of enemyMovesArr) {
-    //         if (move === kingPosition) {
-    //             alert('check');
-                
-    //             check = true;
-    //             break;
-    //         }
-    
-    //     console.log('enemy moves array', enemyMovesArr);
-    //     return enemyMovesArr;
-    
-        
-    // }
-    // }
-    
-    
-    
-    // function findWhiteKing(){
-    //     for (let location of document.querySelectorAll('button')) {
-    //         if (location.textContent.includes('♔')) {
-    //             return location.id;
-    //         }
-    //     } 
-    // }
-    
-    // function findBlackKing(){
-    //     for (let location of document.querySelectorAll('button')) {
-    //         if (location.textContent.includes('♚')) {
-    //             return location.id;
-    //         }
-    //     } 
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
