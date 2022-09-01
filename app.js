@@ -1359,7 +1359,6 @@ function findBlackKing(){
     } 
 }
 
-// somehow spitting out enemy queen moves???
 function getAllBlackMoves() {
     let enemyArray = [];
     let test = Object.keys(board);
