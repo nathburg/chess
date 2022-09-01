@@ -197,7 +197,9 @@ let board = {
 
 let whiteCaptured = [];
 let blackCaptured = [];
+
 let check = false;
+let checkDefense = [];
 
 let currentPlayer = 'white';
 const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -271,7 +273,10 @@ function renderPlayable(position) {
                 // refresh the board
                 displayBoard();
                 // get the positions the pawn functions determines are viable moves
-                const moves = board[position].piece(position);
+                let moves = board[position].piece(position);
+                if (check) {
+                    moves = performIntersection(moves, defenseMoves)
+                }
                 // loop through those moves
                 for (let move of moves) {
                     // if the positions is empty, give it a move button
@@ -757,10 +762,10 @@ function checkCheck() {
         }
     }
     changePlayer();
-    let defenseMoves = [];
-
+    
     if (threatMoves.length > 0) {
-        alert("you're in check")
+        check = true;
+        alert("you're in check");
         for (let position in board) {
             if (board[position].piece != king && board[position].color === currentPlayer) {
                 const newDefenseMoves = board[position].piece(position);
@@ -772,11 +777,22 @@ function checkCheck() {
             }
         }
         console.log(defenseMoves);
-        if (defenseMoves.length === 0)
-        console.log("you're in *checkmate")
-
+        if (defenseMoves.length === 0) {
+            console.log("you're in *checkmate")
+        } 
+        else {
+            checkDefense = defenseMoves;
+            console.log(checkDefense)
+        } 
+    }
+        else {
+        check = false;
     }
 }
+
+
+
+
 
 
 function performIntersection(arr1, arr2) {
