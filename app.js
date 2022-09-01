@@ -288,14 +288,22 @@ function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = 'x';
     targetPositionEl.addEventListener('click', () => {
-        const savePiece = board[currentPosition];
+        const saveCurrentPiece = board[currentPosition];
+        const saveTargetPiece = board[targetPosition];
         board[currentPosition] = false;
-        board[targetPosition] = savePiece;
-        changePlayer();
-        displayBoard();
-        checkDefense = [];
-        check = false;
-        fullCheck();
+        board[targetPosition] = saveCurrentPiece;
+        if (partialKingCheck()) {
+            changePlayer();
+            displayBoard();
+            checkDefense = [];
+            check = false;
+            fullCheck();
+        } else {
+            board[currentPosition] = saveCurrentPiece;
+            board[targetPosition] = saveTargetPiece;
+            displayBoard();
+        }
+        console.log(board[currentPosition], board[targetPosition])
     })
 }
 
@@ -305,19 +313,25 @@ function attackButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
-        const savePiece = board[targetPosition];
-        if (savePiece.color === 'white') {
-            whiteCaptured.push(savePiece);
+        const saveCurrentPiece = board[currentPosition];
+        const saveTargetPiece = board[targetPosition];
+        if (partialKingCheck()) {
+            if (saveTargetPiece.color === 'white') {
+                whiteCaptured.push(saveTargetPiece);
+            } else {
+                blackCaptured.push(saveTargetPiece);
+            }
+            board[targetPosition] = board[currentPosition];
+            board[currentPosition] = false;
+            changePlayer();
+            displayBoard();
+            checkDefense = [];
+            check = false;
+            fullCheck();
         } else {
-            blackCaptured.push(savePiece);
+            board[currentPosition] = saveCurrentPiece;
+            board[targetPosition] = saveTargetPiece;
         }
-        board[targetPosition] = board[currentPosition];
-        board[currentPosition] = false;
-        changePlayer();
-        displayBoard();
-        checkDefense = [];
-        check = false;
-        fullCheck();
     })
 }
 
@@ -593,6 +607,11 @@ function polarityChecker(number) {
     else {
         return constantFunction;
     }
+}
+
+function partialKingCheck() {
+    const theKing = findKing(currentPlayer);
+    return partialCheck(theKing).length === 0
 }
 
 function findKing(color) {
