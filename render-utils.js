@@ -1,12 +1,12 @@
 export function renderGame(game, user) {
     const gamesDiv = document.createElement('div');
-    const playerOneNameEl = document.createElement('div');
-    const playerTwoNameEl = document.createElement('div');
-    const gameEl = document.createElement('div');
+    const playerOneNameEl = document.createElement('p');
+    const playerTwoNameEl = document.createElement('p');
+    const gameEl = document.createElement('p');
     const resumeGameBtn = document.createElement('button');
     const viewGameBtn = document.createElement('button');
-    playerOneNameEl.textContent = game.player_one_name;
-    playerTwoNameEl.textContent = game.player_two_name;
+    playerOneNameEl.textContent = `Player 1: ${game.player_one_name}`;
+    playerTwoNameEl.textContent = `Player 2: ${game.player_two_name}`;
     gameEl.textContent = ''; 
     resumeGameBtn.textContent = 'Resume Game';
     viewGameBtn.textContent = 'View Game';

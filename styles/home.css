@@ -7,6 +7,39 @@ body {
     background-image: url(../assets/marble1.jpg);
 }
 
+main {
+    display: grid;
+    grid-template-rows: 25% auto;
+    justify-content: center;
+    margin-top: 20px;
+    height: 900px;
+    
+}
+
+.new-game-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    padding: 40px;
+}
+
+.games-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+
+}
+
+.games-container div {
+    margin: 20px;
+    padding: 30px;
+    background-color: aqua;
+}
+
 header {
     display: flex;
     justify-content: space-between;

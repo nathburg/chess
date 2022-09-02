@@ -1,3 +1,5 @@
+// here we go
+
 let board = {
     
     a1: {
@@ -203,10 +205,14 @@ const stringToFunction = {
     'king': king
 }
 
-console.log(stringToFunction['rook'])
 
 let whiteCaptured = [];
 let blackCaptured = [];
+
+let whiteKingSideCastling = true;
+let whiteQueenSideCastling = true;
+let blackKingSideCastling = true;
+let blackQueenSideCastling = true;
 
 let check = false;
 let checkDefense = [];
@@ -219,6 +225,8 @@ let kings = {
     white: 'e1',
     black: 'e8'
 }
+
+let pastMoves = ['ready', 'set'];
 
 displayBoard()
 
@@ -257,9 +265,272 @@ function renderPlayable(position) {
     const positionEl = document.getElementById(position);
     
     positionEl.addEventListener('click', () => {
+        const enPassantMoves = pastMoves.slice(-1);
         displayBoard();
         let moves = stringToFunction[board[position].piece](position);
-        if (stringToFunction[board[position].piece] === king) {
+        console.log(board[position].piece)
+        console.log(stringToFunction[board[position].piece])
+        if (board[position].piece === 'pawn') {
+            if (currentPlayer === 'black') {
+                // attempt at en passant for white
+                if (position === 'a4') {
+                    if (enPassantMoves[0][0] === 'b2' && enPassantMoves[0][1] === 'b4') {
+                        moveButton('a4', 'b3')
+                        const savePiece = board['b4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['b4'] = false;
+                    }
+                }
+                if (position === 'b4') {
+                    if (enPassantMoves[0][0] === 'a2' && enPassantMoves[0][1] === 'a4') {
+                        moveButton('b4', 'a3')
+                        const savePiece = board['a4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['a4'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'c2' && enPassantMoves[0][1] === 'c4') {
+                        moveButton('b4', 'c3')
+                        const savePiece = board['c4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+
+                        board['c4'] = false;
+                    }
+                }
+                if (position === 'c4') {
+                    if (enPassantMoves[0][0] === 'b2' && enPassantMoves[0][1] === 'b4') {
+                        moveButton('c4', 'b3')
+                        const savePiece = board['b4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['b4'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'd2' && enPassantMoves[0][1] === 'd4') {
+                        moveButton('c4', 'd3')
+                        const savePiece = board['d4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+
+                        board['d4'] = false;
+                    }
+                }
+                if (position === 'd4') {
+                    if (enPassantMoves[0][0] === 'c2' && enPassantMoves[0][1] === 'c4') {
+                        moveButton('d4', 'c3')
+                        const savePiece = board['c4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['c4'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'e2' && enPassantMoves[0][1] === 'e4') {
+                        moveButton('d4', 'e3')
+                        const savePiece = board['e4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+
+                        board['e4'] = false;
+                    }
+                }
+                if (position === 'e4') {
+                    if (enPassantMoves[0][0] === 'd2' && enPassantMoves[0][1] === 'd4') {
+                        moveButton('e4', 'd3')
+                        const savePiece = board['d4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['d4'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'f2' && enPassantMoves[0][1] === 'f4') {
+                        moveButton('e4', 'f3')
+                        const savePiece = board['f4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+
+                        board['f4'] = false;
+                    }
+                }
+                if (position === 'f4') {
+                    if (enPassantMoves[0][0] === 'e2' && enPassantMoves[0][1] === 'e4') {
+                        moveButton('f4', 'e3')
+                        const savePiece = board['e4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['e4'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'g2' && enPassantMoves[0][1] === 'g4') {
+                        moveButton('f4', 'g3')
+                        const savePiece = board['g4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+
+                        board['g4'] = false;
+                    }
+                }
+                if (position === 'g4') {
+                    if (enPassantMoves[0][0] === 'f2' && enPassantMoves[0][1] === 'f4') {
+                        moveButton('g4', 'f3')
+                        const savePiece = board['f4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['f4'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'h2' && enPassantMoves[0][1] === 'h4') {
+                        moveButton('g4', 'h3')
+                        const savePiece = board['h4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['h4'] = false;
+                    }
+                }
+                if (position === 'h4') {
+                    if (enPassantMoves[0][0] === 'g2' && enPassantMoves[0][1] === 'g4') {
+                        moveButton('h4', 'g3')
+                        const savePiece = board['g4'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['g4'] = false;
+                    }
+                }
+                //promotion
+
+            } else 
+            // white 'pawn's can capture en passant
+                    {
+                if (position === 'a5') {
+                    if (enPassantMoves[0][0] === 'b7' && enPassantMoves[0][1] === 'b5') {
+                        moveButton('a5', 'b6')
+                        const savePiece = board['b5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['b5'] = false;
+                    }
+                }
+                if (position === 'b5') {
+                    if (enPassantMoves[0][0] === 'a7' && enPassantMoves[0][1] === 'a7') {
+                        moveButton('b5', 'a6')
+                        const savePiece = board['a5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['c5'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'c7' && enPassantMoves[0][1] === 'c5') {
+                        moveButton('b5', 'c6')
+                        const savePiece = board['c5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['c5'] = false;
+                    }
+                }
+                if (position === 'c5') {
+                    if (enPassantMoves[0][0] === 'b7' && enPassantMoves[0][1] === 'b5') {
+                        moveButton('c5', 'b6')
+                        const savePiece = board['b5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['b5'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'd7' && enPassantMoves[0][1] === 'd5') {
+                        moveButton('c5', 'd6')
+                        const savePiece = board['d5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['d5'] = false;
+                    }
+                }
+                if (position === 'd5') {
+                    if (enPassantMoves[0][0] === 'c7' && enPassantMoves[0][1] === 'c5') {
+                        moveButton('d5', 'c6')
+                        const savePiece = board['c5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['c5'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'e7' && enPassantMoves[0][1] === 'e5') {
+                        moveButton('d5', 'e6')
+                        const savePiece = board['e5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['e5'] = false;
+                    }
+                }
+                if (position === 'e5') {
+                    if (enPassantMoves[0][0] === 'd7' && enPassantMoves[0][1] === 'd5') {
+                        moveButton('e5', 'd6')
+                        const savePiece = board['d5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['d5'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'f7' && enPassantMoves[0][1] === 'f5') {
+                        moveButton('e5', 'f6')
+                        const savePiece = board['f5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['f5'] = false;
+                    }
+                }
+                if (position === 'f5') {
+                    if (enPassantMoves[0][0] === 'e7' && enPassantMoves[0][1] === 'e5') {
+                        moveButton('f5', 'e6')
+                        const savePiece = board['e5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['e5'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'g7' && enPassantMoves[0][1] === 'g5') {
+                        moveButton('f5', 'g6')
+                        const savePiece = board['g5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+
+                        board['g5'] = false;
+                    }
+                }
+                if (position === 'g5') {
+                    if (enPassantMoves[0][0] === 'f7' && enPassantMoves[0][1] === 'f5') {
+                        moveButton('g5', 'f6')
+                        const savePiece = board['f5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['f5'] = false;
+                    }
+                    if (enPassantMoves[0][0] === 'h7' && enPassantMoves[0][1] === 'h5') {
+                        moveButton('g5', 'h6')
+                        const savePiece = board['h5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['h5'] = false;
+                    }
+                }
+                if (position === 'h5') {
+                    if (enPassantMoves[0][0] === 'g7' && enPassantMoves[0][1] === 'g5') {
+                        moveButton('h5', 'g6')
+                        const savePiece = board['g5'];
+                        // push piece to the right color of array
+                        whiteCaptured.push(savePiece);
+                        board['g5'] = false;
+                    }
+                }
+            } 
+        } else         
+        if (board[position].piece === 'king') {
+            if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === 'rook') {
+                moveButton('e1', 'g1')
+        }
+            // white castling queen side
+            if (currentPlayer === 'white' && whiteQueenSideCastling === true && board.a1.piece === 'rook' && board.b1 === false && board.c1 === false && board.d1 === false) {
+                moveButton('e1', 'c1')
+        }
+            // black castling king side
+            if (currentPlayer === 'black' && blackKingSideCastling === true && board.f8 === false && board.g8 === false && board.h8.piece === 'rook') {
+                moveButton('e8', 'g8')
+        }  
+            // black castling queen side
+            if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === 'rook' && board.b8 === false && board.c8 === false && board.d8 === false) {
+                moveButton('e8', 'c8')
+        } 
+            if (stringToFunction[board[position].piece] === king) {
             let safeMoves = [];
             for (let move of moves) {
                 if (checkChecker(move.space)) {
@@ -267,8 +538,8 @@ function renderPlayable(position) {
                 }
             }
             moves = safeMoves;
-        }
-        if (check && stringToFunction[board[position].piece] != king) {
+            
+            if (check && stringToFunction[board[position].piece] != king) {
             moves = performIntersection(moves, checkDefense)
         }
         for (let move of moves) {
@@ -288,11 +559,104 @@ function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = 'x';
     targetPositionEl.addEventListener('click', () => {
+//complete check conditions for edge cases
+        let spot7 = '';
+        let spot8 = '';
+        spot7 = stringToCoords(currentPosition);
+        spot8 = stringToCoords(targetPosition);
+
+        if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
+            let test = [];
+            if (currentPlayer === 'white') {
+                test = { 
+                    color: 'white',
+                    piece: 'queen',
+                    image: '♕'
+                    } 
+                    board[currentPosition] = false;
+                    board[targetPosition] = test;
+            }
+
+        } 
+        else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    } 
+                    board[currentPosition] = false;
+                    board[targetPosition] = test;
+            }
+        } else {
+            pastMoves.push([currentPosition, targetPosition]);  
+            const savePiece = board[currentPosition];
+            board[currentPosition] = false;
+            board[targetPosition] = savePiece;
+  
+            if (whiteKingSideCastling === true && currentPosition === 'e1' && targetPosition === 'g1') {
+                board['f1'] = board['h1']
+                board['h1'] = false;
+                whiteKingSideCastling = false;
+            }
+            if (whiteQueenSideCastling === true && currentPosition === 'e1' && targetPosition === 'c1') {
+                board['d1'] = board['a1']
+                board['a1'] = false;
+                whiteQueenSideCastling = false;
+            }
+            if (blackKingSideCastling === true && currentPosition === 'e8' && targetPosition === 'g8') {
+                board['f8'] = board['h8']
+                board['h8'] = false;
+                blackKingSideCastling = false;
+            }
+            if (blackQueenSideCastling === true && currentPosition === 'e8' && targetPosition === 'c8') {
+                board['d8'] = board['a8']
+                board['a8'] = false;
+                blackQueenSideCastling = false;
+            }
+
+       // make castling impossible if white or black king moves
+       if (board[targetPosition].piece === 'king')  {
+        if (currentPlayer === 'white') {
+            if (targetPosition != 'g1') {
+                whiteKingSideCastling = false;
+                whiteQueenSideCastling = false;
+            }
+        }
+    }
+    if (board[targetPosition].piece === 'king')  {
+        if (currentPlayer === 'black') {
+            if (targetPosition != 'c8') {
+                blackKingSideCastling = false;
+                blackQueenSideCastling = false;
+            }
+        }
+    }
+
+    // make castling impossible if white or black rooks move
+    // need to clarify which rook has moved, currently if any white rook moves white can no longer castle (vice versa)
+    if (board[targetPosition].piece === 'rook')  {
+        if (currentPlayer === 'white') {
+                whiteKingSideCastling = false;
+                whiteQueenSideCastling = false;
+        }
+    }
+    if (board[targetPosition].piece === 'rook')  {
+        if (currentPlayer === 'black') {
+                blackKingSideCastling = false;
+                blackQueenSideCastling = false;
+        }
+    }
+
+        }
         const saveCurrentPiece = board[currentPosition];
         const saveTargetPiece = board[targetPosition];
         board[currentPosition] = false;
         board[targetPosition] = saveCurrentPiece;
-        if (partialKingCheck()) {
+      // the  below should go after all edge conditions, maybe? Or not
+      
+      if (partialKingCheck()) {
             changePlayer();
             displayBoard();
             checkDefense = [];
@@ -304,16 +668,57 @@ function moveButton(currentPosition, targetPosition) {
             displayBoard();
         }
         console.log(board[currentPosition], board[targetPosition])
+        pastMoves.push([currentPosition, targetPosition]); 
     })
 }
 
 
 function attackButton(currentPosition, targetPosition) {
-    
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
-        const saveCurrentPiece = board[currentPosition];
+
+        let spot7 = '';
+        let spot8 = '';
+        spot7 = stringToCoords(currentPosition);
+        spot8 = stringToCoords(targetPosition); 
+        const savePiece = board[targetPosition];
+        if (savePiece.color === 'white') {
+            whiteCaptured.push(savePiece);
+
+        } 
+
+        if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
+            console.log(currentPlayer);
+            let test = [];
+            if (currentPlayer === 'white') {
+                console.log('in if')
+                test = { 
+                    color: 'white',
+                    piece: 'queen',
+                    image: '♕'
+                    } 
+                // console.log(test);
+                // console.log(currentPosition);
+                // console.log(targetPosition);
+                board[currentPosition] = false;
+                board[targetPosition] = test;
+            }
+
+        } 
+        else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
+            console.log('in if')
+            let test = [];
+            if (currentPlayer === 'black') {
+                test = { 
+                    color: 'black',
+                    piece: 'queen',
+                    image: '♛'
+                    } 
+                board[currentPosition] = false;
+                board[targetPosition] = test;
+            }
+                const saveCurrentPiece = board[currentPosition];
         const saveTargetPiece = board[targetPosition];
         if (partialKingCheck()) {
             if (saveTargetPiece.color === 'white') {
@@ -332,12 +737,13 @@ function attackButton(currentPosition, targetPosition) {
             board[currentPosition] = saveCurrentPiece;
             board[targetPosition] = saveTargetPiece;
         }
+            pastMoves.push([currentPosition, targetPosition]); 
+
     })
 }
 
     
 function pawn(position) {
-    
     let moves = [];
     const coords = stringToCoords(position);
     let x = coords[0];
@@ -369,9 +775,7 @@ function pawn(position) {
             }
         }
     }
-
     if (currentPlayer === 'black') {
-        
         if (inRange(y-1)) {
             if (inRange(x-1)) {
                 const test = coordsToString([x-1, y-1]);
@@ -501,14 +905,6 @@ function testSpace(x, y) {
     }
 }
 
-// function testSpaceKing(x, y) {
-//     if (inRange(x) && inRange(y)) {
-//         const test = coordsToString([x, y]);
-//         if (inspectSpace(test) && checkChecker(test)) {
-//             return inspectSpace(test)
-//         }
-//     }
-// }
 
 function continueMove(position, deltaXFunction, deltaYFunction) {
     let newMoves = [];
@@ -617,6 +1013,7 @@ function partialKingCheck() {
 function findKing(color) {
     for (let position in board) {
         if (stringToFunction[board[position].piece] === king
+
             && board[position].color === color) {
             
             return position;
@@ -641,10 +1038,12 @@ function partialCheck(space) {
             const checkArray = stringToFunction[board[position].piece](position);
             for (let move of checkArray) {
                     if (move.space === space) {
+
                         if (stringToFunction[board[position].piece] === pawn || stringToFunction[board[position].piece] === knight) {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
                         else if (stringToFunction[board[position].piece] != king) {
+
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
                             const deltaXFunction = polarityChecker(threatX-kingX);
@@ -730,106 +1129,3 @@ function performIntersection(arr1, arr2) {
     
 
 }
-
-// const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
-// const array2 = [{space: 'd7', condition: 'empty'},
-//                 {space: 'c6', condition: 'empty'},
-//                 {space: 'b5', condition: 'empty'},
-//                 {space: 'a4', condition: 'enemy'}      
-// ];
-
-// const result = performIntersection(array1, array2);
-// console.log(result);
-
-
-
-// function checkWhite(findWhiteKing, position) {
-    //     let enemyMovesArr = [];
-        
-    //     // loop through pieces array
-    //     console.log('piece', position.piece);
-    //     if (position.piece === 'pawn') {
-    //         let pawnMoves = pawn(position);
-    //         console.log('pawnmoves', pawnMoves);
-    //         for (let move of pawnMoves) {
-    //             enemyMovesArr.push(move);
-    //         }
-            
-    //     }
-    //     if (position.piece === 'rook') {
-    //         console.log('rook position', position);
-    //         let rook = rook(position);
-    //         enemyMovesArr.push(rook);
-    //     }
-    //     if (position.piece === 'queen') {
-    //         let queen = queen(position);
-    //         enemyMovesArr.push(queen);
-    //     }
-    //     if (position.piece === 'bishop') {
-    //         let bishop = bishop(position);
-    //         enemyMovesArr.push(bishop);
-    //     }
-    //     if (position.piece === 'knight') {
-    //         let knight = knight(position);
-    //         enemyMovesArr.push(knight);
-    //     }
-    
-    //     // let kingPosition = findWhiteKing();
-    
-    //     // console.log(enemyMoves, kingPosition);
-    //     for (let move of enemyMovesArr) {
-    //         if (move === kingPosition) {
-    //             alert('check');
-                
-    //             check = true;
-    //             break;
-    //         }
-    
-    //     console.log('enemy moves array', enemyMovesArr);
-    //     return enemyMovesArr;
-    
-        
-    // }
-    // }
-    
-    
-    
-    // function findWhiteKing(){
-    //     for (let location of document.querySelectorAll('button')) {
-    //         if (location.textContent.includes('♔')) {
-    //             return location.id;
-    //         }
-    //     } 
-    // }
-    
-    // function findBlackKing(){
-    //     for (let location of document.querySelectorAll('button')) {
-    //         if (location.textContent.includes('♚')) {
-    //             return location.id;
-    //         }
-    //     } 
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

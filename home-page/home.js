@@ -24,6 +24,9 @@ form.addEventListener('submit', async (e) => {
     await startNewGame(playerOneName, playerTwoName);
     
     await displayUserGames();
+
+    window.location.replace('../');
+    
     form.reset();
 })
 
