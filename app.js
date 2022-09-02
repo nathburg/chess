@@ -530,6 +530,7 @@ function renderPlayable(position) {
             if (currentPlayer === 'black' && blackQueenSideCastling === true && board.a8.piece === 'rook' && board.b8 === false && board.c8 === false && board.d8 === false) {
                 moveButton('e8', 'c8')
         } 
+            if (stringToFunction[board[position].piece] === king) {
             let safeMoves = [];
             for (let move of moves) {
                 if (checkChecker(move.space)) {
@@ -537,10 +538,8 @@ function renderPlayable(position) {
                 }
             }
             moves = safeMoves;
-            // white castling king side
-
-        }
-        if (check && board[position].piece != 'king') {
+            
+            if (check && stringToFunction[board[position].piece] != king) {
             moves = performIntersection(moves, checkDefense)
         }
         for (let move of moves) {
@@ -560,6 +559,7 @@ function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = 'x';
     targetPositionEl.addEventListener('click', () => {
+//complete check conditions for edge cases
         let spot7 = '';
         let spot8 = '';
         spot7 = stringToCoords(currentPosition);
@@ -650,12 +650,25 @@ function moveButton(currentPosition, targetPosition) {
     }
 
         }
+        const saveCurrentPiece = board[currentPosition];
+        const saveTargetPiece = board[targetPosition];
+        board[currentPosition] = false;
+        board[targetPosition] = saveCurrentPiece;
+      // the  below should go after all edge conditions, maybe? Or not
+      
+      if (partialKingCheck()) {
+            changePlayer();
+            displayBoard();
+            checkDefense = [];
+            check = false;
+            fullCheck();
+        } else {
+            board[currentPosition] = saveCurrentPiece;
+            board[targetPosition] = saveTargetPiece;
+            displayBoard();
+        }
+        console.log(board[currentPosition], board[targetPosition])
         pastMoves.push([currentPosition, targetPosition]); 
-        changePlayer();
-        displayBoard();
-        checkDefense = [];
-        check = false;
-        fullCheck();
     })
 }
 
@@ -664,6 +677,7 @@ function attackButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
+
         let spot7 = '';
         let spot8 = '';
         spot7 = stringToCoords(currentPosition);
@@ -671,9 +685,9 @@ function attackButton(currentPosition, targetPosition) {
         const savePiece = board[targetPosition];
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
-        } else {
-            blackCaptured.push(savePiece);
-        }
+
+        } 
+
         if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
             console.log(currentPlayer);
             let test = [];
@@ -704,17 +718,27 @@ function attackButton(currentPosition, targetPosition) {
                 board[currentPosition] = false;
                 board[targetPosition] = test;
             }
-        } else {
+                const saveCurrentPiece = board[currentPosition];
+        const saveTargetPiece = board[targetPosition];
+        if (partialKingCheck()) {
+            if (saveTargetPiece.color === 'white') {
+                whiteCaptured.push(saveTargetPiece);
+            } else {
+                blackCaptured.push(saveTargetPiece);
+            }
             board[targetPosition] = board[currentPosition];
             board[currentPosition] = false;
-        }
-            pastMoves.push([currentPosition, targetPosition]); 
-            console.log('hello')
             changePlayer();
             displayBoard();
             checkDefense = [];
             check = false;
             fullCheck();
+        } else {
+            board[currentPosition] = saveCurrentPiece;
+            board[targetPosition] = saveTargetPiece;
+        }
+            pastMoves.push([currentPosition, targetPosition]); 
+
     })
 }
 
@@ -981,9 +1005,15 @@ function polarityChecker(number) {
     }
 }
 
+function partialKingCheck() {
+    const theKing = findKing(currentPlayer);
+    return partialCheck(theKing).length === 0
+}
+
 function findKing(color) {
     for (let position in board) {
-        if (board[position].piece === 'king'
+        if (stringToFunction[board[position].piece] === king
+
             && board[position].color === color) {
             
             return position;
@@ -993,7 +1023,12 @@ function findKing(color) {
 
 function partialCheck(space) {
     let threatMoves = [];
-    
+    const savePiece = board[space];
+    board[space] = {
+        color: currentPlayer,
+        piece: 'pawn',
+        image: '♟'
+        }
     const kingX = stringToCoords(space)[0];
     const kingY = stringToCoords(space)[1];
 
@@ -1003,10 +1038,12 @@ function partialCheck(space) {
             const checkArray = stringToFunction[board[position].piece](position);
             for (let move of checkArray) {
                     if (move.space === space) {
-                        if (board[position].piece === 'pawn' || board[position].piece === 'knight') {
+
+                        if (stringToFunction[board[position].piece] === pawn || stringToFunction[board[position].piece] === knight) {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
-                        else if (board[position].piece != 'king') {
+                        else if (stringToFunction[board[position].piece] != king) {
+
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
                             const deltaXFunction = polarityChecker(threatX-kingX);
@@ -1022,6 +1059,7 @@ function partialCheck(space) {
         }
     }
     changePlayer();
+    board[space] = savePiece;
     return threatMoves;
     
 }
