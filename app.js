@@ -537,11 +537,13 @@ function renderPlayable(position) {
                 }
             }
             moves = safeMoves;
+            console.log(moves);
         }
             if (check && stringToFunction[board[position].piece] != king) {
             moves = performIntersection(moves, checkDefense)
         }
         for (let move of moves) {
+            console.log(move)
             if (move.condition === 'empty') {
                 moveButton(position, move.space);
             }
@@ -669,8 +671,11 @@ function moveButton(currentPosition, targetPosition) {
 
 
 function attackButton(currentPosition, targetPosition) {
+    const saveCurrentPiece = board[currentPosition];
+    const saveTargetPiece = board[targetPosition];
     const targetPositionEl = document.getElementById(targetPosition);
     targetPositionEl.textContent = `x${board[targetPosition].image}`;
+    
     targetPositionEl.addEventListener('click', () => {
 
         let spot7 = '';
@@ -678,11 +683,6 @@ function attackButton(currentPosition, targetPosition) {
         spot7 = stringToCoords(currentPosition);
         spot8 = stringToCoords(targetPosition); 
         const savePiece = board[targetPosition];
-        if (savePiece.color === 'white') {
-            whiteCaptured.push(savePiece);
-
-        } 
-
         if (board[currentPosition].piece === 'pawn' && spot7[1] === 7 && spot8[1] === 8) {
             console.log(currentPlayer);
             let test = [];
@@ -699,7 +699,6 @@ function attackButton(currentPosition, targetPosition) {
                 board[currentPosition] = false;
                 board[targetPosition] = test;
             }
-
         } 
         else if (board[currentPosition].piece === 'pawn' && spot7[1] === 2 && spot8[1] === 1) {
             console.log('in if')
@@ -713,17 +712,17 @@ function attackButton(currentPosition, targetPosition) {
                 board[currentPosition] = false;
                 board[targetPosition] = test;
             }
-        }    
-                const saveCurrentPiece = board[currentPosition];
-        const saveTargetPiece = board[targetPosition];
+        } else {
+            board[targetPosition] = board[currentPosition];
+            board[currentPosition] = false;}   
         if (partialKingCheck()) {
+            console.log(targetPosition)
             if (saveTargetPiece.color === 'white') {
                 whiteCaptured.push(saveTargetPiece);
             } else {
                 blackCaptured.push(saveTargetPiece);
             }
-            board[targetPosition] = board[currentPosition];
-            board[currentPosition] = false;
+            pastMoves.push([currentPosition, targetPosition]); 
             changePlayer();
             displayBoard();
             checkDefense = [];
@@ -733,8 +732,6 @@ function attackButton(currentPosition, targetPosition) {
             board[currentPosition] = saveCurrentPiece;
             board[targetPosition] = saveTargetPiece;
         }
-            pastMoves.push([currentPosition, targetPosition]); 
-
     })
 }
 
