@@ -1,4 +1,36 @@
-// here we go
+
+import { saveGame, getUser, getGameId, getBoardStateById, getWhiteCaptured, getBlackCaptured } from "./fetch-utils.js";
+const saveGameBtn = document.getElementById('save-game-btn');
+// import { gameId } from "./home-page/home.js";
+const user = getUser();
+
+import { renderCapturedBlack, renderCapturedwhite } from "./render-utils.js";
+
+const blackCapturedContainer = document.querySelector('.black-captured')
+const whiteCapturedContainer = document.querySelector('.white-captured')
+const music = document.getElementById('music');
+
+
+music.volume = .12;
+
+
+// const response = await getGameId();
+// console.log(response);
+
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+
+const boardState = await getBoardStateById(id);
+// console.table(boardState);
+
+const whiteCapturedRes = await getWhiteCaptured(id);
+const blackCapturedRes = await getBlackCaptured(id);
+console.log(whiteCapturedRes);
+console.log(blackCapturedRes);
+
+
+
 
 let board = {
     
@@ -196,6 +228,9 @@ let board = {
         } 
 }
 
+
+board = boardState;
+
 const stringToFunction = {
     'pawn': pawn,
     'rook': rook,
@@ -206,13 +241,16 @@ const stringToFunction = {
 }
 
 
+
 let whiteCaptured = [];
 let blackCaptured = [];
-
+whiteCaptured = whiteCapturedRes;
+blackCaptured = blackCapturedRes;
 let whiteKingSideCastling = true;
 let whiteQueenSideCastling = true;
 let blackKingSideCastling = true;
 let blackQueenSideCastling = true;
+
 
 let check = false;
 let checkDefense = [];
@@ -231,6 +269,8 @@ let pastMoves = ['ready', 'set'];
 displayBoard()
 
 function displayBoard() {
+    blackCapturedContainer.textContent = '';
+    whiteCapturedContainer.textContent = '';
     let white = false;
     let counter = 0;
 
@@ -256,7 +296,11 @@ function displayBoard() {
         white = !white;
         }
 
-    }
+    } 
+    displayBlackCaptured();
+    displayWhiteCaptured();
+    
+
 
 }
 
@@ -313,6 +357,7 @@ function renderPlayable(position) {
                         // push piece to the right color of array
                         whiteCaptured.push(savePiece);
 
+
                         board['d4'] = false;
                     }
                 }
@@ -331,6 +376,7 @@ function renderPlayable(position) {
                         whiteCaptured.push(savePiece);
 
                         board['e4'] = false;
+
                     }
                 }
                 if (position === 'e4') {
@@ -484,6 +530,10 @@ function renderPlayable(position) {
                         // push piece to the right color of array
                         whiteCaptured.push(savePiece);
 
+
+
+
+
                         board['g5'] = false;
                     }
                 }
@@ -558,10 +608,14 @@ function renderPlayable(position) {
 
 function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = 'x';
+    targetPositionEl.textContent = '🟢';
     const saveCurrentPiece = board[currentPosition];
     const saveTargetPiece = board[targetPosition];
     targetPositionEl.addEventListener('click', () => {
+        saveGameBtn.classList.remove('game-saved');
+        saveGameBtn.classList.add('save-game-btn');
+        saveGameBtn.textContent = 'SAVE GAME';
+        movePieceSound();
 //complete check conditions for edge cases
         let spot7 = '';
         let spot8 = '';
@@ -661,22 +715,43 @@ function moveButton(currentPosition, targetPosition) {
             check = false;
             fullCheck();
             pastMoves.push([currentPosition, targetPosition]); 
+
         } else {
             board[currentPosition] = saveCurrentPiece;
             board[targetPosition] = saveTargetPiece;
             displayBoard();
         }
+
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function attackButton(currentPosition, targetPosition) {
     const saveCurrentPiece = board[currentPosition];
     const saveTargetPiece = board[targetPosition];
     const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = `x${board[targetPosition].image}`;
+    targetPositionEl.textContent = '✔️${board[targetPosition].image}`;
     
     targetPositionEl.addEventListener('click', () => {
+        saveGameBtn.classList.remove('game-saved');
+        saveGameBtn.classList.add('save-game-btn');
+        saveGameBtn.textContent = 'SAVE GAME';
+        takePieceSound();
 
         let spot7 = '';
         let spot8 = '';
@@ -734,6 +809,7 @@ function attackButton(currentPosition, targetPosition) {
         }
     })
 }
+
 
     
 function pawn(position) {
@@ -984,6 +1060,7 @@ function changePlayer() {
     } else {
         currentPlayer = 'white';
     }
+    
 }
 
 function polarityChecker(number) {
@@ -1005,12 +1082,15 @@ function partialKingCheck() {
 
 function findKing(color) {
     for (let position in board) {
+
+
         if (stringToFunction[board[position].piece] === king
 
             && board[position].color === color) {
             
             return position;
         }
+
     }
 }
 
@@ -1029,6 +1109,9 @@ function partialCheck(space) {
     for (let position in board) {
         if (board[position].color === currentPlayer) {
             const checkArray = stringToFunction[board[position].piece](position);
+
+           
+
             for (let move of checkArray) {
                     if (move.space === space) {
 
@@ -1036,6 +1119,7 @@ function partialCheck(space) {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
                         else if (stringToFunction[board[position].piece] != king) {
+
 
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
@@ -1072,6 +1156,8 @@ function fullCheck() {
         check = true;
         alert('You\'re in check!')
         for (let position in board) {
+
+
             if (position === kingPosition) {
                 const kingMoves = king(position);
                 for (let move of kingMoves) {
@@ -1081,6 +1167,7 @@ function fullCheck() {
                 }
             } else if (board[position].color === currentPlayer) {
                 const newDefenseMoves = stringToFunction[board[position].piece](position);
+
                 const solutionForCheck = performIntersection(threatMoves, newDefenseMoves);
                 const sendDefenseMoves = defenseMoves.concat(solutionForCheck);
                 defenseMoves = sendDefenseMoves;
@@ -1122,3 +1209,80 @@ function performIntersection(arr1, arr2) {
     
 
 }
+
+
+
+
+console.log(blackCapturedRes)
+
+function displayBlackCaptured() {
+    blackCapturedContainer.textContent = '';
+        if (blackCapturedRes !== null) {
+            for (let piece of blackCapturedRes) {
+                const renderedBlack = renderCapturedBlack(piece);
+                blackCapturedContainer.append(renderedBlack);
+            }
+        }
+        
+    }
+    
+
+
+function displayWhiteCaptured() {
+    whiteCapturedContainer.textContent = '';
+        if (whiteCapturedRes !== null) {
+            for (let piece of whiteCapturedRes) {
+                const renderedWhite = renderCapturedwhite(piece);
+                whiteCapturedContainer.append(renderedWhite);
+            }
+        }
+        
+    }
+    
+
+
+
+
+
+
+
+
+
+saveGameBtn.addEventListener('click', async () => {
+    const response = await saveGame(id, board, blackCaptured, whiteCaptured);
+    saveGameBtn.textContent = 'GAME SAVED';
+    saveGameBtn.classList.remove('save-game-btn');
+    saveGameBtn.classList.add('game-saved');
+    
+    console.log(response);
+});
+
+function movePieceSound(){
+    var audio = new Audio('./assets/chess-move.wav');
+    audio.play();
+}
+
+function takePieceSound() {
+    var audio = new Audio('./assets/take-piece.mp3');
+    audio.play();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
