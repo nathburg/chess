@@ -1,5 +1,7 @@
-import { startNewGame, getUser, getGames, signOutUser, getGameById } from "../fetch-utils.js";
+import { startNewGame, getUser, getGames, signOutUser, getGameById, checkAuth } from "../fetch-utils.js";
 import { renderGame } from "../render-utils.js";
+
+checkAuth();
 
 const form = document.getElementById('new-game-form');
 const gamesList = document.getElementById('past-games-el');

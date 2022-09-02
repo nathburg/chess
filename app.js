@@ -1,5 +1,7 @@
 
-import { saveGame, getUser, getGameId, getBoardStateById, getWhiteCaptured, getBlackCaptured } from "./fetch-utils.js";
+import { saveGame, getUser, signOutUser, getGameId, getBoardStateById, getWhiteCaptured, getBlackCaptured, checkAuth } from "./fetch-utils.js";
+
+checkAuth();
 const saveGameBtn = document.getElementById('save-game-btn');
 // import { gameId } from "./home-page/home.js";
 const user = getUser();
@@ -10,6 +12,12 @@ const blackCapturedContainer = document.querySelector('.black-captured')
 const whiteCapturedContainer = document.querySelector('.white-captured')
 const music = document.getElementById('music');
 const checkDisplay = document.getElementById('check');
+const signOutLink = document.getElementById('sign-out-link');
+
+
+signOutLink.addEventListener('click', async () => {
+    await signOutUser();
+});
 
 music.volume = .12;
 
@@ -20,7 +28,9 @@ music.volume = .12;
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
-
+if (!id) {
+    window.location.replace("./home-page");
+}
 const boardState = await getBoardStateById(id);
 // console.table(boardState);
 
