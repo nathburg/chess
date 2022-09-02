@@ -7,6 +7,10 @@ import { renderCapturedBlack, renderCapturedwhite } from "./render-utils.js";
 
 const blackCapturedContainer = document.querySelector('.black-captured')
 const whiteCapturedContainer = document.querySelector('.white-captured')
+const music = document.getElementById('music');
+
+
+music.volume = .12;
 
 
 // const response = await getGameId();
@@ -302,6 +306,7 @@ function displayBoard() {
     } 
     displayBlackCaptured();
     displayWhiteCaptured();
+    
 
 
 }
@@ -316,7 +321,7 @@ function renderPlayable(position) {
         positionEl.addEventListener('click', () => {
 
 
-            
+                
 
                 // refresh the board
                 displayBoard();
@@ -344,37 +349,32 @@ console.log(stringToFunction['queen']);
 
 function moveButton(currentPosition, targetPosition) {
     const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = 'x';
+    targetPositionEl.textContent = '🟢';
     targetPositionEl.addEventListener('click', () => {
+        saveGameBtn.classList.remove('game-saved');
+        saveGameBtn.classList.add('save-game-btn');
+        saveGameBtn.textContent = 'SAVE GAME';
+        movePieceSound();
         const savePiece = board[currentPosition];
         board[currentPosition] = false;
         board[targetPosition] = savePiece;
         changePlayer();
         displayBoard();
         checkCheck();
+        // displayTurn();
     })
 }
 
-function kingMoveButton(currentPosition, targetPosition) {
-    const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = 'x';
-    targetPositionEl.addEventListener('click', () => {
-        kings[currentPlayer] = targetPosition;
-        const savePiece = board[currentPosition];
-        board[currentPosition] = false;
-        board[targetPosition] = savePiece;
-        console.log(kings);
-        changePlayer();
-        displayBoard();
-        console.log(kings);
-    })
-}
 
 function attackButton(currentPosition, targetPosition) {
     
     const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = `x${board[targetPosition].image}`;
+    targetPositionEl.textContent = `✔️${board[targetPosition].image}`;
     targetPositionEl.addEventListener('click', () => {
+        saveGameBtn.classList.remove('game-saved');
+        saveGameBtn.classList.add('save-game-btn');
+        saveGameBtn.textContent = 'SAVE GAME';
+        takePieceSound();
         const savePiece = board[targetPosition];
         if (savePiece.color === 'white') {
             whiteCaptured.push(savePiece);
@@ -386,28 +386,11 @@ function attackButton(currentPosition, targetPosition) {
         changePlayer();
         displayBoard();
         checkCheck();
+        // displayTurn();
     })
 }
 
-function kingAttackButton(currentPosition, targetPosition) {
-    
-    const targetPositionEl = document.getElementById(targetPosition);
-    targetPositionEl.textContent = `x${board[targetPosition].image}`;
-    targetPositionEl.addEventListener('click', () => {
-        kings[currentPlayer] = targetPosition;
-        const savePiece = board[targetPosition];
-        if (savePiece.color === 'white') {
-            whiteCaptured.push(savePiece);
-        } else {
-            blackCaptured.push(savePiece);
-        }
-        board[targetPosition] = board[currentPosition];
-        board[currentPosition] = false;
-        changePlayer();
-        displayBoard();
-        console.log(kings);
-    })
-}
+
 
 
 
@@ -462,21 +445,7 @@ function checkWhite(findWhiteKing, position) {
 
 
 
-function findWhiteKing(){
-    for (let location of document.querySelectorAll('button')) {
-        if (location.textContent.includes('♔')) {
-            return location.id;
-        }
-    } 
-}
 
-function findBlackKing(){
-    for (let location of document.querySelectorAll('button')) {
-        if (location.textContent.includes('♚')) {
-            return location.id;
-        }
-    } 
-}
 
 
 
@@ -886,30 +855,28 @@ function displayWhiteCaptured() {
 
 
 
-// const array1 = [{space: 'c6', condition: 'empty'}, {space: 'c5', condition: 'empty'}];
-// const array2 = [{space: 'd7', condition: 'empty'},
-//                 {space: 'c6', condition: 'empty'},
-//                 {space: 'b5', condition: 'empty'},
-//                 {space: 'a4', condition: 'enemy'}      
-// ];
 
-// const result = performIntersection(array1, array2);
-// console.log(result);
-
-
-
-// console.log(gameId);
 
 
 
 saveGameBtn.addEventListener('click', async () => {
     const response = await saveGame(id, board, blackCaptured, whiteCaptured);
+    saveGameBtn.textContent = 'GAME SAVED';
+    saveGameBtn.classList.remove('save-game-btn');
+    saveGameBtn.classList.add('game-saved');
     
     console.log(response);
 });
 
+function movePieceSound(){
+    var audio = new Audio('./assets/chess-move.wav');
+    audio.play();
+}
 
-
+function takePieceSound() {
+    var audio = new Audio('./assets/take-piece.mp3');
+    audio.play();
+}
 
 
 

@@ -11,8 +11,10 @@
     <title>Document</title>
 </head>
 <body>
+    
     <header>
         <h1>Chess</h1>
+        
         <nav>
             <a href="home-page">Home</a>
             <a href="auth">Sign out</a>
@@ -117,13 +119,24 @@
                 <img src="./assets/scotch-removebg-preview.png">
             </div>
             <div class="glass2">
-                <img src="./assets/scotch-removebg-preview.png">
+                <img src="./assets/cigar-ashtray-removebg-preview.png">
             </div>
         </div>
         
     </main>
+    
     <div class="save-container">
-        <button id="save-game-btn">Save Game</button>
+        <audio id="music" src="./assets/New York Jazz Lounge - Bar Jazz Classics.mp3" autoplay="true" controls>
+            <embed 
+            src="./assets/New York Jazz Lounge - Bar Jazz Classics.mp3" 
+            loop="true" 
+            autostart="true"
+            width="2" 
+            height="0" 
+            VOLUME=".25">
+    
+        </audio>
+        <button id="save-game-btn" class="save-game-btn">Save Game</button>
     </div>
     
     <script type="module" src="app.js"></script>
