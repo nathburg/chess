@@ -567,6 +567,7 @@ function renderPlayable(position) {
             } else         
             if (board[position].piece === 'king') {
                 if (currentPlayer === 'white' && whiteKingSideCastling === true && board.f1 === false && board.g1 === false && board.h1.piece === 'rook') {
+                    console.log('white castling')
                     moveButton('e1', 'g1')
                 }
                 // white castling queen side
@@ -686,6 +687,7 @@ function moveButton(currentPosition, targetPosition) {
             // board[targetPosition] = savePiece;
             // console.log(board[targetPosition], savePiece)
         else if (whiteKingSideCastling === true && currentPosition === 'e1' && targetPosition === 'g1') {
+            console.log('in else if')
             board['f1'] = board['h1']
             board['h1'] = false;
             whiteKingSideCastling = false;
