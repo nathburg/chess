@@ -1099,12 +1099,11 @@ function findKing(color) {
 
 function partialCheck(space) {
     let threatMoves = [];
+    const kingSpot = findKing(currentPlayer);
+    const saveKing = board[kingSpot];
     const savePiece = board[space];
-    board[space] = {
-        color: currentPlayer,
-        piece: 'pawn',
-        image: '♟'
-        }
+    board[kingSpot] = false;
+    board[space] = saveKing;
     const kingX = stringToCoords(space)[0];
     const kingY = stringToCoords(space)[1];
 
@@ -1112,18 +1111,12 @@ function partialCheck(space) {
     for (let position in board) {
         if (board[position].color === currentPlayer) {
             const checkArray = stringToFunction[board[position].piece](position);
-
-           
-
             for (let move of checkArray) {
                     if (move.space === space) {
-
                         if (stringToFunction[board[position].piece] === pawn || stringToFunction[board[position].piece] === knight) {
                             threatMoves.push({space: position, condition: 'enemy'})
                         }
                         else if (stringToFunction[board[position].piece] != king) {
-
-
                             const threatX = stringToCoords(position)[0];
                             const threatY = stringToCoords(position)[1];
                             const deltaXFunction = polarityChecker(threatX-kingX);
@@ -1140,6 +1133,8 @@ function partialCheck(space) {
     }
     changePlayer();
     board[space] = savePiece;
+    board[kingSpot] = saveKing;
+
     return threatMoves;
     
 }
