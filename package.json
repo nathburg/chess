@@ -1,0 +1,25 @@
+{
+  "name": "chess",
+  "version": "1.0.0",
+  "description": "Chess app built from scratch",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathburg/chess.git"
+  },
+  "keywords": [
+    "chess"
+  ],
+  "author": "nathburg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nathburg/chess/issues"
+  },
+  "homepage": "https://github.com/nathburg/chess#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.4"
+  }
+}
