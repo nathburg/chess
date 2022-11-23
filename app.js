@@ -38,7 +38,22 @@ if (!id) {
 	window.location.replace('./home-page');
 }
 
-onSave(id, (payload) => console.log('payload ', payload));
+onSave(id, (payload) => {
+	board = payload.new.board_state;
+	// blackCaptured = payload.new.black_captured;
+	// whiteCaptured = payload.new.white_captured;
+	// displayBlackCaptured();
+	displayBoard();
+	// displayWhiteCaptured();
+	console.log(
+		'board ',
+		typeof payload.new.board_state
+		// 	'black ',
+		// 	payload.new.black_captured,
+		// 	'white ',
+		// 	payload.new.white_captured
+	);
+});
 
 const boardState = await getBoardStateById(id);
 
@@ -315,8 +330,6 @@ function renderPlayable(position) {
 			const enPassantMoves = pastMoves.slice(-1);
 			displayBoard();
 			let moves = stringToFunction[board[position].piece](position);
-			console.log(board[position].piece);
-			console.log(stringToFunction[board[position].piece]);
 			if (board[position].piece === 'pawn') {
 				if (currentPlayer === 'black') {
 					// attempt at en passant for white
@@ -698,7 +711,6 @@ function renderPlayable(position) {
 				moves = performIntersection(moves, checkDefense);
 			}
 			for (let move of moves) {
-				console.log(move);
 				if (move.condition === 'empty') {
 					moveButton(position, move.space);
 				}
@@ -1346,8 +1358,6 @@ function performIntersection(arr1, arr2) {
 
 	return results;
 }
-
-console.log(blackCapturedRes);
 
 function displayBlackCaptured() {
 	blackCapturedContainer.textContent = '';

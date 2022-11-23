@@ -102,7 +102,6 @@ export async function saveGame(id, boardState, blackCaptured, whiteCaptured) {
 		})
 		.match({ id: id })
 		.single();
-	console.log(response);
 	return response.data;
 }
 
@@ -130,3 +129,5 @@ export function onSave(gameId, handleNewSave) {
 		.on('UPDATE', handleNewSave)
 		.subscribe();
 }
+
+// export async function saveProfile
