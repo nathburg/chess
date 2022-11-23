@@ -60,7 +60,7 @@ const boardState = await getBoardStateById(id);
 const whiteCapturedRes = await getWhiteCaptured(id);
 const blackCapturedRes = await getBlackCaptured(id);
 
-let board = {
+const initialBoard = {
 	a1: {
 		color: 'white',
 		piece: 'rook',
@@ -255,7 +255,7 @@ let board = {
 	},
 };
 
-board = boardState;
+let board = boardState;
 
 const stringToFunction = {
 	pawn: pawn,
@@ -294,19 +294,11 @@ displayBoard();
 function displayBoard() {
 	blackCapturedContainer.textContent = '';
 	whiteCapturedContainer.textContent = '';
-	let white = false;
-	let counter = 0;
 
 	for (const position in board) {
 		const getPosition = document.getElementById(position);
 		const newPosition = document.createElement('button');
 		newPosition.id = position;
-		newPosition.classList.add('square');
-		if (white) {
-			newPosition.classList.add('white');
-		} else {
-			newPosition.classList.add('black');
-		}
 		getPosition.replaceWith(newPosition);
 		if (board[position]) {
 			newPosition.textContent = `${board[position].image}`;
@@ -314,13 +306,28 @@ function displayBoard() {
 				renderPlayable(position);
 			}
 		}
-		counter++;
-		if (counter % 8) {
-			white = !white;
-		}
 	}
+	styleBoard();
 	displayBlackCaptured();
 	displayWhiteCaptured();
+}
+
+function styleBoard() {
+	let isWhite = false;
+	let counter = 0;
+	for (const position in initialBoard) {
+		const positionEl = document.getElementById(position);
+		positionEl.classList.add('square');
+		if (isWhite) {
+			positionEl.classList.add('white');
+		} else {
+			positionEl.classList.add('black');
+		}
+		counter++;
+		if (counter % 8) {
+			isWhite = !isWhite;
+		}
+	}
 }
 
 function renderPlayable(position) {
