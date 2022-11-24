@@ -50,8 +50,6 @@ export async function startNewGame(player1, player2) {
 		.insert({
 			player_one_name: player1,
 			player_two_name: player2,
-			black_captured: [],
-			white_captured: [],
 		})
 		.single();
 	return response;
@@ -71,44 +69,15 @@ export async function getGameById(id) {
 	return response.data;
 }
 
-export async function getBoardStateById(id) {
-	const response = await client
-		.from('games')
-		.select('*')
-		.match({ id })
-		.single();
-	return response.data.board_state;
-}
-
-export async function saveGame(id, boardState, blackCaptured, whiteCaptured) {
+export async function saveGame(id, state) {
 	const response = await client
 		.from('games')
 		.update({
-			board_state: boardState,
-			black_captured: blackCaptured,
-			white_captured: whiteCaptured,
+			game_state: state,
 		})
 		.match({ id: id })
 		.single();
 	return response.data;
-}
-
-export async function getWhiteCaptured(id) {
-	const response = await client
-		.from('games')
-		.select('*')
-		.match({ id })
-		.single();
-	return response.data.white_captured;
-}
-
-export async function getBlackCaptured(id) {
-	const response = await client
-		.from('games')
-		.select('*')
-		.match({ id })
-		.single();
-	return response.data.black_captured;
 }
 
 export function onSave(gameId, handleNewSave) {

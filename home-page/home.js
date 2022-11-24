@@ -31,6 +31,7 @@ form.addEventListener('submit', async (e) => {
 	const playerTwoName = data.get('player-two-name');
 
 	const gameData = await startNewGame(playerOneName, playerTwoName);
+	console.log(gameData);
 	const gameIdCont = gameData.data.id;
 	await displayUserGames();
 	window.location.replace(`../?id=${gameIdCont}`);
