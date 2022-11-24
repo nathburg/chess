@@ -44,11 +44,6 @@ function checkError({ data, error }) {
 
 /////////
 
-// export async function addGame(game) {
-//     const response = await client.from('games').insert({ game_name: game });
-//     console.log(response);
-// }
-
 export async function startNewGame(player1, player2) {
 	const response = await client
 		.from('games')
@@ -60,11 +55,6 @@ export async function startNewGame(player1, player2) {
 		})
 		.single();
 	return response;
-}
-
-export async function getGameId() {
-	const response = client.from('games').select('*').single();
-	return response.data.id;
 }
 
 export async function getGames() {
@@ -87,8 +77,6 @@ export async function getBoardStateById(id) {
 		.select('*')
 		.match({ id })
 		.single();
-	// console.log(response.data.board_state);
-	// const json = await JSON.parse(response.data.board_state);
 	return response.data.board_state;
 }
 

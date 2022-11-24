@@ -3,18 +3,13 @@ import {
 	saveGame,
 	getUser,
 	signOutUser,
-	getGameId,
 	getBoardStateById,
 	getWhiteCaptured,
 	getBlackCaptured,
 	checkAuth,
+	getGameById,
 } from './fetch-utils.js';
-
-checkAuth();
-const saveGameBtn = document.getElementById('save-game-btn');
-// import { gameId } from "./home-page/home.js";
-const user = getUser();
-
+import { initialBoard, initialCastling } from './initial-state.js';
 import { renderCapturedBlack, renderCapturedwhite } from './render-utils.js';
 
 const blackCapturedContainer = document.querySelector('.black-captured');
@@ -29,8 +24,8 @@ signOutLink.addEventListener('click', async () => {
 
 music.volume = 0.12;
 
-// const response = await getGameId();
-// console.log(response);
+checkAuth();
+const user = getUser();
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
@@ -44,218 +39,14 @@ onSave(id, (payload) => {
 	// whiteCaptured = payload.new.white_captured;
 	// displayBlackCaptured();
 	displayBoard();
-	// displayWhiteCaptured();
-	console.log(
-		'board ',
-		typeof payload.new.board_state
-		// 	'black ',
-		// 	payload.new.black_captured,
-		// 	'white ',
-		// 	payload.new.white_captured
-	);
 });
 
-const boardState = await getBoardStateById(id);
+const state = await getGameById(id);
 
-const whiteCapturedRes = await getWhiteCaptured(id);
-const blackCapturedRes = await getBlackCaptured(id);
+const whiteCapturedRes = state.white_captured;
+const blackCapturedRes = state.black_captured;
 
-const initialBoard = {
-	a1: {
-		color: 'white',
-		piece: 'rook',
-		image: '♖',
-	},
-	b1: {
-		color: 'white',
-		piece: 'knight',
-		image: '♘',
-	},
-	c1: {
-		color: 'white',
-		piece: 'bishop',
-		image: '♗',
-	},
-	d1: {
-		color: 'white',
-		piece: 'queen',
-		image: '♕',
-	},
-	e1: {
-		color: 'white',
-		piece: 'king',
-		image: '♔',
-	},
-	f1: {
-		color: 'white',
-		piece: 'bishop',
-		image: '♗',
-	},
-	g1: {
-		color: 'white',
-		piece: 'knight',
-		image: '♘',
-	},
-	h1: {
-		color: 'white',
-		piece: 'rook',
-		image: '♖',
-	},
-	a2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	b2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	c2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	d2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	e2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	f2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	g2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	h2: {
-		color: 'white',
-		piece: 'pawn',
-		image: '♙',
-	},
-	a3: false,
-	b3: false,
-	c3: false,
-	d3: false,
-	e3: false,
-	f3: false,
-	g3: false,
-	h3: false,
-	a4: false,
-	b4: false,
-	c4: false,
-	d4: false,
-	e4: false,
-	f4: false,
-	g4: false,
-	h4: false,
-	a5: false,
-	b5: false,
-	c5: false,
-	d5: false,
-	e5: false,
-	f5: false,
-	g5: false,
-	h5: false,
-	a6: false,
-	b6: false,
-	c6: false,
-	d6: false,
-	e6: false,
-	f6: false,
-	g6: false,
-	h6: false,
-	a7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	b7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	c7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	d7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	e7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	f7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	g7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	h7: {
-		color: 'black',
-		piece: 'pawn',
-		image: '♟',
-	},
-	a8: {
-		color: 'black',
-		piece: 'rook',
-		image: '♜',
-	},
-	b8: {
-		color: 'black',
-		piece: 'knight',
-		image: '♞',
-	},
-	c8: {
-		color: 'black',
-		piece: 'bishop',
-		image: '♝',
-	},
-	d8: {
-		color: 'black',
-		piece: 'queen',
-		image: '♛',
-	},
-	e8: {
-		color: 'black',
-		piece: 'king',
-		image: '♚',
-	},
-	f8: {
-		color: 'black',
-		piece: 'bishop',
-		image: '♝',
-	},
-	g8: {
-		color: 'black',
-		piece: 'knight',
-		image: '♞',
-	},
-	h8: {
-		color: 'black',
-		piece: 'rook',
-		image: '♜',
-	},
-};
-
-let board = boardState;
+let board = state.board_state;
 
 const stringToFunction = {
 	pawn: pawn,
@@ -737,9 +528,6 @@ function moveButton(currentPosition, targetPosition) {
 	const saveCurrentPiece = board[currentPosition];
 	const saveTargetPiece = board[targetPosition];
 	targetPositionEl.addEventListener('click', async () => {
-		saveGameBtn.classList.remove('game-saved');
-		saveGameBtn.classList.add('save-game-btn');
-		saveGameBtn.textContent = 'SAVE GAME';
 		movePieceSound();
 		//complete check conditions for edge cases
 		let spot7 = '';
@@ -880,9 +668,6 @@ function attackButton(currentPosition, targetPosition) {
 	targetPositionEl.textContent = `x${board[targetPosition].image}`;
 
 	targetPositionEl.addEventListener('click', async () => {
-		saveGameBtn.classList.remove('game-saved');
-		saveGameBtn.classList.add('save-game-btn');
-		saveGameBtn.textContent = 'SAVE GAME';
 		takePieceSound();
 
 		let spot7 = '';
@@ -1385,15 +1170,6 @@ function displayWhiteCaptured() {
 		}
 	}
 }
-
-saveGameBtn.addEventListener('click', async () => {
-	const response = await saveGame(id, board, blackCaptured, whiteCaptured);
-	saveGameBtn.textContent = 'GAME SAVED';
-	saveGameBtn.classList.remove('save-game-btn');
-	saveGameBtn.classList.add('game-saved');
-
-	console.log(response);
-});
 
 function movePieceSound() {
 	var audio = new Audio('./assets/chess-move.wav');
