@@ -559,12 +559,14 @@ function continueMove(position, deltaXFunction, deltaYFunction) {
 function checkChecker() {
 	if (!isKingSafe()) {
 		check = true;
-		checkDisplay.textContent = "You're in check";
+		checkDisplay.textContent = `${currentPlayer} is in check`;
 		setCheckDefense();
 		if (checkDefense.length === 0) {
 			checkDisplay.textContent = 'Checkmate';
 			isGameOn = false;
 		}
+	} else {
+		checkDisplay.textContent = '';
 	}
 }
 
