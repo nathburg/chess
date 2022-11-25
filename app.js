@@ -43,7 +43,6 @@ onSave(id, (payload) => {
 	castling = payload.new.game_state.castling;
 	capturedPieces = payload.new.game_state.capturedPieces;
 	pastMoves = payload.new.game_state.pastMoves;
-	checkChecker();
 	refreshDisplay();
 });
 
@@ -93,6 +92,7 @@ refreshDisplay();
 
 function refreshDisplay() {
 	if (isGameOn) {
+		checkChecker();
 		displayBoard();
 		displayCapturedPieces();
 	}
@@ -209,11 +209,10 @@ function setMoveButton(currentPosition, targetPosition, moveType) {
 			changePlayer();
 			setState();
 			await saveGame(id, state);
-			refreshDisplay();
 			checkDefense = [];
 			check = false;
 			checkDisplay.textContent = '';
-			checkChecker();
+			refreshDisplay();
 		});
 	}
 	// board state is reset
@@ -292,9 +291,8 @@ function setCastlingButton(currentPosition, targetPosition) {
 			changePlayer();
 			setState();
 			await saveGame(id, state);
-			refreshDisplay();
-			checkChecker();
 			pastMoves.push([currentPosition, targetPosition, 'castling']);
+			refreshDisplay();
 		});
 	}
 }
