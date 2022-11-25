@@ -4,6 +4,7 @@ import {
 	getGames,
 	signOutUser,
 	checkAuth,
+	deleteGameById,
 } from '../fetch-utils.js';
 import { renderGame } from '../render-utils.js';
 
@@ -39,21 +40,19 @@ form.addEventListener('submit', async (e) => {
 	// form.reset();
 });
 
-async function displayUserGames() {
+export async function displayUserGames() {
 	gamesList.textContent = '';
 	const games = await getGames();
 	for (let game of games) {
-		const gamesDiv = renderGame(game, user);
-		const gameButton = gamesDiv.children[3];
-		if (gameButton.textContent === 'Resume Game') {
-			gameButton.addEventListener('click', () => {
-				console.log('resume clicked');
-			});
-		} else {
-			gameButton.addEventListener('click', () => {
-				console.log('view clicked');
-			});
-		}
+		const gamesDiv = renderGame(game);
+		console.log(gamesDiv.children);
+		const deleteButton = gamesDiv.children[4];
+		deleteButton.addEventListener('click', async () => {
+			const resp = await deleteGameById(game.id);
+			if (!resp.error) {
+				displayUserGames();
+			}
+		});
 		gamesList.append(gamesDiv);
 	}
 }
