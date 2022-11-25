@@ -69,6 +69,15 @@ export async function getGameById(id) {
 	return response.data;
 }
 
+export async function deleteGameById(id) {
+	const response = await client
+		.from('games')
+		.delete('*')
+		.match({ id })
+		.single();
+	return response.data;
+}
+
 export async function saveGame(id, state) {
 	const response = await client
 		.from('games')
