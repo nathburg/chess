@@ -44,27 +44,15 @@ function checkError({ data, error }) {
 
 /////////
 
-// export async function addGame(game) {
-//     const response = await client.from('games').insert({ game_name: game });
-//     console.log(response);
-// }
-
 export async function startNewGame(player1, player2) {
 	const response = await client
 		.from('games')
 		.insert({
 			player_one_name: player1,
 			player_two_name: player2,
-			black_captured: [],
-			white_captured: [],
 		})
 		.single();
 	return response;
-}
-
-export async function getGameId() {
-	const response = client.from('games').select('*').single();
-	return response.data.id;
 }
 
 export async function getGames() {
@@ -81,46 +69,15 @@ export async function getGameById(id) {
 	return response.data;
 }
 
-export async function getBoardStateById(id) {
-	const response = await client
-		.from('games')
-		.select('*')
-		.match({ id })
-		.single();
-	// console.log(response.data.board_state);
-	// const json = await JSON.parse(response.data.board_state);
-	return response.data.board_state;
-}
-
-export async function saveGame(id, boardState, blackCaptured, whiteCaptured) {
+export async function saveGame(id, state) {
 	const response = await client
 		.from('games')
 		.update({
-			board_state: boardState,
-			black_captured: blackCaptured,
-			white_captured: whiteCaptured,
+			game_state: state,
 		})
 		.match({ id: id })
 		.single();
 	return response.data;
-}
-
-export async function getWhiteCaptured(id) {
-	const response = await client
-		.from('games')
-		.select('*')
-		.match({ id })
-		.single();
-	return response.data.white_captured;
-}
-
-export async function getBlackCaptured(id) {
-	const response = await client
-		.from('games')
-		.select('*')
-		.match({ id })
-		.single();
-	return response.data.black_captured;
 }
 
 export function onSave(gameId, handleNewSave) {
