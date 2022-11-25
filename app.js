@@ -121,7 +121,7 @@ function renderPlayable(position) {
 			let moves = pieceStringToFunction[board[position].piece](position);
 			if (check) {
 				// this returns only moves that will get your king out of check
-				moves = performIntersection(moves, checkDefense);
+				moves = performIntersection(checkDefense, moves);
 			}
 			for (let move of moves) {
 				if (move.condition === 'empty') {
