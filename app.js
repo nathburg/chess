@@ -185,6 +185,22 @@ function setMoveButton(currentPosition, targetPosition, moveType) {
 		targetPositionEl.addEventListener('click', async () => {
 			board[currentPosition] = false;
 			board[targetPosition] = saveCurrentPiece;
+			if (saveCurrentPiece.piece === 'pawn') {
+				if (stringToCoords(targetPosition)[1] === 1) {
+					board[targetPosition] = {
+						color: 'black',
+						piece: 'queen',
+						image: '♛',
+					};
+				}
+				if (stringToCoords(targetPosition)[1] === 8) {
+					board[targetPosition] = {
+						color: 'white',
+						piece: 'queen',
+						image: '♕',
+					};
+				}
+			}
 			if (moveType === 'enPassant') board[enemyPosition] = false;
 			if (saveCurrentPiece.piece === 'king') {
 				for (let rook in castling[currentPlayer]) {
