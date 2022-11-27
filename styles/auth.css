@@ -4,6 +4,7 @@
 
 body {
   background-image: url(../assets/marble1.jpg);
+  margin: 0;
 }
 
 header {
