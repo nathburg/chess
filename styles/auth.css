@@ -13,19 +13,23 @@ header {
   align-items: center;
   font-family: "Aboreto", cursive;
   background-image: url(../assets/redwood.jpg);
-  height: 70px;
+  height: 8vh;
   color: darkgoldenrod;
-  border: 2px solid darkgoldenrod;
+
   box-shadow: 8px 9px 10px -6px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 8px 9px 10px -6px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 8px 9px 10px -6px rgba(0, 0, 0, 0.75);
 }
 
 .form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 50px;
   background-image: url(../assets/redwood.jpg);
-  width: 600px;
-  height: 500px;
+  width: 80vw;
+  height: 60vh;
   font-family: "Aboreto", cursive;
   font-weight: bold;
   border-radius: 6px;
@@ -38,9 +42,15 @@ header {
   -moz-box-shadow: 10px 12px 10px 11px rgba(0, 0, 0, 0.75);
 }
 
+a {
+  text-decoration: none;
+  color: rgb(100, 100, 228);
+  cursor: pointer;
+}
+
 .form-container input {
   margin: 20px;
-  width: 400px;
+  width: 60vw;
   height: 40px;
 }
 
