@@ -6,17 +6,10 @@ main {
   display: flex;
   padding: 1vw;
   width: 80vw;
-  margin-left: 8vw;
+  /* margin-left: 8vw;
   margin-right: 4vw;
-  margin-top: 20px;
+  margin-top: 20px; */
   justify-content: space-evenly;
-  /* border-radius: 8px;
-  border: 5px solid rgb(82, 55, 33);
-  background-color: rgb(220, 215, 201);
-
-  box-shadow: 10px 12px 10px 11px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 10px 12px 10px 11px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 10px 12px 10px 11px rgba(0, 0, 0, 0.75); */
 }
 
 header {
@@ -24,8 +17,8 @@ header {
   justify-content: space-between;
   font-size: 1.5vh;
   font-family: "Aboreto", cursive;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 3vw;
+  padding-right: 3vw;
   align-items: center;
   background-color: rgb(44, 54, 57);
   background-image: url(../assets/marble1.jpg);
@@ -76,7 +69,7 @@ header a {
   font-family: "Aboreto", cursive;
 
   margin-top: 3vh;
-  width: 13vw;
+
   height: 60vh;
   padding: 2vh;
   border-radius: 6px;
@@ -89,7 +82,6 @@ header a {
 } */
 
 body {
-  background-color: rgb(162, 123, 92);
   background-image: url(../assets/redwood.jpg);
 }
 
@@ -206,17 +198,95 @@ audio {
 
 .black-captured {
   padding: 1vh;
-  background-image: url(../assets/light-wood.jpg);
-  border: 4px solid rgb(82, 55, 33);
-  border-radius: 20px;
   height: 40vh;
   width: 20vh;
+  background-image: url(../assets/light-wood.jpg);
+  background-position: center;
+  object-fit: cover;
+  border: 4px solid black;
+  border-radius: 20px;
   display: flex;
   font-size: 3vh;
   flex-wrap: wrap;
-  border: 4px solid rgb(29, 17, 8);
   box-shadow: 12px 11px 10px -7px rgba(0, 0, 0, 1);
   -webkit-box-shadow: 12px 11px 10px -7px rgba(0, 0, 0, 1);
   -moz-box-shadow: 12px 11px 10px -7px rgba(0, 0, 0, 1);
   text-shadow: 3px 3px 4px rgb(63, 78, 79);
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .board {
+    width: 100%;
+    justify-self: center;
+    border: 4px solid rgb(29, 17, 8);
+  }
+
+  .white-captured {
+    padding: 1vh;
+    height: 12vh;
+    width: 100vw;
+    background-image: url(../assets/light-wood.jpg);
+    background-position: center;
+    object-fit: cover;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.8vh;
+    flex-wrap: wrap;
+  }
+
+  .captured-pieces-white {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Aboreto", cursive;
+
+    height: 20vh;
+    padding: 2vh;
+  }
+
+  .black-captured {
+    padding: 1vh;
+    height: 12vh;
+    width: 100vw;
+    background-image: url(../assets/light-wood.jpg);
+    background-position: center;
+    object-fit: cover;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.8vh;
+    flex-wrap: wrap;
+  }
+
+  .captured-pieces-black {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Aboreto", cursive;
+
+    height: 20vh;
+    padding: 2vh;
+  }
+
+  .square {
+    height: 10vh;
+    width: 10vh;
+    margin: 0px;
+    padding: 0px;
+    font-size: 4vh;
+    cursor: pointer;
+    text-shadow: 3px 3px 4px rgb(63, 78, 79);
+  }
 }
