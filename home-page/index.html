@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=DynaPuff&family=Goldman&family=Inconsolata&family=Lobster&family=Playfair+Display&family=Rubik+Dirt&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.7/dist/umd/supabase.min.js"></script> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Aboreto&family=DynaPuff&family=Goldman&family=Inconsolata&family=Lobster&family=Playfair+Display&family=Rubik+Dirt&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.35.7/dist/umd/supabase.min.js"
+    ></script>
 
-    <link rel="stylesheet" href="../styles/home.css"/>
-
+    <link rel="stylesheet" href="../styles/home.css" />
 
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Lobby</h1>
-        <nav>
-            <a id="sign-out" href="../auth">Sign out</a>
-        </nav>
+      <h1>Lobby</h1>
+      <nav>
+        <a id="sign-out" href="../auth">Sign out</a>
+      </nav>
     </header>
     <main>
-        
-        <div class="new-game-form">
-            <label for="new-game-form">New Game</label>
-            <form id="new-game-form">
-                <label for="">
-                    <input type="text" name="player-one-name" placeholder="Player One Name">
-                </label>
-                <label for="">
-                    <input type="text" name="player-two-name" placeholder="Player Two Name">
-                </label>
-                <label for="">
-                    <button id="start-new-game">Start New Game</button>
-                </label>
-            </form>
-        </div>
-        <h2>Running games</h2>
-        <div class="games-container" id="past-games-el">
-            
-            
-
-        </div>
-        
-        
+      <div class="new-game-form">
+        <label for="new-game-form">New Game</label>
+        <form id="new-game-form">
+          <label for="">
+            <input
+              class="home-input"
+              type="text"
+              name="player-one-name"
+              placeholder="Player One Name"
+            />
+          </label>
+          <label for="">
+            <input
+              class="home-input"
+              type="text"
+              name="player-two-name"
+              placeholder="Player Two Name"
+            />
+          </label>
+          <label for="">
+            <button id="start-new-game">Start New Game</button>
+          </label>
+        </form>
+      </div>
+      <h2>Running games</h2>
+      <div class="games-container" id="past-games-el"></div>
     </main>
     <script type="module" src="home.js"></script>
-</body>
+  </body>
 </html>
