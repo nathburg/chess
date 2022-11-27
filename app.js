@@ -37,13 +37,12 @@ if (!id) {
 }
 
 onSave(id, (payload) => {
-  isGameOn = payload.new.game_state.isGameOn;
-  currentPlayer = payload.new.game_state.currentPlayer;
-  board = payload.new.game_state.board;
-  castling = payload.new.game_state.castling;
-  capturedPieces = payload.new.game_state.capturedPieces;
-  pastMoves = payload.new.game_state.pastMoves;
-  refreshDisplay();
+	currentPlayer = payload.new.game_state.currentPlayer;
+	board = payload.new.game_state.board;
+	castling = payload.new.game_state.castling;
+	capturedPieces = payload.new.game_state.capturedPieces;
+	pastMoves = payload.new.game_state.pastMoves;
+	refreshDisplay();
 });
 
 //initial game state
@@ -59,21 +58,19 @@ let check = false;
 let checkDefense = [];
 
 let state = {
-  isGameOn,
-  currentPlayer,
-  board,
-  castling,
-  capturedPieces,
-  pastMoves,
+	currentPlayer,
+	board,
+	castling,
+	capturedPieces,
+	pastMoves,
 };
 
 function setState() {
-  state.isGameOn = isGameOn;
-  state.currentPlayer = currentPlayer;
-  state.board = board;
-  state.castling = castling;
-  state.capturedPieces = capturedPieces;
-  state.pastMoves = pastMoves;
+	state.currentPlayer = currentPlayer;
+	state.board = board;
+	state.castling = castling;
+	state.capturedPieces = capturedPieces;
+	state.pastMoves = pastMoves;
 }
 
 const pieceStringToFunction = {
